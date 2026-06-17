@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+import { costume } from '../data/galleries';
+---
+<BaseLayout current="costume" title="Costume" description="Costume work by Kaylee Renaud.">
+  <section class="container page-intro">
+    <h1>Costume</h1>
+    <p>Hand-made pieces and details. Hover for a caption; click to enlarge.</p>
+  </section>
+  <section class="container">
+    <Gallery items={costume} columns={3} />
+  </section>
+</BaseLayout>

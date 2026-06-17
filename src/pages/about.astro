@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+import { aboutPhotos } from '../data/galleries';
+---
+<BaseLayout current="about" title="About" description="About Kaylee Renaud.">
+  <section class="container page-intro">
+    <h1>About</h1>
+    <p class="placeholder-note">Your blurb goes here — send it whenever and I'll drop it in. Below is placeholder text + spots for a few photos of you.</p>
+    <p>
+      Hi, I'm Kaylee. <em>[Your blurb will live here.]</em> Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit. I work across photography, costume, writing, and video —
+      tell your story in a couple of warm, personal paragraphs and we'll style it to feel like you.
+    </p>
+  </section>
+
+  <section class="container">
+    <Gallery items={aboutPhotos} columns={3} />
+  </section>
+</BaseLayout>

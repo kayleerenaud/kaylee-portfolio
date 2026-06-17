@@ -1,0 +1,72 @@
+/* ===========================================================================
+   DESIGN TOKENS — the visual signature of the whole site lives here.
+   Once Kaylee's inspiration/layout references arrive, most restyling happens
+   by editing these variables. Keep the palette small and the type consistent.
+   =========================================================================== */
+:root {
+  /* palette (placeholder — warm editorial neutral) */
+  --bg:        #faf8f5;
+  --surface:   #ffffff;
+  --ink:       #1c1a17;
+  --ink-soft:  #5c574f;
+  --accent:    #b4654a;   /* terracotta — swap for your brand color */
+  --line:      #e7e1d8;
+
+  /* type */
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body:    system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* rhythm */
+  --maxw: 1200px;
+  --gap: clamp(1rem, 2vw, 2rem);
+  --radius: 4px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin: 0 0 0.5em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { display: block; max-width: 100%; height: auto; }
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gap); }
+
+/* page intro block */
+.page-intro { padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem); max-width: 60ch; }
+.page-intro p { color: var(--ink-soft); font-size: 1.1rem; }
+
+/* placeholder note shown in scaffold mode */
+.placeholder-note {
+  background: #fff7ed;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+/* visually-hidden (for accessibility labels) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

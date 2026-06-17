@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+import { writing } from '../data/galleries';
+---
+<BaseLayout current="writing" title="Writing" description="Writing by Kaylee Renaud.">
+  <section class="container page-intro">
+    <h1>Writing</h1>
+    <p>Each cover opens to its piece. Hover for the title; click to read.</p>
+  </section>
+  <section class="container">
+    <Gallery items={writing} columns={3} />
+  </section>
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+import { photography } from '../data/galleries';
+---
+<BaseLayout current="photography" title="Photography" description="Photography by Kaylee Renaud.">
+  <section class="container page-intro">
+    <h1>Photography</h1>
+    <p>Hover any image for its caption; click to view it large with the full story.</p>
+  </section>
+  <section class="container">
+    <Gallery items={photography} columns={3} />
+  </section>
+</BaseLayout>

@@ -1,0 +1,103 @@
+---
+// Reusable image gallery with hover captions + click-to-enlarge lightbox.
+// Pass an array of items: { src, alt, caption }.
+// Hover (desktop) reveals a short caption in the lower-left.
+// Click/tap opens the image large with the FULL caption.
+export type GalleryItem = { src: string; alt: string; caption?: string };
+const { items, columns = 3 } = Astro.props as { items: GalleryItem[]; columns?: number };
+---
+<ul class="gallery" style={`--cols:${columns}`}>
+  {items.map((it) => (
+    <li class="cell">
+      <button
+        class="thumb"
+        data-lightbox
+        data-src={it.src}
+        data-alt={it.alt}
+        data-caption={it.caption ?? ''}
+        aria-label={`Open: ${it.caption || it.alt}`}
+      >
+        <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
+        {it.caption && <span class="caption">{it.caption}</span>}
+      </button>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .gallery {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: var(--gap);
+    grid-template-columns: repeat(var(--cols, 3), 1fr);
+  }
+  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
+
+  .thumb {
+    position: relative; display: block; width: 100%; padding: 0; border: 0;
+    background: var(--surface); cursor: zoom-in; overflow: hidden;
+    border-radius: var(--radius); line-height: 0;
+  }
+  .thumb img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform .4s ease; }
+  .thumb:hover img, .thumb:focus-visible img { transform: scale(1.04); }
+
+  /* caption: lower-left, hidden until hover/focus */
+  .caption {
+    position: absolute; left: 0; bottom: 0; max-width: 90%;
+    margin: 0.6rem; padding: 0.35rem 0.6rem;
+    background: rgba(20,18,15,0.78); color: #fff;
+    font-size: 0.85rem; line-height: 1.3; border-radius: 3px;
+    text-align: left; opacity: 0; transform: translateY(6px);
+    transition: opacity .2s, transform .2s; pointer-events: none;
+  }
+  .thumb:hover .caption, .thumb:focus-visible .caption { opacity: 1; transform: translateY(0); }
+  /* On touch devices (no hover), show captions by default so they're not hidden. */
+  @media (hover: none) { .caption { opacity: 1; transform: none; } }
+</style>
+
+<script>
+  // One shared lightbox for any number of galleries on the page.
+  function ensureLightbox(): HTMLDialogElement {
+    let dlg = document.getElementById('lightbox') as HTMLDialogElement | null;
+    if (dlg) return dlg;
+    dlg = document.createElement('dialog');
+    dlg.id = 'lightbox';
+    dlg.innerHTML = `
+      <button class="lb-close" aria-label="Close">×</button>
+      <figure class="lb-figure">
+        <img class="lb-img" alt="" />
+        <figcaption class="lb-caption"></figcaption>
+      </figure>`;
+    document.body.appendChild(dlg);
+    const style = document.createElement('style');
+    style.textContent = `
+      #lightbox { border: 0; padding: 0; max-width: 96vw; max-height: 96vh; background: transparent; }
+      #lightbox::backdrop { background: rgba(15,13,11,0.92); }
+      #lightbox .lb-figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+      #lightbox .lb-img { max-width: 92vw; max-height: 80vh; width: auto; height: auto; border-radius: 4px; }
+      #lightbox .lb-caption { color: #f3efe9; font-size: 1rem; line-height: 1.5; max-width: 70ch; text-align: center; padding: 0 1rem; }
+      #lightbox .lb-caption:empty { display: none; }
+      #lightbox .lb-close {
+        position: fixed; top: 1rem; right: 1.25rem; width: 44px; height: 44px;
+        font-size: 1.75rem; line-height: 1; color: #fff; background: rgba(0,0,0,.4);
+        border: 0; border-radius: 50%; cursor: pointer;
+      }`;
+    document.head.appendChild(style);
+    const close = () => dlg!.close();
+    dlg.querySelector('.lb-close')!.addEventListener('click', close);
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); }); // click backdrop
+    return dlg;
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('[data-lightbox]') as HTMLElement | null;
+    if (!btn) return;
+    const dlg = ensureLightbox();
+    const img = dlg.querySelector('.lb-img') as HTMLImageElement;
+    const cap = dlg.querySelector('.lb-caption') as HTMLElement;
+    img.src = btn.dataset.src || '';
+    img.alt = btn.dataset.alt || '';
+    cap.textContent = btn.dataset.caption || '';
+    dlg.showModal();
+  });
+</script>

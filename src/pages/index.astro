@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, pages, pageHref } from '../config/site';
+const work = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
+---
+<BaseLayout current="">
+  <section class="hero container">
+    <p class="kicker">Portfolio</p>
+    <h1>{site.brand}</h1>
+    <p class="lede">{site.tagline}</p>
+    <p class="placeholder-note">Scaffold preview — imagery, captions, and your About blurb come next. The structure, navigation, galleries, and contact form are all wired up and working.</p>
+  </section>
+
+  <section class="container">
+    <ul class="tiles">
+      {work.map((p) => (
+        <li>
+          <a href={pageHref(p.slug)} class="tile">
+            <span class="tile-label">{p.label}</span>
+            <span class="tile-teaser">{p.teaser}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding: clamp(3rem, 9vw, 7rem) 0 2rem; }
+  .kicker { font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.5rem; }
+  .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 50ch; }
+  .tiles { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2,1fr); gap: var(--gap); }
+  @media (max-width: 640px) { .tiles { grid-template-columns: 1fr; } }
+  .tile {
+    display: flex; flex-direction: column; gap: 0.25rem; justify-content: flex-end;
+    min-height: 200px; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink); text-decoration: none; transition: transform .15s, border-color .15s;
+  }
+  .tile:hover { transform: translateY(-3px); border-color: var(--accent); text-decoration: none; }
+  .tile-label { font-family: var(--font-display); font-size: 1.6rem; }
+  .tile-teaser { color: var(--ink-soft); }
+</style>

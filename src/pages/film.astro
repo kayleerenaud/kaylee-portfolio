@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import YouTube from '../components/YouTube.astro';
+import { videos } from '../data/galleries';
+---
+<BaseLayout current="film" title="Video" description="Video projects by Kaylee Renaud.">
+  <section class="container page-intro">
+    <h1>Video</h1>
+    <p>Projects embedded straight from YouTube.</p>
+    <p class="placeholder-note">Replace the placeholder video IDs in <code>src/data/galleries.ts</code> with your real ones.</p>
+  </section>
+  <section class="container videos">
+    {videos.map((v) => (
+      <article class="video">
+        <YouTube id={v.id} title={v.title} />
+        <h2>{v.title}</h2>
+        <p>{v.blurb}</p>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .videos { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
+  .video h2 { margin: 1rem 0 0.25rem; font-size: 1.4rem; }
+  .video p { margin: 0; color: var(--ink-soft); }
+</style>

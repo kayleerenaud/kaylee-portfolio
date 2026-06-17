@@ -1,0 +1,76 @@
+---
+import { site } from '../config/site';
+const action = `https://formspree.io/f/${site.formspreeId}`;
+const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
+---
+<form class="contact" action={action} method="POST">
+  {notConfigured && (
+    <p class="placeholder-note">
+      ⚙️ Setup needed: create a free form at <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a>,
+      then paste your form ID into <code>src/config/site.ts</code> (the <code>formspreeId</code> field).
+      Until then this form won't send.
+    </p>
+  )}
+
+  <div class="row">
+    <label>Name<span aria-hidden="true">*</span>
+      <input type="text" name="name" required autocomplete="name" />
+    </label>
+    <label>Email<span aria-hidden="true">*</span>
+      <input type="email" name="email" required autocomplete="email" />
+    </label>
+  </div>
+
+  <div class="row">
+    <label>Phone <span class="opt">(optional)</span>
+      <input type="tel" name="phone" autocomplete="tel" />
+    </label>
+    <label>What's this about?
+      <select name="topic">
+        <option value="">Choose one…</option>
+        <option>Photography booking</option>
+        <option>Costume / commission</option>
+        <option>Writing / collaboration</option>
+        <option>Video project</option>
+        <option>Just saying hi</option>
+        <option>Other</option>
+      </select>
+    </label>
+  </div>
+
+  <label>How did you find me? <span class="opt">(optional)</span>
+    <input type="text" name="referral" placeholder="Instagram, a friend, a search…" />
+  </label>
+
+  <label>Message<span aria-hidden="true">*</span>
+    <textarea name="message" rows="6" required></textarea>
+  </label>
+
+  <!-- spam honeypot: bots fill this, humans don't see it -->
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+  <input type="hidden" name="_subject" value={`New message from your site — ${site.brand}`} />
+
+  <button type="submit" class="btn">Send message</button>
+
+  <p class="fallback">Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a></p>
+</form>
+
+<style>
+  .contact { max-width: 640px; display: grid; gap: 1.1rem; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+  label { display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .opt { color: var(--ink-soft); font-weight: 400; }
+  input, select, textarea {
+    font: inherit; font-size: 1rem; color: var(--ink);
+    padding: 0.65rem 0.75rem; border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); width: 100%;
+  }
+  textarea { resize: vertical; }
+  .btn {
+    justify-self: start; background: var(--accent); color: #fff; border: 0;
+    padding: 0.7rem 1.4rem; border-radius: var(--radius); font-size: 1rem; cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.05); }
+  .fallback { font-size: 0.9rem; color: var(--ink-soft); margin: 0.25rem 0 0; }
+</style>

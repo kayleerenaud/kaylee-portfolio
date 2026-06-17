@@ -1,0 +1,42 @@
+---
+import { site, nextPage, pageHref } from '../config/site';
+const { current } = Astro.props as { current: string };
+const next = nextPage(current);
+---
+<footer class="site-footer">
+  <div class="container">
+    <a class="next-card" href={pageHref(next.slug)}>
+      <span class="next-kicker">Next</span>
+      <span class="next-label">{next.label} →</span>
+      {next.teaser && <span class="next-teaser">{next.teaser}</span>}
+    </a>
+
+    <div class="foot-bottom">
+      <span>© {site.brand}</span>
+      <span class="foot-social">
+        {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram</a>}
+        {site.social.youtube && <a href={site.social.youtube} target="_blank" rel="noopener">YouTube</a>}
+        <a href="/contact/">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); margin-top: clamp(3rem, 8vw, 6rem); padding: clamp(2rem,5vw,3.5rem) 0; }
+  .next-card {
+    display: inline-flex; flex-direction: column; gap: 0.15rem;
+    text-decoration: none; color: var(--ink); padding: 1.25rem 0;
+  }
+  .next-card:hover { text-decoration: none; }
+  .next-card:hover .next-label { color: var(--accent); }
+  .next-kicker { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); }
+  .next-label { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.75rem); transition: color .15s; }
+  .next-teaser { color: var(--ink-soft); }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    font-size: 0.9rem; color: var(--ink-soft);
+  }
+  .foot-social { display: flex; gap: 1.25rem; }
+</style>
