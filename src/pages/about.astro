@@ -33,6 +33,7 @@ import { site, pageHref } from '../config/site';
         <Headshot frames={headshotFrames} alt="Portrait of Kaylee Renaud" />
       </div>
     </div>
+    <Sketch name="squiggle" class="doodle d-tc" />
   </section>
 
   <!-- 2 · BLURB ------------------------------------------------------------ -->
@@ -40,8 +41,8 @@ import { site, pageHref } from '../config/site';
     <div class="container blurb-inner">
       {blurb.map((p, i) => <p class="blurb-p" data-reveal style={`--d:${i * 80}ms`} set:html={p} />)}
     </div>
-    <Sketch name="squiggle" class="doodle d-blurb" />
-    <Sketch name="heart" class="doodle d-blurb2" />
+    <Sketch name="wave" class="doodle d-blurb" />
+    <Sketch name="star" class="doodle d-blurb2" />
   </section>
 
   <!-- 3 · FEATURING (the three crafts) ------------------------------------- -->
@@ -58,6 +59,8 @@ import { site, pageHref } from '../config/site';
         </li>
       ))}
     </ul>
+    <Sketch name="heart" class="doodle d-feat" />
+    <Sketch name="spark" class="doodle d-feat2" />
   </section>
 
   <!-- 4 · CREDITS (no label — the styling carries the vibe) ----------------- -->
@@ -73,6 +76,7 @@ import { site, pageHref } from '../config/site';
       </div>
     </div>
     <Sketch name="spark" class="doodle d-credits" />
+    <Sketch name="squiggle" class="doodle d-credits2" />
   </section>
 
   <!-- 5 · CONTACT INVITE --------------------------------------------------- -->
@@ -93,7 +97,7 @@ import { site, pageHref } from '../config/site';
   .kr-defs { position: absolute; }
 
   /* ---- 1 · title card: letterboxed like an opening frame ---- */
-  .title-card { position: relative; padding: clamp(2.5rem, 7vw, 5rem) 0; border-bottom: 1px solid var(--line); overflow: hidden; }
+  .title-card { position: relative; padding: clamp(2.5rem, 7vw, 5rem) 0; overflow: hidden; }
   .tc-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; min-height: 56vh; }
   @media (max-width: 760px) { .tc-grid { grid-template-columns: 1fr; text-align: center; } .tc-photo { justify-self: center; } }
   .tc-name { font-size: clamp(2.8rem, 9vw, 6rem); line-height: .95; margin: 0; }
@@ -113,7 +117,7 @@ import { site, pageHref } from '../config/site';
   }
 
   /* ---- 3 · featuring ---- */
-  .featuring { padding: clamp(2rem, 5vw, 3rem) 0; }
+  .featuring { position: relative; padding: clamp(2rem, 5vw, 3rem) 0; }
   .section-kicker { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); text-align: center; margin: 0 0 2rem; }
   .craft-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
   @media (max-width: 700px) { .craft-grid { grid-template-columns: 1fr; } }
@@ -124,7 +128,7 @@ import { site, pageHref } from '../config/site';
   .craft-blurb { color: var(--ink-soft); font-size: .95rem; max-width: 24ch; }
 
   /* ---- 4 · credits ---- */
-  .credits-section { position: relative; padding: clamp(3rem, 8vw, 6rem) 0; border-top: 1px solid var(--line); background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 6%, transparent)); overflow: hidden; }
+  .credits-section { position: relative; padding: clamp(3rem, 8vw, 6rem) 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 5%, transparent), transparent); overflow: hidden; }
   .credits-roll { display: flex; flex-direction: column; gap: 2.5rem; align-items: center; text-align: center; }
   .credit-heading { font-family: var(--font-display); font-size: 1.25rem; color: var(--accent); margin: 0 0 .6rem; letter-spacing: .02em; }
   .credit-line { font-family: var(--font-mono); font-size: .95rem; line-height: 1.7; color: var(--ink-soft); margin: 0; }
@@ -143,17 +147,25 @@ import { site, pageHref } from '../config/site';
   /* ---- margin doodles: small, in the gutters, never over the content ----
      (only shown when there's real gutter room; all sit below the fold so the
      scroll-draw always triggers as they enter the viewport) */
-  /* anchored to the gutter OUTSIDE the 1200px content column, so they can never
-     overlap text; when there's no gutter room they tuck off-screen. (--gut is
-     the space between the viewport edge and the content column, minus the
-     doodle's own width.) */
-  .doodle {
-    position: absolute; z-index: 1; pointer-events: none; width: var(--w);
-    --gut: calc((100% - 1200px) / 2 - var(--w) - 14px);
+  /* ---- WOVEN UNDERLAY DOODLES ----
+     The doodles live BEHIND the text/images (z-index 0) at low opacity and
+     scatter across the full width, weaving here and there as you scroll. The
+     content is lifted above them (z-index 1), so they read as a soft underlay
+     at any screen width — no gutter dependency. They still draw on scroll. */
+  .tc-grid, .blurb-inner, .section-kicker, .craft-grid, .credits-roll, .invite {
+    position: relative; z-index: 1;
   }
-  .d-blurb   { --w: 76px; top: 16%;    right: var(--gut); }
-  .d-blurb2  { --w: 50px; bottom: 12%; left:  var(--gut); }
-  .d-credits { --w: 56px; top: 16%;    left:  var(--gut); }
-  .d-invite  { --w: 72px; bottom: 14%; right: var(--gut); }
-  @media (max-width: 1080px) { .doodle { display: none; } }
+  .doodle { position: absolute; z-index: 0; pointer-events: none; width: var(--w); opacity: .5; }
+  .d-tc       { --w: 150px; bottom: 5%;  left: 21%; }
+  .d-blurb    { --w: 168px; top: 28%;    right: 5%; }
+  .d-blurb2   { --w: 58px;  bottom: 6%;  left: 7%; }
+  .d-feat     { --w: 64px;  top: -3%;    right: 21%; }
+  .d-feat2    { --w: 74px;  bottom: -5%; left: 15%; }
+  .d-credits  { --w: 60px;  top: 16%;    right: 13%; }
+  .d-credits2 { --w: 128px; bottom: 7%;  left: 9%; }
+  .d-invite   { --w: 118px; top: 32%;    left: 16%; }
+  @media (max-width: 700px) {
+    .doodle { opacity: .38; }
+    .d-blurb, .d-feat, .d-credits2 { display: none; }
+  }
 </style>
