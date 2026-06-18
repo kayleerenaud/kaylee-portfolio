@@ -10,19 +10,20 @@ export const site = {
   brand: 'Kaylee Renaud',
 
   // A short tagline shown on the home page + in search results.
-  tagline: 'Film · Costume · Writing · Visual Storytelling',
+  tagline: 'Film · Costume · Writing',
 
   // Where the contact form delivers. See src/pages/contact.astro for setup.
   // Paste your Formspree form ID here once you create a (free) account.
   formspreeId: 'YOUR_FORM_ID',
 
   // Direct email shown on the contact page as a fallback.
-  email: 'hello@kayleerenaud.com',
+  // (Once you own kayleerenaud.com you can switch this to hello@kayleerenaud.com.)
+  email: 'kayleeerenaud@gmail.com',
 
   // Social links. Empty string = hidden.
   social: {
     instagram: 'https://www.instagram.com/the.miss.kaylee/',
-    youtube: 'https://www.youtube.com/@kayleerenaud',
+    youtube: 'https://www.youtube.com/@the.miss.kaylee',
   },
 } as const;
 

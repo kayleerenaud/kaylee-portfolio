@@ -8,9 +8,11 @@
 //
 // Pass an array of items: { src, alt, caption }.
 export type GalleryItem = { src: string; alt: string; caption?: string };
-const { items, columns = 3 } = Astro.props as { items: GalleryItem[]; columns?: number };
+// layout: 'grid' (default vertical grid) or 'strip' (horizontal filmstrip of
+// landscape stills you scroll/swipe sideways — used for Film stills).
+const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryItem[]; columns?: number; layout?: 'grid' | 'strip' };
 ---
-<ul class="gallery" data-gallery style={`--cols:${columns}`}>
+<ul class:list={['gallery', layout === 'strip' && 'strip']} data-gallery style={`--cols:${columns}`}>
   {items.map((it, i) => (
     <li class="cell" data-reveal style={`--d:${(i % 4) * 70}ms`}>
       <button
@@ -35,8 +37,21 @@ const { items, columns = 3 } = Astro.props as { items: GalleryItem[]; columns?: 
     display: grid; gap: var(--gap);
     grid-template-columns: repeat(var(--cols, 3), 1fr);
   }
-  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .gallery:not(.strip) { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .gallery:not(.strip) { grid-template-columns: 1fr; } }
+
+  /* horizontal filmstrip: landscape stills, scroll/swipe sideways with snap */
+  .gallery.strip {
+    display: flex; grid-template-columns: none;
+    gap: var(--gap); overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.9rem; scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+  .gallery.strip::-webkit-scrollbar { height: 8px; }
+  .gallery.strip::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 8px; }
+  .gallery.strip .cell { flex: 0 0 auto; width: min(82vw, 560px); scroll-snap-align: center; }
+  .gallery.strip .thumb img { aspect-ratio: 16 / 9; }
 
   .thumb {
     position: relative; display: block; width: 100%; padding: 0; border: 0;

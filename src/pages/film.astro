@@ -12,8 +12,8 @@ import { filmStills, videos } from '../data/galleries';
   </section>
 
   <section class="container">
-    <h2 class="section-label" data-reveal>Stills</h2>
-    <Gallery items={filmStills} columns={3} />
+    <h2 class="section-label" data-reveal>Stills <span class="strip-hint" aria-hidden="true">— scroll sideways →</span></h2>
+    <Gallery items={filmStills} layout="strip" />
   </section>
 
   <section class="container videos">
@@ -30,6 +30,7 @@ import { filmStills, videos } from '../data/galleries';
 
 <style>
   .section-label { font-size: 1.1rem; letter-spacing: .04em; color: var(--ink-soft); margin: 2.5rem 0 1rem; }
+  .strip-hint { font-size: 0.85rem; color: color-mix(in srgb, var(--accent) 70%, var(--ink-soft)); font-family: var(--font-body); }
   .videos { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
   .video h3 { margin: 1rem 0 0.25rem; font-size: 1.4rem; font-family: var(--font-display); }
   .video p { margin: 0; color: var(--ink-soft); }
