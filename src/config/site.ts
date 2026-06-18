@@ -1,17 +1,16 @@
 // ============================================================================
 //  SITE CONFIG — the single source of truth for the whole site.
-//  Change your brand name, links, or page order here and it updates everywhere
-//  (header, page titles, footer, the "Next →" tour). No need to touch any
-//  other file for these.
+//  Change your brand name, links, page order, section colors, or audio motifs
+//  here and it updates everywhere (header, titles, footer "Next →" tour, the
+//  scroll-driven color + sound moods). No need to touch any other file.
 // ============================================================================
 
 export const site = {
   // Your brand / artist name. Shows in the header, browser tab, and footer.
-  // If you ever rebrand (or change your name), edit ONLY this line.
   brand: 'Kaylee Renaud',
 
   // A short tagline shown on the home page + in search results.
-  tagline: 'Photographer · Costume Maker · Writer · Storyteller',
+  tagline: 'Film · Costume · Writing · Visual Storytelling',
 
   // Where the contact form delivers. See src/pages/contact.astro for setup.
   // Paste your Formspree form ID here once you create a (free) account.
@@ -28,29 +27,41 @@ export const site = {
 } as const;
 
 // ----------------------------------------------------------------------------
-//  PAGE ORDER — controls both the top nav bar AND the "Next →" guided tour
-//  at the bottom of each page. Reorder this array to reorder the whole site.
-//  `inNav: false` keeps a page out of the top bar but still in the flow.
+//  PAGES — controls the top nav, the "Next →" guided tour, AND each section's
+//  "mood": the accent color it paints the site with and the audio motif it
+//  plays as you arrive. Reorder this array to reorder the whole story.
+//
+//    slug    : url path; '' = home
+//    label   : nav + link text
+//    teaser  : shown next to the "Next →" link at the bottom of the prior page
+//    accent  : the section's signature color (drives links, highlights, motion)
+//    tone    : base note (Hz) for the optional ambient pad that plays on arrival
+//    inNav   : false = keep out of the top bar but still in the story flow
 // ----------------------------------------------------------------------------
 export type PageDef = {
-  slug: string;       // url path; '' = home
-  label: string;      // nav + link text
-  teaser?: string;    // shown next to the "Next →" link at the bottom
+  slug: string;
+  label: string;
+  teaser?: string;
+  accent: string;
+  tone: number;
   inNav?: boolean;
 };
 
 export const pages: PageDef[] = [
-  { slug: '',            label: 'Home',        teaser: 'Start here.' },
-  { slug: 'about',       label: 'About',       teaser: 'A little about me.' },
-  { slug: 'photography', label: 'Photography', teaser: 'Light, people, places.' },
-  { slug: 'costume',     label: 'Costume',     teaser: 'Things made by hand.' },
-  { slug: 'writing',     label: 'Writing',     teaser: 'Words and worlds.' },
-  { slug: 'film',        label: 'Video',       teaser: 'Moving pictures.' },
-  { slug: 'contact',     label: 'Contact',     teaser: "Let's talk." },
+  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#b4654a', tone: 196.00 },
+  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#6b7f6e', tone: 220.00 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#4a6178', tone: 174.61 },
+  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#8a5a78', tone: 261.63 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#9a7b4f', tone: 207.65 },
+  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#4f7a72', tone: 246.94 },
 ];
 
 export function pageHref(slug: string) {
   return slug === '' ? '/' : `/${slug}/`;
+}
+
+export function getPage(slug: string): PageDef {
+  return pages.find((p) => p.slug === slug) ?? pages[0];
 }
 
 // Given the current page slug, return the next page in the tour (wraps around).

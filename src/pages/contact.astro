@@ -5,9 +5,9 @@ import { site } from '../config/site';
 ---
 <BaseLayout current="contact" title="Contact" description="Get in touch with Kaylee Renaud.">
   <section class="container page-intro">
-    <h1>Contact</h1>
-    <p>Have a project, a question, or just want to say hello? Send a note — I read everything and I'll get back to you.</p>
-    <p class="socials">
+    <h1 data-reveal>Contact</h1>
+    <p data-reveal style="--d:80ms">Have a project, a question, or just want to say hello? Send a note — I read everything and I'll get back to you.</p>
+    <p class="socials" data-reveal style="--d:140ms">
       {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram ↗</a>}
       {site.social.youtube && <a href={site.social.youtube} target="_blank" rel="noopener">YouTube ↗</a>}
     </p>

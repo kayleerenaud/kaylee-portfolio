@@ -1,0 +1,158 @@
+---
+// ATMOSPHERE — the scroll-driven "story" layer, all client-side & dependency-free.
+//   1. Reveal-on-scroll for [data-reveal] elements.
+//   2. Mood shifts: as a [data-accent] section reaches center, the whole site's
+//      accent color eases to that section's color (and the ambient tone glides).
+//   3. A scroll-progress hairline in the active accent color.
+//   4. An optional, OFF-by-default ambient pad (Web Audio — no asset files).
+//      A floating speaker toggle arms it; tone changes per section as you scroll.
+//      Swap to real audio files later by pointing data-audio at /audio/*.mp3.
+//
+// The initial accent + tone come from the current page (passed in by BaseLayout).
+const { tone = 196 } = Astro.props as { tone?: number };
+---
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<button id="sound-toggle" class="sound-toggle" aria-pressed="false"
+        aria-label="Turn ambient sound on" title="Ambient sound">
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path class="spk" d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+    <g class="waves" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <path d="M16.5 8.5a5 5 0 0 1 0 7"/>
+      <path d="M18.8 6.2a8.5 8.5 0 0 1 0 11.6"/>
+    </g>
+    <line class="slash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<style>
+  .sound-toggle {
+    position: fixed; right: 1rem; bottom: 1rem; z-index: 90;
+    width: 46px; height: 46px; border-radius: 50%;
+    display: grid; place-items: center; cursor: pointer;
+    color: #fff; border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+    background: color-mix(in srgb, var(--accent) 80%, #1c1a17);
+    box-shadow: 0 6px 20px rgba(0,0,0,.22);
+    transition: transform .15s, background .6s ease;
+  }
+  .sound-toggle:hover { transform: scale(1.07); }
+  .sound-toggle .waves { opacity: 0; transition: opacity .2s; }
+  .sound-toggle .slash { opacity: 1; transition: opacity .2s; }
+  .sound-toggle[aria-pressed="true"] .waves { opacity: 1; }
+  .sound-toggle[aria-pressed="true"] .slash { opacity: 0; }
+  .sound-toggle[aria-pressed="true"] { animation: pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 6px 20px rgba(0,0,0,.22) } 50% { box-shadow: 0 6px 26px color-mix(in srgb, var(--accent) 55%, transparent) } }
+  @media (prefers-reduced-motion: reduce) { .sound-toggle[aria-pressed="true"] { animation: none } }
+</style>
+
+<script is:inline define:vars={{ initialTone: tone }}>
+  (() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = document.documentElement;
+
+    /* ---------- 1. Reveal on scroll ---------- */
+    const reveals = document.querySelectorAll('[data-reveal]');
+    if (reveals.length) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        }
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      reveals.forEach((el) => io.observe(el));
+    }
+
+    /* ---------- 2. Mood: accent + tone follow the section in view ---------- */
+    let currentTone = initialTone;
+    const moods = Array.from(document.querySelectorAll('[data-accent]'));
+    if (moods.length) {
+      const moodIO = new IntersectionObserver((entries) => {
+        // pick the most-visible mood section currently intersecting
+        let best = null, bestRatio = 0;
+        for (const e of entries) {
+          if (e.isIntersecting && e.intersectionRatio > bestRatio) { best = e.target; bestRatio = e.intersectionRatio; }
+        }
+        if (!best) return;
+        const accent = best.getAttribute('data-accent');
+        const t = parseFloat(best.getAttribute('data-tone') || '') || currentTone;
+        if (accent) root.style.setProperty('--accent', accent);
+        currentTone = t;
+        glideTone(t);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta && accent) meta.setAttribute('content', accent);
+      }, { threshold: [0.25, 0.5, 0.75], rootMargin: '-20% 0px -40% 0px' });
+      moods.forEach((el) => moodIO.observe(el));
+    }
+
+    /* ---------- 3. Scroll progress ---------- */
+    const bar = document.getElementById('scroll-progress');
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+        if (bar) bar.style.width = p + '%';
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ---------- 4. Ambient pad (procedural, off by default) ---------- */
+    const btn = document.getElementById('sound-toggle');
+    let ctx = null, master = null, lp = null, voices = [], on = false;
+
+    function buildAudio() {
+      if (ctx) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC();
+      master = ctx.createGain(); master.gain.value = 0;          // fade in on enable
+      lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; lp.Q.value = 0.6;
+      lp.connect(master); master.connect(ctx.destination);
+      // a soft two-note pad (root + a gentle fifth above)
+      [1, 1.5].forEach((mult, i) => {
+        const osc = ctx.createOscillator(); osc.type = 'sine';
+        osc.frequency.value = currentTone * mult;
+        const g = ctx.createGain(); g.gain.value = i === 0 ? 0.5 : 0.32;
+        // slow tremolo so the pad breathes
+        const lfo = ctx.createOscillator(); lfo.frequency.value = 0.07 + i * 0.05;
+        const lfoG = ctx.createGain(); lfoG.gain.value = 0.12;
+        lfo.connect(lfoG); lfoG.connect(g.gain);
+        osc.connect(g); g.connect(lp); osc.start(); lfo.start();
+        voices.push({ osc, mult });
+      });
+    }
+
+    function glideTone(t) {
+      if (!ctx || !on) return;
+      const now = ctx.currentTime;
+      voices.forEach((v) => v.osc.frequency.linearRampToValueAtTime(t * v.mult, now + 0.8));
+    }
+
+    function setOn(next) {
+      on = next;
+      btn.setAttribute('aria-pressed', String(on));
+      btn.setAttribute('aria-label', on ? 'Turn ambient sound off' : 'Turn ambient sound on');
+      try { localStorage.setItem('kr-sound', on ? '1' : '0'); } catch {}
+      if (on) {
+        buildAudio();
+        if (ctx.state === 'suspended') ctx.resume();
+        glideTone(currentTone);
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setTargetAtTime(0.05, ctx.currentTime, 0.6);   // very low, ambient
+      } else if (ctx) {
+        master.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+      }
+    }
+
+    btn.addEventListener('click', () => setOn(!on));
+    // Honor a saved preference, but only auto-start after a real interaction
+    // (browsers block audio otherwise). If they had it on, arm on first gesture.
+    let saved = '0';
+    try { saved = localStorage.getItem('kr-sound') || '0'; } catch {}
+    if (saved === '1' && !reduce) {
+      const arm = () => { setOn(true); window.removeEventListener('pointerdown', arm); };
+      window.addEventListener('pointerdown', arm, { once: true });
+    }
+  })();
+</script>

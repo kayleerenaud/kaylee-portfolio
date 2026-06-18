@@ -1,42 +1,59 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site, pages, pageHref } from '../config/site';
-const work = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
+// The "movements" of the home-page story: each discipline as you scroll.
+const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
 ---
 <BaseLayout current="">
   <section class="hero container">
-    <p class="kicker">Portfolio</p>
-    <h1>{site.brand}</h1>
-    <p class="lede">{site.tagline}</p>
-    <p class="placeholder-note">Scaffold preview — imagery, captions, and your About blurb come next. The structure, navigation, galleries, and contact form are all wired up and working.</p>
+    <p class="kicker" data-reveal>Portfolio</p>
+    <h1 data-reveal style="--d:60ms">{site.brand}</h1>
+    <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
+    <p class="scroll-hint" data-reveal style="--d:240ms" aria-hidden="true">Scroll to begin ↓</p>
+    <p class="placeholder-note" data-reveal style="--d:300ms">
+      Scaffold preview — placeholder imagery + Lorem ipsum until your words and pictures arrive.
+      Scroll down: the color and ambient tone shift with each section (tap the speaker, lower-right, to hear it).
+    </p>
   </section>
 
-  <section class="container">
-    <ul class="tiles">
-      {work.map((p) => (
-        <li>
-          <a href={pageHref(p.slug)} class="tile">
-            <span class="tile-label">{p.label}</span>
-            <span class="tile-teaser">{p.teaser}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+  <!-- Each movement repaints the site with its own mood color as it reaches center. -->
+  {movements.map((p, i) => (
+    <section class="movement" data-accent={p.accent} data-tone={p.tone}>
+      <div class="container m-inner">
+        <p class="m-index" data-reveal aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+        <a class="m-link" href={pageHref(p.slug)}>
+          <h2 class="m-title" data-reveal style="--d:80ms">{p.label}</h2>
+        </a>
+        <p class="m-teaser" data-reveal style="--d:160ms">{p.teaser}</p>
+        <a class="m-cta" href={pageHref(p.slug)} data-reveal style="--d:220ms">Enter {p.label} →</a>
+      </div>
+    </section>
+  ))}
 </BaseLayout>
 
 <style>
-  .hero { padding: clamp(3rem, 9vw, 7rem) 0 2rem; }
+  .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 4rem); min-height: 72vh; display: flex; flex-direction: column; justify-content: center; }
   .kicker { font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.5rem; }
   .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 50ch; }
-  .tiles { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2,1fr); gap: var(--gap); }
-  @media (max-width: 640px) { .tiles { grid-template-columns: 1fr; } }
-  .tile {
-    display: flex; flex-direction: column; gap: 0.25rem; justify-content: flex-end;
-    min-height: 200px; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius);
-    background: var(--surface); color: var(--ink); text-decoration: none; transition: transform .15s, border-color .15s;
+  .scroll-hint { color: var(--ink-soft); font-size: 0.9rem; letter-spacing: .08em; margin-top: 1.5rem; }
+
+  .movement {
+    min-height: 80vh; display: flex; align-items: center;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 5%, transparent));
   }
-  .tile:hover { transform: translateY(-3px); border-color: var(--accent); text-decoration: none; }
-  .tile-label { font-family: var(--font-display); font-size: 1.6rem; }
-  .tile-teaser { color: var(--ink-soft); }
+  .m-inner { width: 100%; }
+  .m-index { font-family: var(--font-display); font-size: 1rem; color: var(--accent); letter-spacing: .2em; margin: 0 0 .5rem; }
+  .m-link { text-decoration: none; }
+  .m-title {
+    font-size: clamp(2.5rem, 11vw, 7rem); line-height: 0.95; margin: 0; color: var(--ink);
+    transition: color .3s, letter-spacing .3s;
+  }
+  .m-link:hover .m-title { color: var(--accent); letter-spacing: .005em; }
+  .m-teaser { font-size: 1.25rem; color: var(--ink-soft); margin: 1rem 0 1.5rem; max-width: 40ch; }
+  .m-cta {
+    display: inline-block; font-size: 1rem; color: var(--accent);
+    border-bottom: 1px solid currentColor; padding-bottom: 2px;
+  }
+  .m-cta:hover { text-decoration: none; }
 </style>

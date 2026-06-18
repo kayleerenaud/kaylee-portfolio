@@ -1,19 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
 import YouTube from '../components/YouTube.astro';
-import { videos } from '../data/galleries';
+import { filmStills, videos } from '../data/galleries';
 ---
-<BaseLayout current="film" title="Video" description="Video projects by Kaylee Renaud.">
+<BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
   <section class="container page-intro">
-    <h1>Video</h1>
-    <p>Projects embedded straight from YouTube.</p>
-    <p class="placeholder-note">Replace the placeholder video IDs in <code>src/data/galleries.ts</code> with your real ones.</p>
+    <h1 data-reveal>Film</h1>
+    <p data-reveal style="--d:80ms">Moving pictures and the frames behind them. Tap any still to enlarge and read its full caption — use the arrows, your keyboard, or a swipe to move through them.</p>
+    <p class="placeholder-note" data-reveal style="--d:140ms">Swap the placeholder stills and YouTube IDs in <code>src/data/galleries.ts</code> for your real work.</p>
   </section>
+
+  <section class="container">
+    <h2 class="section-label" data-reveal>Stills</h2>
+    <Gallery items={filmStills} columns={3} />
+  </section>
+
   <section class="container videos">
-    {videos.map((v) => (
-      <article class="video">
+    <h2 class="section-label" data-reveal>Motion</h2>
+    {videos.map((v, i) => (
+      <article class="video" data-reveal style={`--d:${i * 80}ms`}>
         <YouTube id={v.id} title={v.title} />
-        <h2>{v.title}</h2>
+        <h3>{v.title}</h3>
         <p>{v.blurb}</p>
       </article>
     ))}
@@ -21,7 +29,8 @@ import { videos } from '../data/galleries';
 </BaseLayout>
 
 <style>
+  .section-label { font-size: 1.1rem; letter-spacing: .04em; color: var(--ink-soft); margin: 2.5rem 0 1rem; }
   .videos { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
-  .video h2 { margin: 1rem 0 0.25rem; font-size: 1.4rem; }
+  .video h3 { margin: 1rem 0 0.25rem; font-size: 1.4rem; font-family: var(--font-display); }
   .video p { margin: 0; color: var(--ink-soft); }
 </style>

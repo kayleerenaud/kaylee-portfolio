@@ -5,8 +5,8 @@ import { writing } from '../data/galleries';
 ---
 <BaseLayout current="writing" title="Writing" description="Writing by Kaylee Renaud.">
   <section class="container page-intro">
-    <h1>Writing</h1>
-    <p>Each cover opens to its piece. Hover for the title; click to read.</p>
+    <h1 data-reveal>Writing</h1>
+    <p data-reveal style="--d:80ms">Each cover opens to its piece. A title and excerpt preview in the corner — tap to enlarge and read it in full.</p>
   </section>
   <section class="container">
     <Gallery items={writing} columns={3} />

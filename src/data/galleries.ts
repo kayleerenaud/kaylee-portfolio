@@ -7,33 +7,35 @@
 //  Each item: { src, alt, caption }
 //    src     = image URL (or /images/... once you add real files to /public)
 //    alt     = plain description for accessibility / screen readers
-//    caption = the text shown lower-left on hover + in full in the lightbox
+//    caption = the FULL caption. A short preview shows lower-left on the
+//              thumbnail; the whole thing expands in the enlarged lightbox view.
 // ============================================================================
 import type { GalleryItem } from '../components/Gallery.astro';
 
 const ph = (seed: string) => `https://picsum.photos/seed/${seed}/900/1125`;
 
-export const photography: GalleryItem[] = [
-  { src: ph('kr-photo-1'), alt: 'Placeholder photograph 1', caption: 'Caption goes here — golden hour, downtown.' },
-  { src: ph('kr-photo-2'), alt: 'Placeholder photograph 2', caption: 'Caption goes here — portrait study.' },
-  { src: ph('kr-photo-3'), alt: 'Placeholder photograph 3', caption: 'Caption goes here — quiet morning.' },
-  { src: ph('kr-photo-4'), alt: 'Placeholder photograph 4', caption: 'Caption goes here — texture & light.' },
-  { src: ph('kr-photo-5'), alt: 'Placeholder photograph 5', caption: 'Caption goes here — on location.' },
-  { src: ph('kr-photo-6'), alt: 'Placeholder photograph 6', caption: 'Caption goes here — candid.' },
+// FILM — stills from set / behind-the-scenes. (Moving pieces live in `videos`.)
+export const filmStills: GalleryItem[] = [
+  { src: ph('kr-film-1'), alt: 'Placeholder film still 1', caption: 'Lorem ipsum — opening frame, golden hour on location. The full caption can run several sentences and will expand here when enlarged, telling the story behind the shot.' },
+  { src: ph('kr-film-2'), alt: 'Placeholder film still 2', caption: 'Lorem ipsum — close on the lead during the third act. Replace with the real story of this frame.' },
+  { src: ph('kr-film-3'), alt: 'Placeholder film still 3', caption: 'Lorem ipsum — wide establishing shot, quiet morning light.' },
+  { src: ph('kr-film-4'), alt: 'Placeholder film still 4', caption: 'Lorem ipsum — behind the scenes, blocking the dolly move.' },
+  { src: ph('kr-film-5'), alt: 'Placeholder film still 5', caption: 'Lorem ipsum — practical lighting test, deep shadows.' },
+  { src: ph('kr-film-6'), alt: 'Placeholder film still 6', caption: 'Lorem ipsum — final frame before the cut to black.' },
 ];
 
 export const costume: GalleryItem[] = [
-  { src: ph('kr-costume-1'), alt: 'Placeholder costume 1', caption: 'Caption goes here — hand-stitched bodice.' },
-  { src: ph('kr-costume-2'), alt: 'Placeholder costume 2', caption: 'Caption goes here — detail work.' },
-  { src: ph('kr-costume-3'), alt: 'Placeholder costume 3', caption: 'Caption goes here — full look.' },
-  { src: ph('kr-costume-4'), alt: 'Placeholder costume 4', caption: 'Caption goes here — fabric study.' },
+  { src: ph('kr-costume-1'), alt: 'Placeholder costume 1', caption: 'Lorem ipsum — hand-stitched bodice, boned and lined. The full process note expands here: fabric choices, fittings, and the reference that started it.' },
+  { src: ph('kr-costume-2'), alt: 'Placeholder costume 2', caption: 'Lorem ipsum — detail of the beadwork at the collar.' },
+  { src: ph('kr-costume-3'), alt: 'Placeholder costume 3', caption: 'Lorem ipsum — the full look, photographed on set.' },
+  { src: ph('kr-costume-4'), alt: 'Placeholder costume 4', caption: 'Lorem ipsum — fabric study and draping test.' },
 ];
 
 // Writing pieces use a "cover" image that opens to the full text in the lightbox.
 export const writing: GalleryItem[] = [
-  { src: ph('kr-writing-1'), alt: 'Cover for a written piece 1', caption: 'Title of piece — short excerpt or the full short text can live here.' },
-  { src: ph('kr-writing-2'), alt: 'Cover for a written piece 2', caption: 'Title of piece — short excerpt here.' },
-  { src: ph('kr-writing-3'), alt: 'Cover for a written piece 3', caption: 'Title of piece — short excerpt here.' },
+  { src: ph('kr-writing-1'), alt: 'Cover for a written piece 1', caption: 'Title of piece — Lorem ipsum dolor sit amet. The short excerpt previews lower-left; the full short piece (or a longer excerpt) expands in the enlarged view so a reader can read it in place.' },
+  { src: ph('kr-writing-2'), alt: 'Cover for a written piece 2', caption: 'Title of piece — Lorem ipsum, a short excerpt here.' },
+  { src: ph('kr-writing-3'), alt: 'Cover for a written piece 3', caption: 'Title of piece — Lorem ipsum, a short excerpt here.' },
 ];
 
 // Photos of Kaylee for the About page.
