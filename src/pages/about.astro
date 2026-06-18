@@ -34,7 +34,6 @@ import { site, pageHref } from '../config/site';
         <Headshot frames={headshotFrames} alt="Portrait of Kaylee Renaud" />
       </div>
     </div>
-    <Sketch name="squiggle" class="doodle d-tc" />
   </section>
 
   <!-- 2 · BLURB ------------------------------------------------------------ -->
@@ -42,8 +41,6 @@ import { site, pageHref } from '../config/site';
     <div class="container blurb-inner">
       {blurb.map((p, i) => <p class="blurb-p" data-reveal style={`--d:${i * 80}ms`} set:html={p} />)}
     </div>
-    <Sketch name="wave" class="doodle d-blurb" />
-    <Sketch name="star" class="doodle d-blurb2" />
   </section>
 
   <!-- 3 · FEATURING (the three crafts) ------------------------------------- -->
@@ -60,8 +57,6 @@ import { site, pageHref } from '../config/site';
         </li>
       ))}
     </ul>
-    <Sketch name="heart" class="doodle d-feat" />
-    <Sketch name="spark" class="doodle d-feat2" />
   </section>
 
   <!-- 4 · CREDITS (no label — the styling carries the vibe) ----------------- -->
@@ -76,8 +71,6 @@ import { site, pageHref } from '../config/site';
         ))}
       </div>
     </div>
-    <Sketch name="spark" class="doodle d-credits" />
-    <Sketch name="squiggle" class="doodle d-credits2" />
   </section>
 
   <!-- 5 · CONTACT INVITE --------------------------------------------------- -->
@@ -90,7 +83,6 @@ import { site, pageHref } from '../config/site';
         <a class="btn-ghost" href={`mailto:${site.email}`}>{site.email}</a>
       </div>
     </div>
-    <Sketch name="arrow" class="doodle d-invite" />
   </section>
 </BaseLayout>
 
@@ -148,25 +140,4 @@ import { site, pageHref } from '../config/site';
   /* ---- margin doodles: small, in the gutters, never over the content ----
      (only shown when there's real gutter room; all sit below the fold so the
      scroll-draw always triggers as they enter the viewport) */
-  /* ---- WOVEN UNDERLAY DOODLES ----
-     The doodles live BEHIND the text/images (z-index 0) at low opacity and
-     scatter across the full width, weaving here and there as you scroll. The
-     content is lifted above them (z-index 1), so they read as a soft underlay
-     at any screen width — no gutter dependency. They still draw on scroll. */
-  .tc-grid, .blurb-inner, .section-kicker, .craft-grid, .credits-roll, .invite {
-    position: relative; z-index: 1;
-  }
-  .doodle { position: absolute; z-index: 0; pointer-events: none; width: var(--w); opacity: .5; }
-  .d-tc       { --w: 150px; bottom: 5%;  left: 21%; }
-  .d-blurb    { --w: 168px; top: 28%;    right: 5%; }
-  .d-blurb2   { --w: 58px;  bottom: 6%;  left: 7%; }
-  .d-feat     { --w: 64px;  top: -3%;    right: 21%; }
-  .d-feat2    { --w: 74px;  bottom: -5%; left: 15%; }
-  .d-credits  { --w: 60px;  top: 16%;    right: 13%; }
-  .d-credits2 { --w: 128px; bottom: 7%;  left: 9%; }
-  .d-invite   { --w: 118px; top: 32%;    left: 16%; }
-  @media (max-width: 700px) {
-    .doodle { opacity: .38; }
-    .d-blurb, .d-feat, .d-credits2 { display: none; }
-  }
 </style>
