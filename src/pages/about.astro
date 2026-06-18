@@ -88,7 +88,7 @@ import { site, pageHref } from '../config/site';
   .kr-defs { position: absolute; }
 
   /* ---- 1 · title card: letterboxed like an opening frame ---- */
-  .title-card { position: relative; padding: clamp(2.5rem, 7vw, 5rem) 0; overflow: hidden; }
+  .title-card { position: relative; padding: clamp(2.5rem, 7vw, 5rem) 0; }
   .tc-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; min-height: 56vh; }
   @media (max-width: 760px) { .tc-grid { grid-template-columns: 1fr; text-align: center; } .tc-photo { justify-self: center; } }
   .tc-name { font-size: clamp(2.8rem, 9vw, 6rem); line-height: .95; margin: 0; }
@@ -119,7 +119,7 @@ import { site, pageHref } from '../config/site';
   .craft-blurb { color: var(--ink-soft); font-size: .95rem; max-width: 24ch; }
 
   /* ---- 4 · credits ---- */
-  .credits-section { position: relative; padding: clamp(3rem, 8vw, 6rem) 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 5%, transparent), transparent); overflow: hidden; }
+  .credits-section { position: relative; padding: clamp(3rem, 8vw, 6rem) 0; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 5%, transparent), transparent); }
   .credits-roll { display: flex; flex-direction: column; gap: 2.75rem; align-items: center; text-align: center; }
   .credit-sketch { display: block; width: 54px; height: 54px; margin: 0 auto .6rem; }
   .credit-heading { font-family: var(--font-display); font-size: 1.25rem; color: var(--accent); margin: 0 0 .6rem; letter-spacing: .02em; }

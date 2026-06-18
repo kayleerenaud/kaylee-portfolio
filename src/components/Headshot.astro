@@ -1,52 +1,55 @@
 ---
-// Multi-frame headshot. Flips through the frames once on load (a quick, playful
-// photo-booth flutter) and lands on the LAST frame — your professional shot.
-// Hover (or tap) to replay. Before JS / with reduced-motion it simply shows the
-// professional frame.
+// A little PILE of photos, each tilted at its own angle. On load it "deals"
+// through the stack — each frame pops to the top in turn (same rate as before) —
+// and lands with the professional shot on top. Hover (or tab to it) to reshuffle.
+// Before JS / with reduced-motion it simply rests with the pro shot on top.
 const { frames, alt = 'Portrait of Kaylee Renaud' } = Astro.props as { frames: string[]; alt?: string };
 const last = frames.length - 1;
+// per-photo tilt + tiny offset so the pile looks hand-stacked
+const rot = [-5, 4.5, -3.5, 2.5, -2, 3.5];
+const dx  = [-7, 6, -4, 5, -6, 4];
+const dy  = [5, -4, 6, -3, -5, 4];
 ---
 <figure class="headshot" data-headshot tabindex="0" aria-label={alt}>
-  <div class="hs-window">
+  <div class="hs-stack">
     {frames.map((src, i) => (
       <img
         src={src}
         alt={i === last ? alt : ''}
         class:list={['hs-frame', i === last && 'on']}
         data-i={i}
+        style={`--rot:${rot[i % rot.length]}deg; --tx:${dx[i % dx.length]}px; --ty:${dy[i % dy.length]}px;`}
         loading="eager"
         decoding="async"
         aria-hidden={i === last ? undefined : 'true'}
       />
     ))}
-    <span class="hs-grain" aria-hidden="true"></span>
   </div>
   <figcaption class="hs-tag" aria-hidden="true">{`${frames.length} / ${frames.length}`}</figcaption>
 </figure>
 
 <style>
-  .headshot { margin: 0; width: min(78vw, 360px); position: relative; outline: none; }
-  .hs-window {
-    position: relative; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden;
-    background: var(--surface);
-    box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 0 1px var(--line);
-    transform: rotate(-1.2deg);
-  }
+  .headshot { margin: 0; width: min(78vw, 350px); position: relative; outline: none; }
+  .hs-stack { position: relative; aspect-ratio: 4 / 5; }
   .hs-frame {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    opacity: 0; transition: opacity .07s linear;
+    border: 7px solid #f4efe5; border-radius: 3px; background: #f4efe5;
+    box-shadow: 0 10px 26px rgba(0,0,0,.45);
+    transform: rotate(var(--rot)) translate(var(--tx), var(--ty));
+    transition: transform .22s ease, box-shadow .22s ease;
+    z-index: 1;
   }
-  .hs-frame.on { opacity: 1; }
-  /* a faint grain so it reads filmic, cohesive with the rest of the site */
-  .hs-grain {
-    position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .35;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  /* the frame currently on top: pulled forward, straightened a touch, lifted */
+  .hs-frame.on {
+    z-index: 5;
+    transform: rotate(calc(var(--rot) * .45)) translate(calc(var(--tx) * .5), calc(var(--ty) * .5)) scale(1.015);
+    box-shadow: 0 18px 40px rgba(0,0,0,.5);
   }
   .hs-tag {
-    position: absolute; right: -8px; bottom: -14px;
+    position: absolute; right: -6px; bottom: -16px; z-index: 6;
     font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em;
     color: var(--accent); background: var(--bg); padding: 2px 8px; border-radius: 3px;
-    border: 1px solid var(--line); transform: rotate(-1.2deg);
+    border: 1px solid var(--line);
   }
   @media (prefers-reduced-motion: reduce) { .hs-frame { transition: none; } }
 </style>
@@ -73,7 +76,6 @@ const last = frames.length - 1;
         show(i);
       }, 230);
     };
-    // play once shortly after load, then settle on the professional frame
     if (!reduce) setTimeout(play, 450);
     box.addEventListener('mouseenter', play);
     box.addEventListener('focus', play);
