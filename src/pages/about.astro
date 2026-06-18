@@ -6,12 +6,17 @@ import { hook, blurb, basedIn, headshotFrames, crafts, credits } from '../data/a
 import { site, pageHref } from '../config/site';
 ---
 <BaseLayout current="about" title="About" description="About Kaylee Renaud — film, costume, and writing.">
-  <!-- pencil filter used by every doodle (rendered once) -->
+  <!-- soft, grainy "pencil" filter used by every doodle (rendered once) -->
   <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false">
     <defs>
-      <filter id="kr-pencil" x="-25%" y="-25%" width="150%" height="150%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.018 0.04" numOctaves="2" seed="7" result="n" />
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G" />
+      <filter id="kr-pencil" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wobbled" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="4" result="grain" />
+        <feComponentTransfer in="grain" result="grainA">
+          <feFuncA type="discrete" tableValues="1 1 1 0 1 1 1 0 1 1" />
+        </feComponentTransfer>
+        <feComposite in="wobbled" in2="grainA" operator="in" />
       </filter>
     </defs>
   </svg>
@@ -24,17 +29,19 @@ import { site, pageHref } from '../config/site';
         <h1 class="tc-name" data-reveal style="--d:60ms">{site.brand}</h1>
         <p class="tc-hook" data-reveal style="--d:140ms">{hook}</p>
         <p class="tc-credit" data-reveal style="--d:220ms">Written · Shot · Stitched by {site.brand}</p>
+        <p class="tc-loc" data-reveal style="--d:280ms">On location · {basedIn}</p>
       </div>
       <div class="tc-photo" data-reveal style="--d:160ms">
         <Headshot frames={headshotFrames} alt="Portrait of Kaylee Renaud" />
       </div>
     </div>
-    <Sketch name="star" class="doodle d-tc-star" />
   </section>
 
   <!-- 2 · BLURB ------------------------------------------------------------ -->
-  <section class="container blurb">
-    {blurb.map((p, i) => <p class="blurb-p" data-reveal style={`--d:${i * 80}ms`}>{p}</p>)}
+  <section class="blurb-section">
+    <div class="container blurb-inner">
+      {blurb.map((p, i) => <p class="blurb-p" data-reveal style={`--d:${i * 80}ms`} set:html={p} />)}
+    </div>
     <Sketch name="squiggle" class="doodle d-blurb" />
     <Sketch name="heart" class="doodle d-blurb2" />
   </section>
@@ -55,16 +62,9 @@ import { site, pageHref } from '../config/site';
     </ul>
   </section>
 
-  <!-- 4 · BASED IN --------------------------------------------------------- -->
-  <section class="container based">
-    <span class="based-pin"><Sketch name="pin" /></span>
-    <p class="based-text" data-reveal>{basedIn}</p>
-  </section>
-
-  <!-- 5 · END CREDITS ------------------------------------------------------ -->
+  <!-- 4 · CREDITS (no label — the styling carries the vibe) ----------------- -->
   <section class="credits-section">
     <div class="container">
-      <p class="credits-head" data-reveal>End Credits</p>
       <div class="credits-roll">
         {credits.map((group, gi) => (
           <div class="credit-group" data-reveal style={`--d:${gi * 70}ms`}>
@@ -77,13 +77,15 @@ import { site, pageHref } from '../config/site';
     <Sketch name="spark" class="doodle d-credits" />
   </section>
 
-  <!-- 6 · CONTACT INVITE --------------------------------------------------- -->
-  <section class="container invite">
-    <h2 class="invite-title" data-reveal>Let's make something.</h2>
-    <p class="invite-sub" data-reveal style="--d:80ms">A project, a question, or just a hello — I read everything.</p>
-    <div class="invite-actions" data-reveal style="--d:160ms">
-      <a class="btn-solid" href={pageHref('contact')}>Get in touch →</a>
-      <a class="btn-ghost" href={`mailto:${site.email}`}>{site.email}</a>
+  <!-- 5 · CONTACT INVITE --------------------------------------------------- -->
+  <section class="invite-section">
+    <div class="container invite">
+      <h2 class="invite-title" data-reveal>Let's make something.</h2>
+      <p class="invite-sub" data-reveal style="--d:80ms">A project, a question, or just a hello — I read everything.</p>
+      <div class="invite-actions" data-reveal style="--d:160ms">
+        <a class="btn-solid" href={pageHref('contact')}>Get in touch →</a>
+        <a class="btn-ghost" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
     </div>
     <Sketch name="arrow" class="doodle d-invite" />
   </section>
@@ -102,12 +104,18 @@ import { site, pageHref } from '../config/site';
   .tc-name { font-size: clamp(2.8rem, 9vw, 6rem); line-height: .95; margin: 0; }
   .tc-hook { font-size: clamp(1.15rem, 2.6vw, 1.6rem); color: var(--ink); margin: 1.2rem 0 .8rem; max-width: 30ch; }
   @media (max-width: 760px) { .tc-hook { margin-inline: auto; } }
-  .tc-credit { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em; color: var(--ink-soft); margin: 0; }
+  .tc-credit { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em; color: var(--ink-soft); margin: 0 0 .35rem; }
+  .tc-loc { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em; color: var(--accent); margin: 0; }
   .tc-photo { display: flex; justify-content: flex-end; }
 
   /* ---- 2 · blurb ---- */
-  .blurb { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); max-width: 64ch; }
-  .blurb-p { font-size: 1.2rem; line-height: 1.7; color: var(--ink); margin: 0 0 1.4rem; }
+  .blurb-section { position: relative; }
+  .blurb-inner { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); max-width: 64ch; }
+  .blurb-p { font-size: 1.2rem; line-height: 1.75; color: var(--ink); margin: 0 0 1.5rem; }
+  .blurb-p em {
+    font-family: var(--font-hand); font-style: normal; font-weight: 600;
+    font-size: 1.4em; line-height: 1; color: var(--accent);
+  }
 
   /* ---- 3 · featuring ---- */
   .featuring { padding: clamp(2rem, 5vw, 3rem) 0; }
@@ -120,20 +128,15 @@ import { site, pageHref } from '../config/site';
   .craft-label { font-family: var(--font-display); font-size: 1.5rem; }
   .craft-blurb { color: var(--ink-soft); font-size: .95rem; max-width: 24ch; }
 
-  /* ---- 4 · based in ---- */
-  .based { position: relative; display: flex; align-items: center; justify-content: center; gap: .75rem; padding: clamp(2rem, 5vw, 3.5rem) 0; }
-  .based-pin { width: 34px; height: 40px; display: block; flex: 0 0 auto; }
-  .based-text { font-family: var(--font-mono); font-size: 1rem; letter-spacing: .08em; color: var(--ink-soft); margin: 0; }
-
-  /* ---- 5 · end credits ---- */
+  /* ---- 4 · credits ---- */
   .credits-section { position: relative; padding: clamp(3rem, 8vw, 6rem) 0; border-top: 1px solid var(--line); background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 6%, transparent)); overflow: hidden; }
-  .credits-head { font-family: var(--font-mono); font-size: .8rem; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); text-align: center; margin: 0 0 2.5rem; }
   .credits-roll { display: flex; flex-direction: column; gap: 2.5rem; align-items: center; text-align: center; }
   .credit-heading { font-family: var(--font-display); font-size: 1.25rem; color: var(--accent); margin: 0 0 .6rem; letter-spacing: .02em; }
   .credit-line { font-family: var(--font-mono); font-size: .95rem; line-height: 1.7; color: var(--ink-soft); margin: 0; }
 
-  /* ---- 6 · invite ---- */
-  .invite { position: relative; text-align: center; padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3rem); }
+  /* ---- 5 · invite ---- */
+  .invite-section { position: relative; }
+  .invite { text-align: center; padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3rem); }
   .invite-title { font-size: clamp(2rem, 6vw, 3.5rem); margin: 0 0 .5rem; }
   .invite-sub { color: var(--ink-soft); font-size: 1.15rem; margin: 0 0 1.8rem; }
   .invite-actions { display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex-wrap: wrap; }
@@ -142,13 +145,13 @@ import { site, pageHref } from '../config/site';
   .btn-ghost { color: var(--ink-soft); border-bottom: 1px solid var(--line); padding-bottom: 2px; }
   .btn-ghost:hover { color: var(--ink); text-decoration: none; }
 
-  /* ---- margin doodles (placed in the gutters; hidden when too narrow) ---- */
-  .doodle { position: absolute; z-index: 1; pointer-events: none; color: var(--accent); }
-  .d-tc-star  { width: 58px; top: 14%;  right: 6%; }
-  .d-blurb    { width: 90px; top: 8%;   right: -2%; }
-  .d-blurb2   { width: 54px; bottom: 6%; left: -3%; }
-  .d-credits  { width: 60px; top: 12%;  left: 5%; }
-  .d-invite   { width: 84px; bottom: 8%; right: 8%; }
-  @media (max-width: 1100px) { .d-blurb, .d-blurb2, .d-credits { display: none; } }
-  @media (max-width: 760px)  { .doodle { display: none; } }
+  /* ---- margin doodles: small, in the gutters, never over the content ----
+     (only shown when there's real gutter room; all sit below the fold so the
+     scroll-draw always triggers as they enter the viewport) */
+  .doodle { position: absolute; z-index: 1; pointer-events: none; }
+  .d-blurb   { width: 78px; top: 16%;    right: clamp(.5rem, 3vw, 3rem); }
+  .d-blurb2  { width: 50px; bottom: 12%; left:  clamp(.5rem, 3vw, 3rem); }
+  .d-credits { width: 56px; top: 16%;    left:  clamp(.5rem, 4vw, 4rem); }
+  .d-invite  { width: 74px; bottom: 14%; right: clamp(.5rem, 4vw, 4rem); }
+  @media (max-width: 1280px) { .doodle { display: none; } }
 </style>

@@ -7,13 +7,14 @@
 export const hook = "Hi, I'm Kaylee — I make things that feel like a story.";
 
 // Two short paragraphs. Personality first, credentials later.
+// Wrap words in <em>…</em> to give them the handwritten emphasis font.
 export const blurb: string[] = [
-  "Lorem ipsum — I'm a multi-faceted artist working across film, costume, and writing. I'm happiest somewhere between a sewing table, a viewfinder, and a half-filled notebook, chasing the moment a small idea turns into a whole little world.",
-  "Lorem ipsum — I'm especially drawn to stories made for kids: the warmth, the wonder, the permission to be playful. Whether I'm stitching a costume, framing a shot, or writing a scene, I'm really doing the same thing — building somewhere you'd want to spend an afternoon.",
+  "Lorem ipsum — I'm a <em>multi-faceted artist</em> working across film, costume, and writing. I'm happiest somewhere between a sewing table, a viewfinder, and a half-filled notebook, chasing the moment a small idea turns into a <em>whole little world</em>.",
+  "Lorem ipsum — I'm especially drawn to <em>stories made for kids</em>: the warmth, the wonder, the permission to be playful. Whether I'm stitching a costume, framing a shot, or writing a scene, I'm really doing the same thing — building somewhere you'd <em>want to spend an afternoon</em>.",
 ];
 
-// Where you're based (a map-pin doodle draws itself next to this).
-export const basedIn = "Based in Los Angeles, California";
+// Where you're based — shown as a filmic "on location" line in the title card.
+export const basedIn = "New York, NY";
 
 // Headshot frames — flips through these on load and lands on the LAST one
 // (your professional shot). Replace with 4 real photos. Square-ish works best.

@@ -33,9 +33,9 @@ const item = LIB[name] ?? LIB.star;
     animation: kr-float 7s ease-in-out infinite;
   }
   .sketch path {
-    fill: none; stroke: var(--accent); stroke-width: 2.3;
+    fill: none; stroke: var(--sketch-ink, #ece6d8); stroke-width: 2.6;
     stroke-linecap: round; stroke-linejoin: round;
-    filter: url(#kr-pencil); opacity: .92;
+    filter: url(#kr-pencil); opacity: .9;
   }
   /* draw bound to scroll position as the doodle enters view */
   @supports (animation-timeline: view()) {
