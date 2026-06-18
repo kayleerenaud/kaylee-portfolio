@@ -35,9 +35,10 @@ export const crafts = [
 
 // End credits — Awards / Experience / Education. Keep entries short and real;
 // "Title — where, year" reads cleanly in the credit roll.
-export const credits: { heading: string; lines: string[] }[] = [
+export const credits: { heading: string; sketch: string; lines: string[] }[] = [
   {
     heading: 'Awards',
+    sketch: 'star',
     lines: [
       'Best Short Film — Placeholder Festival, 2024',
       'Costume Design, Honorable Mention — Placeholder Awards, 2023',
@@ -46,6 +47,7 @@ export const credits: { heading: string; lines: string[] }[] = [
   },
   {
     heading: 'Selected Experience',
+    sketch: 'spark',
     lines: [
       'Costume Designer — Placeholder Production, 2023–24',
       'Writer / Director — "Placeholder" (short), 2023',
@@ -54,6 +56,7 @@ export const credits: { heading: string; lines: string[] }[] = [
   },
   {
     heading: 'Education',
+    sketch: 'quill',
     lines: [
       'BFA, Film & Media — Placeholder University, 2022',
       'Costume Construction — Placeholder Workshop, 2021',
