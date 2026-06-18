@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ScrollScene from '../components/ScrollScene.astro';
 import { site, pages, pageHref, getPage } from '../config/site';
 // The "movements" of the home-page story: the work, between About and Contact.
 const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
@@ -7,12 +8,7 @@ const about = getPage('about');
 const contact = getPage('contact');
 ---
 <BaseLayout current="">
-  <section class="hero container">
-    <p class="kicker" data-reveal>Portfolio</p>
-    <h1 data-reveal style="--d:60ms">{site.brand}</h1>
-    <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
-    <p class="scroll-hint" data-reveal style="--d:240ms" aria-hidden="true">Scroll to begin ↓</p>
-  </section>
+  <ScrollScene />
 
   <!-- OPEN with About -->
   <section class="movement intro" data-accent={about.accent} data-tone={about.tone}>
@@ -60,11 +56,6 @@ const contact = getPage('contact');
 </BaseLayout>
 
 <style>
-  .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 4rem); min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
-  .kicker { font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.5rem; }
-  .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 50ch; }
-  .scroll-hint { color: var(--ink-soft); font-size: 0.9rem; letter-spacing: .08em; margin-top: 1.5rem; }
-
   .movement {
     min-height: 80vh; display: flex; align-items: center;
     border-top: 1px solid var(--line);

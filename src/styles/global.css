@@ -94,26 +94,35 @@ img { display: block; max-width: 100%; height: auto; }
    never a timed dissolve that outlasts the scroll itself.
    --d is an optional per-item stagger delay (set inline).
    =========================================================================== */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1);
-  transition-delay: var(--d, 0ms);
-  will-change: opacity, transform;
+/* Reveals are SCROLL-LINKED, not timed: each element's progress is bound to its
+   position in the viewport, so it animates exactly at the speed of the scroll
+   and reverses the instant you scroll back — no dissolve that lags behind the
+   wheel. Browsers without scroll-driven animations simply show the content. */
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    opacity: 0;
+    animation: kr-reveal linear both;
+    animation-timeline: view();
+    /* scrub from just-entered to ~a quarter up the viewport, then it's done */
+    animation-range: entry 4% cover 20%;
+  }
+  @keyframes kr-reveal {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 }
-[data-reveal].is-in { opacity: 1; transform: none; }
 
-/* scroll-progress hairline in the section's accent color */
+/* scroll-progress hairline in the section's accent color (width tracks scroll) */
 .scroll-progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
   background: var(--accent); z-index: 100;
-  transition: width .1s linear, background .6s ease;
+  transition: background .4s ease; /* color eases; width is set live per frame */
 }
 
-/* Respect users who prefer no motion: everything just appears, no transitions. */
+/* Respect users who prefer no motion: everything just appears. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; animation: none !important; }
   body, body::before, a { transition: none; }
   .scroll-progress { display: none; }
 }

@@ -50,18 +50,10 @@ const { tone = 196 } = Astro.props as { tone?: number };
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.documentElement;
 
-    /* ---------- 1. Reveal on scroll ---------- */
-    const reveals = document.querySelectorAll('[data-reveal]');
-    if (reveals.length) {
-      const io = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-        }
-      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-      reveals.forEach((el) => io.observe(el));
-    }
+    /* Reveals are handled in CSS via scroll-driven animations (global.css) so
+       they track scroll position exactly. No JS needed here. */
 
-    /* ---------- 2. Mood: accent + tone follow the section in view ---------- */
+    /* ---------- Mood: accent + tone follow the section in view ---------- */
     let currentTone = initialTone;
     const moods = Array.from(document.querySelectorAll('[data-accent]'));
     if (moods.length) {
