@@ -40,17 +40,38 @@ const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryI
   @media (max-width: 900px) { .gallery:not(.strip) { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .gallery:not(.strip) { grid-template-columns: 1fr; } }
 
-  /* horizontal filmstrip: landscape stills, scroll/swipe sideways with snap */
+  /* ---- ACTUAL FILM STRIP -------------------------------------------------
+     A near-black film base with sprocket-hole perforations running along the
+     top + bottom edges. The perforation rows use background-attachment: local
+     so they SCROLL WITH the frames (not sit still while images slide past),
+     selling the illusion that the whole strip is one continuous piece of film.
+     The existing horizontal scroll/snap/swipe + lightbox all keep working. */
   .gallery.strip {
-    display: flex; grid-template-columns: none;
-    gap: var(--gap); overflow-x: auto; overscroll-behavior-x: contain;
+    --film: #0c0a08;            /* film base */
+    --perf: #d8cfc1;            /* perforation punch color */
+    --perf-band: 30px;          /* height of each sprocket margin */
+    display: flex; grid-template-columns: none; gap: 7px;
+    overflow-x: auto; overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.9rem; scrollbar-width: thin;
-    scrollbar-color: var(--accent) transparent;
+    background-color: var(--film); border-radius: 6px;
+    padding: var(--perf-band) 7px;
+    /* two perforation rows (top + bottom), one rounded-rect tile repeated-x */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='18'%3E%3Crect x='11' y='5' width='12' height='8' rx='2' fill='%23d8cfc1'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='18'%3E%3Crect x='11' y='5' width='12' height='8' rx='2' fill='%23d8cfc1'/%3E%3C/svg%3E");
+    background-repeat: repeat-x, repeat-x;
+    background-size: 34px 18px, 34px 18px;
+    background-position: left 0 top 6px, left 0 bottom 6px;
+    background-attachment: local, local;     /* <-- perforations scroll with film */
+    scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent) 70%, transparent) var(--film);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.5);
   }
-  .gallery.strip::-webkit-scrollbar { height: 8px; }
+  .gallery.strip::-webkit-scrollbar { height: 7px; }
+  .gallery.strip::-webkit-scrollbar-track { background: var(--film); }
   .gallery.strip::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 8px; }
-  .gallery.strip .cell { flex: 0 0 auto; width: min(82vw, 560px); scroll-snap-align: center; }
+  /* each frame: a still in its own film cell, thin separators between frames */
+  .gallery.strip .cell { flex: 0 0 auto; width: min(82vw, 540px); scroll-snap-align: center; }
+  .gallery.strip .thumb { border-radius: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.6); }
   .gallery.strip .thumb img { aspect-ratio: 16 / 9; }
 
   .thumb {
