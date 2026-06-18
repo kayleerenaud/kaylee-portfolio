@@ -8,13 +8,13 @@
    data-accent. The smooth transition below is what makes the color "travel".
    =========================================================================== */
 :root {
-  /* palette (placeholder — warm editorial neutral) */
-  --bg:        #faf8f5;
-  --surface:   #ffffff;
-  --ink:       #1c1a17;
-  --ink-soft:  #5c574f;
-  --accent:    #b4654a;   /* per-section default; overridden by site.ts */
-  --line:      #e7e1d8;
+  /* palette (dark, cinematic — warm near-black with soft light type) */
+  --bg:        #14110f;
+  --surface:   #1d1916;
+  --ink:       #f1ece4;
+  --ink-soft:  #a59c90;
+  --accent:    #d4805f;   /* per-section default; overridden by site.ts */
+  --line:      #2c2722;
 
   /* type */
   --font-display: 'Georgia', 'Times New Roman', serif;
@@ -69,7 +69,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* placeholder note shown in scaffold mode */
 .placeholder-note {
-  background: color-mix(in srgb, var(--accent) 7%, #fff);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
   border: 1px dashed var(--accent);
   border-radius: var(--radius);
   padding: 0.75rem 1rem;

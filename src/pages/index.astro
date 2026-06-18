@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, pages, pageHref } from '../config/site';
-// The "movements" of the home-page story: each discipline as you scroll.
+import { site, pages, pageHref, getPage } from '../config/site';
+// The "movements" of the home-page story: the work, between About and Contact.
 const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
+const about = getPage('about');
+const contact = getPage('contact');
 ---
 <BaseLayout current="">
   <section class="hero container">
@@ -10,13 +12,24 @@ const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug)
     <h1 data-reveal style="--d:60ms">{site.brand}</h1>
     <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
     <p class="scroll-hint" data-reveal style="--d:240ms" aria-hidden="true">Scroll to begin ↓</p>
-    <p class="placeholder-note" data-reveal style="--d:300ms">
-      Scaffold preview — placeholder imagery + Lorem ipsum until your words and pictures arrive.
-      Scroll down: the color and ambient tone shift with each section (tap the speaker, lower-right, to hear it).
-    </p>
   </section>
 
-  <!-- Each movement repaints the site with its own mood color as it reaches center. -->
+  <!-- OPEN with About -->
+  <section class="movement intro" data-accent={about.accent} data-tone={about.tone}>
+    <div class="container m-inner">
+      <p class="m-index" data-reveal aria-hidden="true">Hello</p>
+      <a class="m-link" href={pageHref('about')}>
+        <h2 class="m-title" data-reveal style="--d:80ms">About</h2>
+      </a>
+      <p class="m-teaser about-teaser" data-reveal style="--d:160ms">
+        I'm Kaylee — I work across film, costume, and writing. <em>[Your short intro lands here.]</em>
+        This is where the story starts.
+      </p>
+      <a class="m-cta" href={pageHref('about')} data-reveal style="--d:220ms">More about me →</a>
+    </div>
+  </section>
+
+  <!-- THE WORK — each movement repaints the site with its own mood color. -->
   {movements.map((p, i) => (
     <section class="movement" data-accent={p.accent} data-tone={p.tone}>
       <div class="container m-inner">
@@ -29,10 +42,25 @@ const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug)
       </div>
     </section>
   ))}
+
+  <!-- CLOSE with Contact -->
+  <section class="movement outro" data-accent={contact.accent} data-tone={contact.tone}>
+    <div class="container m-inner">
+      <p class="m-index" data-reveal aria-hidden="true">The end, or a beginning</p>
+      <h2 class="m-title" data-reveal style="--d:80ms">Let's make something.</h2>
+      <p class="m-teaser" data-reveal style="--d:160ms">
+        Have a project, a question, or just want to say hello? I read everything.
+      </p>
+      <div class="outro-actions" data-reveal style="--d:220ms">
+        <a class="btn-solid" href={pageHref('contact')}>Get in touch →</a>
+        <a class="btn-ghost" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 4rem); min-height: 72vh; display: flex; flex-direction: column; justify-content: center; }
+  .hero { padding: clamp(3rem, 9vw, 7rem) 0 clamp(2rem, 6vw, 4rem); min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
   .kicker { font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.5rem; }
   .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 50ch; }
   .scroll-hint { color: var(--ink-soft); font-size: 0.9rem; letter-spacing: .08em; margin-top: 1.5rem; }
@@ -40,8 +68,9 @@ const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug)
   .movement {
     min-height: 80vh; display: flex; align-items: center;
     border-top: 1px solid var(--line);
-    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 5%, transparent));
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 9%, transparent));
   }
+  .intro { border-top: 0; }
   .m-inner { width: 100%; }
   .m-index { font-family: var(--font-display); font-size: 1rem; color: var(--accent); letter-spacing: .2em; margin: 0 0 .5rem; }
   .m-link { text-decoration: none; }
@@ -50,10 +79,20 @@ const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug)
     transition: color .3s, letter-spacing .3s;
   }
   .m-link:hover .m-title { color: var(--accent); letter-spacing: .005em; }
-  .m-teaser { font-size: 1.25rem; color: var(--ink-soft); margin: 1rem 0 1.5rem; max-width: 40ch; }
+  .m-teaser { font-size: 1.25rem; color: var(--ink-soft); margin: 1rem 0 1.5rem; max-width: 44ch; }
+  .about-teaser { max-width: 52ch; }
   .m-cta {
     display: inline-block; font-size: 1rem; color: var(--accent);
     border-bottom: 1px solid currentColor; padding-bottom: 2px;
   }
   .m-cta:hover { text-decoration: none; }
+
+  .outro-actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+  .btn-solid {
+    background: var(--accent); color: #14110f; font-weight: 600;
+    padding: 0.7rem 1.5rem; border-radius: var(--radius); transition: filter .15s;
+  }
+  .btn-solid:hover { text-decoration: none; filter: brightness(1.08); }
+  .btn-ghost { color: var(--ink-soft); border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+  .btn-ghost:hover { color: var(--ink); text-decoration: none; }
 </style>
