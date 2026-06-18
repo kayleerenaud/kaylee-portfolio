@@ -1,18 +1,104 @@
 ---
-// Responsive, lazy YouTube embed. Pass the video `id` (and optional `title`).
+// Responsive, lazy YouTube embed wired to the IFrame API so we can react to
+// play/pause/finish:
+//   • while playing → the page's ambient sound DUCKS (fades out) and the rest
+//     of the page dims a shade darker, spotlighting the video;
+//   • a soft accent light-bleed glows out from the video edges for immersion;
+//   • on pause/finish → everything returns to normal.
 const { id, title = 'YouTube video' } = Astro.props as { id: string; title?: string };
+// unique per-instance id (two embeds can share the same video id)
+const playerId = 'ytp-' + Math.random().toString(36).slice(2, 9);
 ---
-<div class="yt">
-  <iframe
-    src={`https://www.youtube-nocookie.com/embed/${id}`}
-    title={title}
-    loading="lazy"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen
-  ></iframe>
+<div class="yt-stage">
+  <div class="yt-glow" aria-hidden="true"></div>
+  <div class="yt">
+    <iframe
+      id={playerId}
+      src={`https://www.youtube-nocookie.com/embed/${id}?enablejsapi=1&rel=0`}
+      title={title}
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  </div>
 </div>
+
 <style>
-  .yt { position: relative; aspect-ratio: 16 / 9; width: 100%; background: #000; border-radius: var(--radius); overflow: hidden; }
+  .yt-stage { position: relative; }
+  .yt { position: relative; aspect-ratio: 16 / 9; width: 100%; background: #000; border-radius: var(--radius); overflow: hidden; transition: box-shadow .45s ease; }
   .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* soft light-bleed behind the video — a stand-in "reflection" of its edges
+     dissolving into the surrounding space (true pixel reflection isn't possible
+     with YouTube's cross-origin player). Off until the video plays. */
+  .yt-glow {
+    position: absolute; inset: -6%; z-index: -1; border-radius: 50%;
+    background: radial-gradient(closest-side,
+        color-mix(in srgb, var(--accent) 38%, transparent),
+        color-mix(in srgb, var(--accent) 14%, transparent) 55%, transparent 78%);
+    filter: blur(34px); opacity: 0; transform: scale(0.96);
+    transition: opacity .5s ease, transform .5s ease; pointer-events: none;
+  }
+  /* lift the whole stage above the page-dim overlay while playing, so both the
+     video AND its surrounding light-bleed read above the darkened page */
+  .yt-stage:has(.yt.is-playing) { z-index: 75; }
+  .yt-stage:has(.yt.is-playing) .yt-glow { opacity: 1; transform: scale(1.04); }
+
+  /* when playing: raise the video above the page-dim overlay + edge light bleed */
+  .yt.is-playing {
+    z-index: 80;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.4),
+      0 0 50px 6px color-mix(in srgb, var(--accent) 34%, transparent),
+      0 0 120px 24px color-mix(in srgb, var(--accent) 16%, transparent),
+      0 30px 90px rgba(0,0,0,.6);
+  }
 </style>
+
+<script is:inline define:vars={{ playerId }}>
+  (() => {
+    function makePlayer() {
+      const el = document.getElementById(playerId);
+      if (!el || !window.YT || !window.YT.Player) return;
+      new window.YT.Player(playerId, {
+        events: {
+          onStateChange: (e) => {
+            const yt = document.getElementById(playerId)?.closest('.yt');
+            if (!yt) return;
+            const S = window.YT.PlayerState;
+            if (e.data === S.PLAYING) {
+              yt.classList.add('is-playing');
+              document.body.classList.add('video-focus');
+              window.dispatchEvent(new CustomEvent('kr-duck'));
+            } else if (e.data === S.PAUSED || e.data === S.ENDED) {
+              yt.classList.remove('is-playing');
+              if (!document.querySelector('.yt.is-playing')) {
+                document.body.classList.remove('video-focus');
+                window.dispatchEvent(new CustomEvent('kr-unduck'));
+              }
+            }
+          },
+        },
+      });
+    }
+
+    // shared loader: one API script for any number of embeds on the page
+    window.__krYt = window.__krYt || { ready: false, loading: false, queue: [] };
+    const reg = (fn) => { window.__krYt.ready ? fn() : window.__krYt.queue.push(fn); };
+    reg(makePlayer);
+    if (!window.__krYt.loading) {
+      window.__krYt.loading = true;
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (typeof prev === 'function') prev();
+        window.__krYt.ready = true;
+        window.__krYt.queue.forEach((f) => f());
+        window.__krYt.queue = [];
+      };
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+  })();
+</script>

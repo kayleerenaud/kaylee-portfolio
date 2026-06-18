@@ -121,6 +121,9 @@ const { tone = 196 } = Astro.props as { tone?: number };
       voices.forEach((v) => v.osc.frequency.linearRampToValueAtTime(t * v.mult, now + 0.8));
     }
 
+    let ducked = false;  // temporarily silenced (e.g. while a video plays)
+    const targetGain = () => (on && !ducked ? 0.05 : 0);
+
     function setOn(next) {
       on = next;
       btn.setAttribute('aria-pressed', String(on));
@@ -130,14 +133,24 @@ const { tone = 196 } = Astro.props as { tone?: number };
         buildAudio();
         if (ctx.state === 'suspended') ctx.resume();
         glideTone(currentTone);
+      }
+      if (ctx) {
         master.gain.cancelScheduledValues(ctx.currentTime);
-        master.gain.setTargetAtTime(0.05, ctx.currentTime, 0.6);   // very low, ambient
-      } else if (ctx) {
-        master.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+        master.gain.setTargetAtTime(targetGain(), ctx.currentTime, on ? 0.6 : 0.3);
       }
     }
 
     btn.addEventListener('click', () => setOn(!on));
+
+    // Duck (fade out, but stay "on") while a video plays; restore when it stops.
+    window.addEventListener('kr-duck', () => {
+      ducked = true;
+      if (ctx && on) master.gain.setTargetAtTime(0, ctx.currentTime, 0.35);
+    });
+    window.addEventListener('kr-unduck', () => {
+      ducked = false;
+      if (ctx && on) master.gain.setTargetAtTime(targetGain(), ctx.currentTime, 0.7);
+    });
     // Honor a saved preference, but only auto-start after a real interaction
     // (browsers block audio otherwise). If they had it on, arm on first gesture.
     let saved = '0';

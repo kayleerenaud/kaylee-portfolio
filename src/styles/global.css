@@ -87,6 +87,15 @@ img { display: block; max-width: 100%; height: auto; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* When a video is playing, dim the whole page a shade darker so the viewer
+   focuses on it. The playing .yt raises itself above this overlay (z-index 80).
+   This dim is a deliberate, click-driven transition (not scroll-linked). */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 70; pointer-events: none;
+  background: rgba(8, 6, 5, 0); transition: background .45s ease;
+}
+body.video-focus::after { background: rgba(8, 6, 5, 0.62); }
+
 /* ===========================================================================
    SCROLL STORY — reveal-on-scroll. Anything with data-reveal starts hidden and
    eases in the instant it enters the viewport (IntersectionObserver in

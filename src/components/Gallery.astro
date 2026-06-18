@@ -38,6 +38,7 @@ const isStrip = layout === 'strip';
   {isStrip && (
     <>
       <div class="film-vignette" aria-hidden="true"></div>
+      <div class="film-grain" aria-hidden="true"></div>
       <div class="film-flicker" aria-hidden="true"></div>
     </>
   )}
@@ -64,7 +65,7 @@ const isStrip = layout === 'strip';
     --perf-band: 30px;          /* height of each sprocket margin */
     display: flex; grid-template-columns: none; gap: 7px;
     overflow-x: auto; overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
     background-color: var(--film); border-radius: 6px;
     padding: var(--perf-band) 7px;
     /* two perforation rows (top + bottom), one rounded-rect tile repeated-x */
@@ -86,17 +87,20 @@ const isStrip = layout === 'strip';
   .gallery.strip .thumb { border-radius: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.6); }
   .gallery.strip .thumb img { aspect-ratio: 16 / 9; }
 
-  /* per-frame sheen + vignette: each still sits slightly shaded, so hovering it
-     "lifts" the shade and the image lights up — an invitation to click. */
+  /* per-frame sheen + vignette. Shading scales with --off (0 = dead-centre in
+     the strip, 1 = at the edges), set live by JS — so whichever frame is
+     centred is the LEAST affected and the side frames sit deeper in shadow.
+     Hovering a frame lifts the shade entirely, lighting it up to invite a click. */
+  .gallery.strip .cell { --off: 1; }
   .gallery.strip .thumb::after {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 1px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,.10), transparent 28%, transparent 68%, rgba(0,0,0,.30)),
-      radial-gradient(125% 130% at 50% 42%, transparent 58%, rgba(0,0,0,.40));
-    opacity: 1; transition: opacity .28s ease;
+      linear-gradient(180deg, rgba(255,255,255,.10), transparent 28%, transparent 68%, rgba(0,0,0,.34)),
+      radial-gradient(125% 130% at 50% 42%, transparent 56%, rgba(0,0,0,.46));
+    opacity: calc(0.12 + var(--off) * 0.88); transition: opacity .15s linear;
   }
   .gallery.strip .thumb:hover::after,
-  .gallery.strip .thumb:focus-visible::after { opacity: .12; }
+  .gallery.strip .thumb:focus-visible::after { opacity: .1; transition: opacity .28s ease; }
 
   /* edge-printing in the bottom film margin: project name + date */
   .gallery.strip .frame-edge {
@@ -107,29 +111,52 @@ const isStrip = layout === 'strip';
     background: var(--film, #0c0a08); padding: 3px 6px; border-radius: 2px;
   }
 
-  /* ---- strip overlays (sit over the whole film, do not scroll) ---- */
+  /* ---- strip overlays (sit over the whole film, do not scroll) ----
+     All three are MASKED so they're clear through the centre column and
+     strongest at the left/right edges — so the centred frame stays cleanest
+     and the side frames pick up more grain, flicker and vignette. */
   .filmstrip { position: relative; }
   .filmstrip .film-vignette,
-  .filmstrip .film-flicker { position: absolute; inset: 0; pointer-events: none; border-radius: 6px; }
+  .filmstrip .film-grain,
+  .filmstrip .film-flicker {
+    position: absolute; inset: 0; pointer-events: none; border-radius: 6px;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, #000 100%);
+    mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, #000 100%);
+  }
   /* soft sheen + edge vignette down the strip */
   .filmstrip .film-vignette {
     z-index: 5;
     background:
-      linear-gradient(105deg, transparent 32%, rgba(255,255,255,.05) 48%, transparent 64%),
-      linear-gradient(90deg, rgba(0,0,0,.38), transparent 10%, transparent 90%, rgba(0,0,0,.38)),
-      radial-gradient(140% 150% at 50% 50%, transparent 62%, rgba(0,0,0,.30));
+      linear-gradient(105deg, transparent 32%, rgba(255,255,255,.06) 48%, transparent 64%),
+      linear-gradient(90deg, rgba(0,0,0,.42), transparent 14%, transparent 86%, rgba(0,0,0,.42)),
+      radial-gradient(140% 150% at 50% 50%, transparent 60%, rgba(0,0,0,.34));
   }
-  /* projector flicker — gentle brightness wobble only */
+  /* moving film grain / dust flecks (animated fractal noise) */
+  .filmstrip .film-grain {
+    z-index: 6; mix-blend-mode: overlay; opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    background-size: 170px 170px;
+    animation: kr-grain 1.1s steps(4) infinite;
+  }
+  /* projector flicker — gentle brightness wobble (nudged up a hair) */
   .filmstrip .film-flicker {
-    z-index: 6; background: #fff; mix-blend-mode: soft-light; opacity: .02;
-    animation: kr-flicker 4.6s steps(1) infinite;
+    z-index: 7; background: #fff; mix-blend-mode: soft-light; opacity: .03;
+    animation: kr-flicker 3.8s steps(1) infinite;
   }
   @keyframes kr-flicker {
-    0%,100% { opacity: .015 } 7% { opacity: .05 } 11% { opacity: .01 } 19% { opacity: .06 }
-    24% { opacity: .02 } 38% { opacity: .045 } 43% { opacity: .008 } 54% { opacity: .055 }
-    60% { opacity: .02 } 72% { opacity: .035 } 80% { opacity: .06 } 85% { opacity: .012 } 93% { opacity: .045 }
+    0%,100% { opacity: .02 } 6% { opacity: .075 } 10% { opacity: .015 } 18% { opacity: .09 }
+    23% { opacity: .03 } 36% { opacity: .07 } 42% { opacity: .012 } 52% { opacity: .085 }
+    58% { opacity: .03 } 70% { opacity: .055 } 79% { opacity: .095 } 84% { opacity: .018 } 92% { opacity: .07 }
   }
-  @media (prefers-reduced-motion: reduce) { .filmstrip .film-flicker { animation: none; opacity: .015; } }
+  @keyframes kr-grain {
+    0% { background-position: 0 0 } 25% { background-position: -38px 22px }
+    50% { background-position: 26px -30px } 75% { background-position: -18px -14px }
+    100% { background-position: 30px 28px }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .filmstrip .film-flicker { animation: none; opacity: .02; }
+    .filmstrip .film-grain { animation: none; opacity: .35; }
+  }
 
   .thumb {
     position: relative; display: block; width: 100%; padding: 0; border: 0;
@@ -256,12 +283,76 @@ const isStrip = layout === 'strip';
     if (!btn) return;
     const root = btn.closest('[data-gallery]');
     if (!root) return;
-    const thumbs = Array.from(root.querySelectorAll<HTMLElement>('[data-lightbox]'));
+    // exclude looped clones so the lightbox cycles the real set only;
+    // a clone still carries the original data-index, so clicks map correctly.
+    const thumbs = Array.from(root.querySelectorAll<HTMLElement>('[data-lightbox]:not([data-clone])'));
     group = thumbs.map((t) => ({ src: t.dataset.src || '', alt: t.dataset.alt || '', caption: t.dataset.caption || '' }));
     idx = Number(btn.dataset.index || 0);
     const dlg = build();
     dlg.classList.toggle('is-single', group.length < 2);
     render();
     dlg.showModal();
+  });
+
+  /* ---- FILM STRIP: seamless infinite loop + live centre-focus ----------------
+     • The real frames are cloned once before and once after, so the strip is one
+       endless loop — scroll far enough either way and you arrive back at the
+       start with no visible seam (we jump scrollLeft by exactly one set width
+       whenever you drift into a clone zone; the content there is identical).
+     • Each frame's --off (0 = centred, 1 = at the edge) is recomputed every
+       frame so the centred still is the cleanest and the sides fall into shadow,
+       grain and flicker. */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('.gallery.strip').forEach((ul) => {
+    const cellsInit = Array.from(ul.children) as HTMLElement[];
+    const n = cellsInit.length;
+    let stride = 0;
+    const loop = n >= 3 && !reduceMotion;
+
+    if (loop) {
+      const cloneSet = (mark: string) => {
+        const frag = document.createDocumentFragment();
+        cellsInit.forEach((c) => {
+          const clone = c.cloneNode(true) as HTMLElement;
+          clone.setAttribute('data-clone', mark);
+          clone.querySelectorAll('[data-lightbox]').forEach((b) => {
+            b.setAttribute('data-clone', mark);
+            (b as HTMLElement).tabIndex = -1;
+          });
+          frag.appendChild(clone);
+        });
+        return frag;
+      };
+      ul.appendChild(cloneSet('after'));
+      const before = cloneSet('before');
+      ul.insertBefore(before, ul.firstChild);
+      // one "set" stride = distance from the first real cell to the first 'after' clone
+      const cells = Array.from(ul.children) as HTMLElement[];
+      stride = cells[2 * n].offsetLeft - cells[n].offsetLeft;
+      ul.scrollLeft = stride; // start viewing the middle (real) set
+    }
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      if (loop && stride > 0) {
+        if (ul.scrollLeft < stride * 0.5) ul.scrollLeft += stride;
+        else if (ul.scrollLeft > stride * 1.5) ul.scrollLeft -= stride;
+      }
+      const r = ul.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const half = r.width / 2 || 1;
+      for (const cell of Array.from(ul.children) as HTMLElement[]) {
+        const cr = cell.getBoundingClientRect();
+        const off = Math.min(1, Math.abs(cr.left + cr.width / 2 - cx) / half);
+        cell.style.setProperty('--off', off.toFixed(3));
+      }
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    ul.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    // settle initial positions (after layout)
+    requestAnimationFrame(update);
+    setTimeout(update, 250);
   });
 </script>
