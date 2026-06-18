@@ -92,15 +92,34 @@ const isStrip = layout === 'strip';
      centred is the LEAST affected and the side frames sit deeper in shadow.
      Hovering a frame lifts the shade entirely, lighting it up to invite a click. */
   .gallery.strip .cell { --off: 1; }
+  /* deeper vignette the further a frame is from centre */
   .gallery.strip .thumb::after {
-    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 1px;
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 1px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,.10), transparent 28%, transparent 68%, rgba(0,0,0,.34)),
-      radial-gradient(125% 130% at 50% 42%, transparent 56%, rgba(0,0,0,.46));
-    opacity: calc(0.12 + var(--off) * 0.88); transition: opacity .15s linear;
+      linear-gradient(180deg, rgba(255,255,255,.10), transparent 24%, transparent 60%, rgba(0,0,0,.52)),
+      radial-gradient(120% 125% at 50% 42%, transparent 48%, rgba(0,0,0,.72));
+    opacity: calc(0.1 + var(--off) * 0.9); transition: opacity .15s linear;
   }
-  .gallery.strip .thumb:hover::after,
+  /* small dust flecks / scratches that twinkle over the non-centred frames
+     (distinct from the fine grain; scaled by --off so the centred frame is clean) */
+  .gallery.strip .thumb::before {
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 1px;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='34' cy='44' r='1.1'/%3E%3Ccircle cx='168' cy='26' r='.8'/%3E%3Ccircle cx='96' cy='132' r='1.5'/%3E%3Ccircle cx='194' cy='176' r='.9'/%3E%3Ccircle cx='64' cy='192' r='.7'/%3E%3Crect x='150' y='60' width='1' height='8'/%3E%3C/g%3E%3Cg fill='%23000000'%3E%3Ccircle cx='128' cy='76' r='1.1'/%3E%3Ccircle cx='48' cy='120' r='.9'/%3E%3Ccircle cx='178' cy='104' r='.7'/%3E%3Crect x='28' y='162' width='1' height='7'/%3E%3Crect x='112' y='30' width='1' height='6'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    opacity: calc(var(--off) * 0.6); transition: opacity .15s linear;
+    animation: kr-flecks 0.6s steps(1) infinite;
+  }
+  @keyframes kr-flecks {
+    0% { background-position: 0 0 } 20% { background-position: -64px 34px }
+    40% { background-position: 42px -52px } 60% { background-position: -30px -22px }
+    80% { background-position: 74px 60px } 100% { background-position: 12px 18px }
+  }
+  .gallery.strip .thumb:hover::after { opacity: .1; transition: opacity .28s ease; }
+  .gallery.strip .thumb:hover::before,
+  .gallery.strip .thumb:focus-visible::before { opacity: 0; }
   .gallery.strip .thumb:focus-visible::after { opacity: .1; transition: opacity .28s ease; }
+  @media (prefers-reduced-motion: reduce) { .gallery.strip .thumb::before { animation: none; } }
 
   /* edge-printing in the bottom film margin: project name + date */
   .gallery.strip .frame-edge {
