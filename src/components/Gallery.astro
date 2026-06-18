@@ -7,29 +7,41 @@
 //    (on-screen arrows, keyboard ← →, or swipe on mobile). Esc / tap-outside closes.
 //
 // Pass an array of items: { src, alt, caption }.
-export type GalleryItem = { src: string; alt: string; caption?: string };
+//   edge = optional "edge print" shown in the film-strip margin (Film stills):
+//          use the project name + date, e.g. "Golden Hour · Apr 2024".
+export type GalleryItem = { src: string; alt: string; caption?: string; edge?: string };
 // layout: 'grid' (default vertical grid) or 'strip' (horizontal filmstrip of
 // landscape stills you scroll/swipe sideways — used for Film stills).
 const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryItem[]; columns?: number; layout?: 'grid' | 'strip' };
+const isStrip = layout === 'strip';
 ---
-<ul class:list={['gallery', layout === 'strip' && 'strip']} data-gallery style={`--cols:${columns}`}>
-  {items.map((it, i) => (
-    <li class="cell" data-reveal style={`--d:${(i % 4) * 70}ms`}>
-      <button
-        class="thumb"
-        data-lightbox
-        data-index={i}
-        data-src={it.src}
-        data-alt={it.alt}
-        data-caption={it.caption ?? ''}
-        aria-label={`Enlarge: ${it.caption || it.alt}`}
-      >
-        <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
-        {it.caption && <span class="caption">{it.caption}</span>}
-      </button>
-    </li>
-  ))}
-</ul>
+<div class:list={['gallery-wrap', isStrip && 'filmstrip']}>
+  <ul class:list={['gallery', isStrip && 'strip']} data-gallery style={`--cols:${columns}`}>
+    {items.map((it, i) => (
+      <li class="cell" data-reveal style={`--d:${(i % 4) * 70}ms`}>
+        <button
+          class="thumb"
+          data-lightbox
+          data-index={i}
+          data-src={it.src}
+          data-alt={it.alt}
+          data-caption={it.caption ?? ''}
+          aria-label={`Enlarge: ${it.caption || it.alt}`}
+        >
+          <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
+          {it.caption && <span class="caption">{it.caption}</span>}
+        </button>
+        {isStrip && it.edge && <span class="frame-edge">{it.edge}</span>}
+      </li>
+    ))}
+  </ul>
+  {isStrip && (
+    <>
+      <div class="film-vignette" aria-hidden="true"></div>
+      <div class="film-flicker" aria-hidden="true"></div>
+    </>
+  )}
+</div>
 
 <style>
   .gallery {
@@ -70,9 +82,54 @@ const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryI
   .gallery.strip::-webkit-scrollbar-track { background: var(--film); }
   .gallery.strip::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 8px; }
   /* each frame: a still in its own film cell, thin separators between frames */
-  .gallery.strip .cell { flex: 0 0 auto; width: min(82vw, 540px); scroll-snap-align: center; }
+  .gallery.strip .cell { position: relative; flex: 0 0 auto; width: min(82vw, 540px); scroll-snap-align: center; }
   .gallery.strip .thumb { border-radius: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.6); }
   .gallery.strip .thumb img { aspect-ratio: 16 / 9; }
+
+  /* per-frame sheen + vignette: each still sits slightly shaded, so hovering it
+     "lifts" the shade and the image lights up — an invitation to click. */
+  .gallery.strip .thumb::after {
+    content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 1px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.10), transparent 28%, transparent 68%, rgba(0,0,0,.30)),
+      radial-gradient(125% 130% at 50% 42%, transparent 58%, rgba(0,0,0,.40));
+    opacity: 1; transition: opacity .28s ease;
+  }
+  .gallery.strip .thumb:hover::after,
+  .gallery.strip .thumb:focus-visible::after { opacity: .12; }
+
+  /* edge-printing in the bottom film margin: project name + date */
+  .gallery.strip .frame-edge {
+    position: absolute; left: 6px; bottom: -22px; z-index: 4; pointer-events: none;
+    max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font: 600 10px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--perf, #d8cfc1) 88%, #fff);
+    background: var(--film, #0c0a08); padding: 3px 6px; border-radius: 2px;
+  }
+
+  /* ---- strip overlays (sit over the whole film, do not scroll) ---- */
+  .filmstrip { position: relative; }
+  .filmstrip .film-vignette,
+  .filmstrip .film-flicker { position: absolute; inset: 0; pointer-events: none; border-radius: 6px; }
+  /* soft sheen + edge vignette down the strip */
+  .filmstrip .film-vignette {
+    z-index: 5;
+    background:
+      linear-gradient(105deg, transparent 32%, rgba(255,255,255,.05) 48%, transparent 64%),
+      linear-gradient(90deg, rgba(0,0,0,.38), transparent 10%, transparent 90%, rgba(0,0,0,.38)),
+      radial-gradient(140% 150% at 50% 50%, transparent 62%, rgba(0,0,0,.30));
+  }
+  /* projector flicker — gentle brightness wobble only */
+  .filmstrip .film-flicker {
+    z-index: 6; background: #fff; mix-blend-mode: soft-light; opacity: .02;
+    animation: kr-flicker 4.6s steps(1) infinite;
+  }
+  @keyframes kr-flicker {
+    0%,100% { opacity: .015 } 7% { opacity: .05 } 11% { opacity: .01 } 19% { opacity: .06 }
+    24% { opacity: .02 } 38% { opacity: .045 } 43% { opacity: .008 } 54% { opacity: .055 }
+    60% { opacity: .02 } 72% { opacity: .035 } 80% { opacity: .06 } 85% { opacity: .012 } 93% { opacity: .045 }
+  }
+  @media (prefers-reduced-motion: reduce) { .filmstrip .film-flicker { animation: none; opacity: .015; } }
 
   .thumb {
     position: relative; display: block; width: 100%; padding: 0; border: 0;
@@ -85,7 +142,7 @@ const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryI
   /* caption PREVIEW: lower-left, truncated to 2 lines. Full text lives in the
      lightbox. A subtle accent gradient ties it to the section's mood color. */
   .caption {
-    position: absolute; left: 0; right: auto; bottom: 0; max-width: 85%;
+    position: absolute; left: 0; right: auto; bottom: 0; max-width: 85%; z-index: 3;
     margin: 0.6rem; padding: 0.4rem 0.65rem;
     background: linear-gradient(180deg,
         color-mix(in srgb, var(--accent) 24%, rgba(18,16,13,0.82)),

@@ -15,13 +15,14 @@ import type { GalleryItem } from '../components/Gallery.astro';
 const ph = (seed: string) => `https://picsum.photos/seed/${seed}/900/1125`;
 
 // FILM — stills from set / behind-the-scenes. (Moving pieces live in `videos`.)
+//   edge = the film-strip "edge print": project name + date for that frame.
 export const filmStills: GalleryItem[] = [
-  { src: ph('kr-film-1'), alt: 'Placeholder film still 1', caption: 'Lorem ipsum — opening frame, golden hour on location. The full caption can run several sentences and will expand here when enlarged, telling the story behind the shot.' },
-  { src: ph('kr-film-2'), alt: 'Placeholder film still 2', caption: 'Lorem ipsum — close on the lead during the third act. Replace with the real story of this frame.' },
-  { src: ph('kr-film-3'), alt: 'Placeholder film still 3', caption: 'Lorem ipsum — wide establishing shot, quiet morning light.' },
-  { src: ph('kr-film-4'), alt: 'Placeholder film still 4', caption: 'Lorem ipsum — behind the scenes, blocking the dolly move.' },
-  { src: ph('kr-film-5'), alt: 'Placeholder film still 5', caption: 'Lorem ipsum — practical lighting test, deep shadows.' },
-  { src: ph('kr-film-6'), alt: 'Placeholder film still 6', caption: 'Lorem ipsum — final frame before the cut to black.' },
+  { src: ph('kr-film-1'), alt: 'Placeholder film still 1', edge: 'Project One · 2024', caption: 'Lorem ipsum — opening frame, golden hour on location. The full caption can run several sentences and will expand here when enlarged, telling the story behind the shot.' },
+  { src: ph('kr-film-2'), alt: 'Placeholder film still 2', edge: 'Project One · 2024', caption: 'Lorem ipsum — close on the lead during the third act. Replace with the real story of this frame.' },
+  { src: ph('kr-film-3'), alt: 'Placeholder film still 3', edge: 'Project Two · 2023', caption: 'Lorem ipsum — wide establishing shot, quiet morning light.' },
+  { src: ph('kr-film-4'), alt: 'Placeholder film still 4', edge: 'Project Two · 2023', caption: 'Lorem ipsum — behind the scenes, blocking the dolly move.' },
+  { src: ph('kr-film-5'), alt: 'Placeholder film still 5', edge: 'Project Three · 2023', caption: 'Lorem ipsum — practical lighting test, deep shadows.' },
+  { src: ph('kr-film-6'), alt: 'Placeholder film still 6', edge: 'Project Three · 2023', caption: 'Lorem ipsum — final frame before the cut to black.' },
 ];
 
 export const costume: GalleryItem[] = [
