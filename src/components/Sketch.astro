@@ -17,6 +17,23 @@ const LIB: Record<string, { vb: string; d: string[] }> = {
   thread: { vb: '0 0 100 100', d: ['M22 34 L66 72', 'M22 34 q-6 -3 -3 -8 q4 -4 8 0', 'M66 72 q14 -5 8 -16 q-6 -9 5 -15'] },
   quill:  { vb: '0 0 100 100', d: ['M28 80 C40 60 58 36 80 22', 'M52 46 q9 -3 13 -11', 'M44 56 q9 -3 13 -11', 'M60 38 q9 -3 13 -11', 'M28 80 L23 86 L32 84 Z'] },
   squiggle:{ vb:'0 0 120 60',  d: ['M8 40 C20 10 34 10 44 34 C52 52 66 52 72 30 C78 10 96 12 112 38'] },
+  // laurel wreath — Awards
+  laurel: { vb: '0 0 100 100', d: [
+    'M50 88 C36 80 26 60 30 36', 'M50 88 C64 80 74 60 70 36',
+    'M38 72 q-9 -4 -10 -13', 'M34 58 q-9 -4 -10 -13', 'M32 45 q-9 -4 -9 -13',
+    'M62 72 q9 -4 10 -13', 'M66 58 q9 -4 10 -13', 'M68 45 q9 -4 9 -13',
+  ] },
+  // graduation cap — Education
+  gradcap: { vb: '0 0 100 100', d: [
+    'M50 34 L85 49 L50 64 L15 49 Z',
+    'M33 55 L33 69 Q50 79 67 69 L67 55',
+    'M67 51 L75 51 L75 71', 'M75 71 l-3.5 7 l7 0 z',
+  ] },
+  // a summit with a flag — Experience (milestones climbed)
+  summit: { vb: '0 0 100 100', d: [
+    'M12 82 L38 40 L52 60 L64 44 L88 82 Z',
+    'M64 44 L64 28', 'M64 28 L80 33 L64 38',
+  ] },
 };
 
 interface Props { name: string; class?: string; }
@@ -50,8 +67,8 @@ const item = LIB[name] ?? LIB.star;
        then let it unravel again as it scrolls up and out of view */
     @keyframes kr-draw {
       0%   { stroke-dashoffset: 1; }   /* entering from the bottom — not yet drawn */
-      32%  { stroke-dashoffset: 0; }   /* fully drawn before reaching centre */
-      68%  { stroke-dashoffset: 0; }   /* stays whole through the middle of the screen */
+      39%  { stroke-dashoffset: 0; }   /* fully drawn just before reaching centre */
+      61%  { stroke-dashoffset: 0; }   /* stays whole through the middle of the screen */
       100% { stroke-dashoffset: 1; }   /* unravels as it leaves the top */
     }
   }

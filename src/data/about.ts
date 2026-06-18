@@ -38,7 +38,7 @@ export const crafts = [
 export const credits: { heading: string; sketch: string; lines: string[] }[] = [
   {
     heading: 'Awards',
-    sketch: 'star',
+    sketch: 'laurel',
     lines: [
       'Best Short Film — Placeholder Festival, 2024',
       'Costume Design, Honorable Mention — Placeholder Awards, 2023',
@@ -47,7 +47,7 @@ export const credits: { heading: string; sketch: string; lines: string[] }[] = [
   },
   {
     heading: 'Selected Experience',
-    sketch: 'spark',
+    sketch: 'summit',
     lines: [
       'Costume Designer — Placeholder Production, 2023–24',
       'Writer / Director — "Placeholder" (short), 2023',
@@ -56,7 +56,7 @@ export const credits: { heading: string; sketch: string; lines: string[] }[] = [
   },
   {
     heading: 'Education',
-    sketch: 'quill',
+    sketch: 'gradcap',
     lines: [
       'BFA, Film & Media — Placeholder University, 2022',
       'Costume Construction — Placeholder Workshop, 2021',

@@ -57,8 +57,12 @@ const last = frames.length - 1;
     const frames = Array.from(box.querySelectorAll<HTMLElement>('.hs-frame'));
     if (frames.length < 2) return;
     const last = frames.length - 1;
+    const tag = box.querySelector<HTMLElement>('.hs-tag');
     let timer = 0;
-    const show = (i: number) => frames.forEach((f, k) => f.classList.toggle('on', k === i));
+    const show = (i: number) => {
+      frames.forEach((f, k) => f.classList.toggle('on', k === i));
+      if (tag) tag.textContent = `${i + 1} / ${frames.length}`;
+    };
     const play = () => {
       if (reduce) { show(last); return; }
       window.clearInterval(timer);
