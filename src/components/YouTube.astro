@@ -1,66 +1,81 @@
 ---
-// Responsive, lazy YouTube embed wired to the IFrame API so we can react to
-// play/pause/finish:
-//   • while playing → the page's ambient sound DUCKS (fades out) and the rest
-//     of the page dims a shade darker, spotlighting the video;
-//   • a soft accent light-bleed glows out from the video edges for immersion;
+// Responsive, lazy YouTube embed wired to the IFrame API so the page can react
+// to play / pause / finish:
+//   • while playing → the ambient sound DUCKS, and a dark "spotlight" overlay
+//     dims the rest of the page with a HOLE punched exactly over the video, so
+//     the video keeps its full original brightness while everything else recedes;
+//   • a soft accent light-bleed rings the video for immersion;
+//   • if the video scrolls out of view (still playing) the dim fades off so the
+//     visitor can keep exploring; it returns when the video scrolls back in;
 //   • on pause/finish → everything returns to normal.
 const { id, title = 'YouTube video' } = Astro.props as { id: string; title?: string };
-// unique per-instance id (two embeds can share the same video id)
 const playerId = 'ytp-' + Math.random().toString(36).slice(2, 9);
 ---
-<div class="yt-stage">
-  <div class="yt-glow" aria-hidden="true"></div>
-  <div class="yt">
-    <iframe
-      id={playerId}
-      src={`https://www.youtube-nocookie.com/embed/${id}?enablejsapi=1&rel=0`}
-      title={title}
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-    ></iframe>
-  </div>
+<div class="yt">
+  <iframe
+    id={playerId}
+    src={`https://www.youtube-nocookie.com/embed/${id}?enablejsapi=1&rel=0`}
+    title={title}
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
 </div>
 
 <style>
-  .yt-stage { position: relative; }
-  .yt { position: relative; aspect-ratio: 16 / 9; width: 100%; background: #000; border-radius: var(--radius); overflow: hidden; transition: box-shadow .45s ease; }
+  .yt { position: relative; aspect-ratio: 16 / 9; width: 100%; background: #000; border-radius: var(--radius); overflow: hidden; }
   .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
-  /* soft light-bleed behind the video — a stand-in "reflection" of its edges
-     dissolving into the surrounding space (true pixel reflection isn't possible
-     with YouTube's cross-origin player). Off until the video plays. */
-  .yt-glow {
-    position: absolute; inset: -6%; z-index: -1; border-radius: 50%;
-    background: radial-gradient(closest-side,
-        color-mix(in srgb, var(--accent) 38%, transparent),
-        color-mix(in srgb, var(--accent) 14%, transparent) 55%, transparent 78%);
-    filter: blur(34px); opacity: 0; transform: scale(0.96);
-    transition: opacity .5s ease, transform .5s ease; pointer-events: none;
-  }
-  /* lift the whole stage above the page-dim overlay while playing, so both the
-     video AND its surrounding light-bleed read above the darkened page */
-  .yt-stage:has(.yt.is-playing) { z-index: 75; }
-  .yt-stage:has(.yt.is-playing) .yt-glow { opacity: 1; transform: scale(1.04); }
-
-  /* when playing: raise the video above the page-dim overlay + edge light bleed */
-  .yt.is-playing {
-    z-index: 80;
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,.4),
-      0 0 50px 6px color-mix(in srgb, var(--accent) 34%, transparent),
-      0 0 120px 24px color-mix(in srgb, var(--accent) 16%, transparent),
-      0 30px 90px rgba(0,0,0,.6);
-  }
 </style>
 
 <script is:inline define:vars={{ playerId }}>
   (() => {
+    /* ---- one shared spotlight overlay for the whole page ---- */
+    function spotlight() {
+      if (window.__krSpot) return window.__krSpot;
+      const ov = document.createElement('div'); ov.className = 'kr-spotlight';
+      const hole = document.createElement('div'); hole.className = 'kr-spot-hole';
+      ov.appendChild(hole); document.body.appendChild(ov);
+
+      const css = document.createElement('style');
+      css.textContent = `
+        .kr-spotlight { position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: 0; transition: opacity .45s ease; }
+        .kr-spotlight.on { opacity: 1; }
+        .kr-spot-hole { position: fixed; border-radius: var(--radius); transition: box-shadow .45s ease;
+          box-shadow:
+            0 0 60px 12px color-mix(in srgb, var(--accent) 36%, transparent),
+            0 0 150px 32px color-mix(in srgb, var(--accent) 14%, transparent),
+            0 0 0 9999px rgba(8,6,5,0.62); }
+        @media (prefers-reduced-motion: reduce) { .kr-spotlight { transition: none; } }`;
+      document.head.appendChild(css);
+
+      let active = null, raf = 0;
+      const inView = (r) => r.top < innerHeight * 0.85 && r.bottom > innerHeight * 0.15;
+      const place = () => {
+        raf = 0;
+        if (!active) { ov.classList.remove('on'); return; }
+        const r = active.getBoundingClientRect();
+        if (inView(r)) {
+          hole.style.top = r.top + 'px'; hole.style.left = r.left + 'px';
+          hole.style.width = r.width + 'px'; hole.style.height = r.height + 'px';
+          ov.classList.add('on');
+        } else {
+          ov.classList.remove('on');     // scrolled past → un-dim, video keeps playing
+        }
+      };
+      const sched = () => { if (!raf) raf = requestAnimationFrame(place); };
+      addEventListener('scroll', sched, { passive: true });
+      addEventListener('resize', sched, { passive: true });
+
+      window.__krSpot = {
+        play(yt) { active = yt; place(); },
+        stop(yt) { if (active === yt) { active = null; ov.classList.remove('on'); } },
+      };
+      return window.__krSpot;
+    }
+
     function makePlayer() {
-      const el = document.getElementById(playerId);
-      if (!el || !window.YT || !window.YT.Player) return;
+      if (!document.getElementById(playerId) || !window.YT || !window.YT.Player) return;
       new window.YT.Player(playerId, {
         events: {
           onStateChange: (e) => {
@@ -69,12 +84,12 @@ const playerId = 'ytp-' + Math.random().toString(36).slice(2, 9);
             const S = window.YT.PlayerState;
             if (e.data === S.PLAYING) {
               yt.classList.add('is-playing');
-              document.body.classList.add('video-focus');
+              spotlight().play(yt);
               window.dispatchEvent(new CustomEvent('kr-duck'));
             } else if (e.data === S.PAUSED || e.data === S.ENDED) {
               yt.classList.remove('is-playing');
+              spotlight().stop(yt);
               if (!document.querySelector('.yt.is-playing')) {
-                document.body.classList.remove('video-focus');
                 window.dispatchEvent(new CustomEvent('kr-unduck'));
               }
             }
@@ -83,7 +98,7 @@ const playerId = 'ytp-' + Math.random().toString(36).slice(2, 9);
       });
     }
 
-    // shared loader: one API script for any number of embeds on the page
+    // shared API loader: one script for any number of embeds
     window.__krYt = window.__krYt || { ready: false, loading: false, queue: [] };
     const reg = (fn) => { window.__krYt.ready ? fn() : window.__krYt.queue.push(fn); };
     reg(makePlayer);

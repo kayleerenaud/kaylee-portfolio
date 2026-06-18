@@ -138,15 +138,16 @@ const isStrip = layout === 'strip';
     background-size: 170px 170px;
     animation: kr-grain 1.1s steps(4) infinite;
   }
-  /* projector flicker — gentle brightness wobble (nudged up a hair) */
+  /* projector flicker — brightness wobble, pushed up for a more "projected" feel
+     (still a fraction of true projector flicker so it stays tasteful). */
   .filmstrip .film-flicker {
-    z-index: 7; background: #fff; mix-blend-mode: soft-light; opacity: .03;
-    animation: kr-flicker 3.8s steps(1) infinite;
+    z-index: 7; background: #fff; mix-blend-mode: soft-light; opacity: .04;
+    animation: kr-flicker 3.2s steps(1) infinite;
   }
   @keyframes kr-flicker {
-    0%,100% { opacity: .02 } 6% { opacity: .075 } 10% { opacity: .015 } 18% { opacity: .09 }
-    23% { opacity: .03 } 36% { opacity: .07 } 42% { opacity: .012 } 52% { opacity: .085 }
-    58% { opacity: .03 } 70% { opacity: .055 } 79% { opacity: .095 } 84% { opacity: .018 } 92% { opacity: .07 }
+    0%,100% { opacity: .03 } 5% { opacity: .12 } 9% { opacity: .02 } 17% { opacity: .15 }
+    22% { opacity: .04 } 34% { opacity: .11 } 40% { opacity: .015 } 49% { opacity: .14 }
+    56% { opacity: .04 } 68% { opacity: .085 } 77% { opacity: .155 } 82% { opacity: .02 } 90% { opacity: .11 }
   }
   @keyframes kr-grain {
     0% { background-position: 0 0 } 25% { background-position: -38px 22px }
@@ -295,19 +296,22 @@ const isStrip = layout === 'strip';
   });
 
   /* ---- FILM STRIP: seamless infinite loop + live centre-focus ----------------
-     • The real frames are cloned once before and once after, so the strip is one
-       endless loop — scroll far enough either way and you arrive back at the
-       start with no visible seam (we jump scrollLeft by exactly one set width
-       whenever you drift into a clone zone; the content there is identical).
-     • Each frame's --off (0 = centred, 1 = at the edge) is recomputed every
-       frame so the centred still is the cleanest and the sides fall into shadow,
-       grain and flicker. */
+     Shudder-free design:
+       • The loop is built from TWO clone sets on each side, and we only re-centre
+         scrollLeft once scrolling has SETTLED (never mid-fling) — so momentum is
+         never interrupted. Because each clone set is pixel-identical, the silent
+         re-centre is invisible.
+       • The per-frame focus (--off: 0 centred → 1 at the edge) is computed from
+         CACHED offsets + scrollLeft each frame — no getBoundingClientRect in the
+         scroll loop, so there's no forced reflow to stutter on. */
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const SIDE = 2; // clone sets on each side
   document.querySelectorAll<HTMLElement>('.gallery.strip').forEach((ul) => {
     const cellsInit = Array.from(ul.children) as HTMLElement[];
     const n = cellsInit.length;
-    let stride = 0;
     const loop = n >= 3 && !reduceMotion;
+    let stride = 0;
+    let centers: number[] = [];
 
     if (loop) {
       const cloneSet = (mark: string) => {
@@ -323,36 +327,51 @@ const isStrip = layout === 'strip';
         });
         return frag;
       };
-      ul.appendChild(cloneSet('after'));
-      const before = cloneSet('before');
-      ul.insertBefore(before, ul.firstChild);
-      // one "set" stride = distance from the first real cell to the first 'after' clone
-      const cells = Array.from(ul.children) as HTMLElement[];
-      stride = cells[2 * n].offsetLeft - cells[n].offsetLeft;
-      ul.scrollLeft = stride; // start viewing the middle (real) set
+      for (let i = 0; i < SIDE; i++) ul.appendChild(cloneSet('after'));
+      for (let i = 0; i < SIDE; i++) ul.insertBefore(cloneSet('before'), ul.firstChild);
     }
 
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      if (loop && stride > 0) {
-        if (ul.scrollLeft < stride * 0.5) ul.scrollLeft += stride;
-        else if (ul.scrollLeft > stride * 1.5) ul.scrollLeft -= stride;
-      }
-      const r = ul.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const half = r.width / 2 || 1;
-      for (const cell of Array.from(ul.children) as HTMLElement[]) {
-        const cr = cell.getBoundingClientRect();
-        const off = Math.min(1, Math.abs(cr.left + cr.width / 2 - cx) / half);
-        cell.style.setProperty('--off', off.toFixed(3));
+    const measure = () => {
+      const cells = Array.from(ul.children) as HTMLElement[];
+      centers = cells.map((c) => c.offsetLeft + c.offsetWidth / 2);
+      if (loop) {
+        stride = centers[n] - centers[0]; // width of one full set
+        ul.scrollLeft = stride * SIDE;     // start in the middle (real) set
       }
     };
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-    ul.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    // settle initial positions (after layout)
-    requestAnimationFrame(update);
-    setTimeout(update, 250);
+
+    // focus only — cheap, runs every scroll frame, no layout reads
+    let ticking = false;
+    const focus = () => {
+      ticking = false;
+      const vc = ul.scrollLeft + ul.clientWidth / 2;
+      const half = ul.clientWidth / 2 || 1;
+      const cells = ul.children;
+      for (let i = 0; i < cells.length; i++) {
+        const off = Math.min(1, Math.abs(centers[i] - vc) / half);
+        (cells[i] as HTMLElement).style.setProperty('--off', off.toFixed(3));
+      }
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(focus); } };
+
+    // re-centre only when motion has stopped (debounce + scrollend)
+    let settleTimer = 0;
+    const recenter = () => {
+      if (!loop || stride <= 0) return;
+      const lo = stride * (SIDE - 0.5), hi = stride * (SIDE + 0.5);
+      let x = ul.scrollLeft, moved = false;
+      while (x < lo) { x += stride; moved = true; }
+      while (x > hi) { x -= stride; moved = true; }
+      if (moved) ul.scrollLeft = x;
+    };
+    const settle = () => { clearTimeout(settleTimer); settleTimer = window.setTimeout(recenter, 140); };
+
+    ul.addEventListener('scroll', () => { onScroll(); settle(); }, { passive: true });
+    ul.addEventListener('scrollend', recenter);
+    window.addEventListener('resize', () => { measure(); focus(); }, { passive: true });
+
+    measure();
+    focus();
+    setTimeout(() => { measure(); focus(); }, 300); // re-settle after fonts/layout
   });
 </script>
