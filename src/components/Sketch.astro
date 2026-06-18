@@ -1,0 +1,58 @@
+---
+// Pencil-textured single-line doodle that "draws itself" bound to scroll
+// position (inks in as it enters the viewport, un-inks as you scroll back —
+// at the speed of the scroll, no timed dissolve). After it's drawn it settles
+// into a gentle idle float. The pencil wobble/grain comes from the #kr-pencil
+// SVG filter, which About renders once.
+//
+// These are placeholder doodles — swap in Kaylee's own line art anytime.
+const LIB: Record<string, { vb: string; d: string[] }> = {
+  star:   { vb: '0 0 100 100', d: ['M50 14 L60 40 L88 41 L66 59 L74 87 L50 71 L26 87 L34 59 L12 41 L40 40 Z'] },
+  heart:  { vb: '0 0 100 100', d: ['M50 80 C24 60 26 30 44 30 C50 30 50 38 50 42 C50 38 50 30 56 30 C74 30 76 60 50 80 Z'] },
+  wave:   { vb: '0 0 112 80',  d: ['M8 50 Q20 34 32 50 T56 50 T80 50 T104 50'] },
+  spark:  { vb: '0 0 100 100', d: ['M50 26 V74', 'M26 50 H74', 'M33 33 L67 67', 'M67 33 L33 67'] },
+  arrow:  { vb: '0 0 100 100', d: ['M12 46 C38 22 62 72 86 44', 'M86 44 L74 43', 'M86 44 L80 55'] },
+  pin:    { vb: '0 0 100 100', d: ['M50 86 C30 60 32 38 50 30 C68 38 70 60 50 86 Z', 'M50 50 m-7 0 a7 7 0 1 0 14 0 a7 7 0 1 0 -14 0'] },
+  clapper:{ vb: '0 0 100 100', d: ['M16 54 H82 V82 H16 Z', 'M16 54 L19 42 L86 50 L83 62 Z', 'M30 44 L26 56', 'M46 46 L42 58', 'M62 48 L58 60'] },
+  thread: { vb: '0 0 100 100', d: ['M22 34 L66 72', 'M22 34 q-6 -3 -3 -8 q4 -4 8 0', 'M66 72 q14 -5 8 -16 q-6 -9 5 -15'] },
+  quill:  { vb: '0 0 100 100', d: ['M28 80 C40 60 58 36 80 22', 'M52 46 q9 -3 13 -11', 'M44 56 q9 -3 13 -11', 'M60 38 q9 -3 13 -11', 'M28 80 L23 86 L32 84 Z'] },
+  squiggle:{ vb:'0 0 120 60',  d: ['M8 40 C20 10 34 10 44 34 C52 52 66 52 72 30 C78 10 96 12 112 38'] },
+};
+
+interface Props { name: string; class?: string; }
+const { name, class: className } = Astro.props as Props;
+const item = LIB[name] ?? LIB.star;
+---
+<svg class:list={['sketch', className]} viewBox={item.vb} fill="none" aria-hidden="true">
+  {item.d.map((d) => <path d={d} pathLength="1" />)}
+</svg>
+
+<style>
+  .sketch {
+    overflow: visible; display: block; width: 100%; height: auto;
+    animation: kr-float 7s ease-in-out infinite;
+  }
+  .sketch path {
+    fill: none; stroke: var(--accent); stroke-width: 2.3;
+    stroke-linecap: round; stroke-linejoin: round;
+    filter: url(#kr-pencil); opacity: .92;
+  }
+  /* draw bound to scroll position as the doodle enters view */
+  @supports (animation-timeline: view()) {
+    .sketch path {
+      stroke-dasharray: 1; stroke-dashoffset: 1;
+      animation: kr-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 42%;
+    }
+    @keyframes kr-draw { to { stroke-dashoffset: 0; } }
+  }
+  @keyframes kr-float {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50%      { transform: translateY(-7px) rotate(1.5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sketch { animation: none; }
+    .sketch path { stroke-dashoffset: 0; animation: none; }
+  }
+</style>
