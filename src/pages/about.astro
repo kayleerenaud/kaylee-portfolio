@@ -27,7 +27,8 @@ import { site, pageHref } from '../config/site';
       <div class="tc-copy">
         <h1 class="tc-name" data-reveal>{site.brand}</h1>
         <p class="tc-hook" data-reveal style="--d:100ms">{hook}</p>
-        <p class="tc-credit" data-reveal style="--d:180ms">Filmmaker · Costume Designer · Writer <span class="tc-loc-inline">/ {basedIn}</span></p>
+        <p class="tc-credit" data-reveal style="--d:180ms">Filmmaker · Costume Designer · Writer</p>
+        <p class="tc-loc" data-reveal style="--d:240ms">{basedIn}</p>
       </div>
       <div class="tc-photo" data-reveal style="--d:160ms">
         <Headshot frames={headshotFrames} alt="Portrait of Kaylee Renaud" />
@@ -104,7 +105,7 @@ import { site, pageHref } from '../config/site';
   .tc-hook { font-size: clamp(1.15rem, 2.6vw, 1.6rem); color: var(--ink); margin: 1.2rem 0 1rem; max-width: 30ch; }
   @media (max-width: 760px) { .tc-hook { margin-inline: auto; } }
   .tc-credit { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em; color: var(--ink-soft); margin: 0; }
-  .tc-loc-inline { color: var(--accent); white-space: nowrap; }
+  .tc-loc { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .1em; color: var(--accent); margin: .35rem 0 0; }
   .tc-photo { display: flex; justify-content: flex-end; }
 
   /* ---- 2 · blurb ---- */
