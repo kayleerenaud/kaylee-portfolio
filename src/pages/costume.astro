@@ -172,7 +172,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   /* oak tag — kraft paper with grain, torn edges, hand-tilted */
   .oaktag {
     position: relative; width: 100%; max-width: 230px; border: 0; cursor: pointer;
-    text-align: left; padding: 30px 18px 18px; margin-top: 18px;
+    text-align: left; padding: 40px 18px 18px; margin-top: 18px;
     display: flex; flex-direction: column; gap: .35rem;
     background: none; color: #3c3324; z-index: 1;
     transform-origin: 50% 6px;
@@ -241,6 +241,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     background-image: repeating-linear-gradient(90deg, transparent 0 3px, rgba(255,255,255,.012) 3px 4px),
                       repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.04) 3px 4px); }
   .panel.open { display: block; animation: panel-in .32s ease; }
+  .panel.open.instant { animation: none; } /* stepping between projects = no fade, no flash */
   @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .panel-inner { max-width: 1080px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 4rem) var(--gap) 5rem; }
   .panel-close {
@@ -322,27 +323,28 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   let openEl: HTMLElement | null = null;
   const lbUp = () => !!document.querySelector('#lightbox[open]');
 
-  function show(p: HTMLElement) {
-    if (openEl) openEl.classList.remove('open');
+  function show(p: HTMLElement, instant = false) {
+    if (openEl && openEl !== p) openEl.classList.remove('open', 'instant');
     openEl = p;
+    p.classList.toggle('instant', instant);   // skip the fade when stepping between projects
     p.classList.add('open');
     p.scrollTop = 0;
     document.body.style.overflow = 'hidden';
   }
   function close() {
     if (!openEl) return;
-    openEl.classList.remove('open');
+    openEl.classList.remove('open', 'instant');
     openEl = null;
     document.body.style.overflow = '';
   }
   function navigate(dir: number) {
     if (!openEl) return;
     const i = panels.indexOf(openEl);
-    show(panels[(i + dir + panels.length) % panels.length]);
+    show(panels[(i + dir + panels.length) % panels.length], true);
   }
 
   document.querySelectorAll<HTMLElement>('[data-open]').forEach((btn) =>
-    btn.addEventListener('click', () => { const p = document.getElementById(btn.dataset.open!); if (p) show(p); })
+    btn.addEventListener('click', () => { const p = document.getElementById(btn.dataset.open!); if (p) show(p, false); })
   );
   panels.forEach((p) => {
     p.querySelector('.panel-close')?.addEventListener('click', close);

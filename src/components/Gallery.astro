@@ -39,11 +39,11 @@ const isStrip = layout === 'strip';
     ))}
     {isStrip && coda && (
       <li class="cell cell-coda" data-reveal>
-        <div class="coming-soon">
+        <button class="coming-soon" type="button" data-coda aria-haspopup="dialog" aria-label={`Coming soon: ${coda.title}`}>
           <span class="cs-kicker">Coming Soon</span>
           <span class="cs-title">{coda.title}</span>
           <span class="cs-meta">{[coda.role, coda.date].filter(Boolean).join(' · ')}</span>
-        </div>
+        </button>
       </li>
     )}
   </ul>
@@ -55,6 +55,17 @@ const isStrip = layout === 'strip';
     </>
   )}
 </div>
+{isStrip && coda && (
+  <dialog class="coda-modal" id="coda-modal" aria-label={`Coming soon: ${coda.title}`}>
+    <button class="coda-close" aria-label="Close">×</button>
+    <div class="coda-card">
+      <span class="cs-kicker">Coming Soon</span>
+      <span class="coda-title">{coda.title}</span>
+      <span class="coda-meta">{[coda.role, coda.date].filter(Boolean).join(' · ')}</span>
+      <p class="coda-note">In production — more to be revealed.</p>
+    </div>
+  </dialog>
+)}
 
 <style>
   .gallery {
@@ -108,15 +119,30 @@ const isStrip = layout === 'strip';
   /* "Coming Soon" trailer slide at the end of the strip */
   .gallery.strip .cell-coda { display: flex; }
   .coming-soon {
+    position: relative; overflow: hidden; border: 0; cursor: pointer;
     width: 100%; aspect-ratio: 16 / 9; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: .5rem; text-align: center; padding: 1rem;
     background: radial-gradient(120% 100% at 50% 28%, color-mix(in srgb, var(--accent) 24%, #0c0a08), #0c0a08 72%);
     border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.6);
   }
+  .coming-soon > * { position: relative; z-index: 3; } /* keep text above the flecks/vignette */
   .cs-kicker { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .3em; font-size: .68rem;
     color: color-mix(in srgb, var(--accent) 72%, #fff); }
   .cs-title { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2.1rem); color: #f3efe9; line-height: 1.05; }
   .cs-meta { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; color: #b9b2a6; }
+
+  /* the click-through "coming soon" detail card */
+  .coda-modal { border: 0; padding: 0; background: transparent; max-width: 92vw; }
+  .coda-modal::backdrop { background: rgba(10,8,7,.9); backdrop-filter: blur(3px); }
+  .coda-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: .8rem;
+    padding: clamp(2.5rem, 7vw, 4.5rem) clamp(2rem, 6vw, 4rem);
+    background: radial-gradient(120% 100% at 50% 25%, color-mix(in srgb, var(--accent) 26%, #0c0a08), #0c0a08 75%);
+    border-radius: 6px; box-shadow: 0 24px 70px rgba(0,0,0,.6); text-align: center; }
+  .coda-title { font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.4rem); color: #f3efe9; line-height: 1.02; max-width: 18ch; }
+  .coda-meta { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .12em; color: color-mix(in srgb, var(--accent) 60%, #cfc9c0); }
+  .coda-note { color: #b9b2a6; margin: .4rem 0 0; }
+  .coda-close { position: absolute; top: .6rem; right: .7rem; width: 40px; height: 40px; font-size: 1.6rem; line-height: 1;
+    color: #fff; background: rgba(0,0,0,.4); border: 0; border-radius: 50%; cursor: pointer; }
 
   /* per-frame sheen + vignette. Shading scales with --off (0 = dead-centre in
      the strip, 1 = at the edges), set live by JS — so whichever frame is
@@ -124,7 +150,7 @@ const isStrip = layout === 'strip';
      Hovering a frame lifts the shade entirely, lighting it up to invite a click. */
   .gallery.strip .cell { --off: 1; }
   /* deeper vignette the further a frame is from centre */
-  .gallery.strip .thumb::after {
+  .gallery.strip .thumb::after, .gallery.strip .coming-soon::after {
     content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 1px;
     background:
       linear-gradient(180deg, rgba(255,255,255,.10), transparent 24%, transparent 60%, rgba(0,0,0,.52)),
@@ -133,7 +159,7 @@ const isStrip = layout === 'strip';
   }
   /* small dust flecks / scratches that twinkle over the non-centred frames
      (distinct from the fine grain; scaled by --off so the centred frame is clean) */
-  .gallery.strip .thumb::before {
+  .gallery.strip .thumb::before, .gallery.strip .coming-soon::before {
     content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: 1px;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='34' cy='44' r='1.1'/%3E%3Ccircle cx='168' cy='26' r='.8'/%3E%3Ccircle cx='96' cy='132' r='1.5'/%3E%3Ccircle cx='194' cy='176' r='.9'/%3E%3Ccircle cx='64' cy='192' r='.7'/%3E%3Crect x='150' y='60' width='1' height='8'/%3E%3C/g%3E%3Cg fill='%23000000'%3E%3Ccircle cx='128' cy='76' r='1.1'/%3E%3Ccircle cx='48' cy='120' r='.9'/%3E%3Ccircle cx='178' cy='104' r='.7'/%3E%3Crect x='28' y='162' width='1' height='7'/%3E%3Crect x='112' y='30' width='1' height='6'/%3E%3C/g%3E%3C/svg%3E");
@@ -424,4 +450,14 @@ const isStrip = layout === 'strip';
     focus();
     setTimeout(() => { measure(); focus(); }, 300); // re-settle after fonts/layout
   });
+
+  // "Coming Soon" slide → click opens a focused detail card
+  const codaModal = document.getElementById('coda-modal') as HTMLDialogElement | null;
+  if (codaModal) {
+    document.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('[data-coda]')) codaModal.showModal();
+    });
+    codaModal.querySelector('.coda-close')?.addEventListener('click', () => codaModal.close());
+    codaModal.addEventListener('click', (e) => { if (e.target === codaModal) codaModal.close(); });
+  }
 </script>
