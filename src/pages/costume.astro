@@ -5,6 +5,10 @@ import { projects, upcoming } from '../data/costume';
 import { site } from '../config/site';
 
 const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
+// a hand-drawn-ish twine knot; rotated/scaled slightly differently per tag so
+// no two look identical (organic)
+const knot = `<svg viewBox="0 0 30 38" fill="none" aria-hidden="true"><path d="M15 38 L15 25 C6 25 6 12 15 12 C24 12 23 23 12 19 M15 12 L15 2" stroke="#a8946a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const knotStyle = (i: number) => `--knot-rot:${((i * 41) % 9) - 4}deg; --knot-flip:${i % 2 ? -1 : 1};`;
 type Img = { src: string; label: string };
 function pieceImages(piece: { final?: string; rendering?: string; progress?: string[]; swatches?: string[] }): Img[] {
   const out: Img[] = [];
@@ -23,11 +27,11 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 
   <!-- THE RAIL of oak tags -->
   <section class="container rail-wrap">
-    <div class="rail" aria-hidden="true"></div>
     <ul class="rack">
       {projects.map((p, i) => (
         <li class="tag-li" style={`--i:${i}`}>
           <button class="oaktag" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
+            <span class="tag-knot" style={knotStyle(i)}><Fragment set:html={knot} /></span>
             <span class="tag-eyelet" aria-hidden="true"></span>
             <span class="tag-kicker stamp">{p.kind === 'paper' ? 'Paper Project' : 'Costume Design'}</span>
             <span class="tag-show hand">{p.show}</span>
@@ -40,6 +44,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
       ))}
       <li class="tag-li" style={`--i:${projects.length}`}>
         <div class="oaktag oaktag-upcoming">
+          <span class="tag-knot" style={knotStyle(projects.length)}><Fragment set:html={knot} /></span>
           <span class="tag-eyelet" aria-hidden="true"></span>
           <span class="tag-kicker stamp">Upcoming</span>
           <span class="tag-show hand">{upcoming.show}</span>
@@ -108,28 +113,36 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 
 <style>
   /* ---------- THE RAIL ---------- */
-  .rail-wrap { position: relative; padding-block: 1rem clamp(3rem, 7vw, 5rem); }
-  .rail { position: absolute; left: var(--gap); right: var(--gap); top: 26px; height: 3px;
-    background: linear-gradient(90deg, transparent, #6b5d45 8%, #6b5d45 92%, transparent); border-radius: 3px; }
+  .rail-wrap { position: relative; padding-block: 2.25rem clamp(3rem, 7vw, 5rem); }
   .rack { list-style: none; margin: 0; padding: 0; display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+    grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.5rem); }
+  @media (max-width: 760px) { .rack { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 430px) { .rack { grid-template-columns: 1fr; } }
 
   .tag-li { display: flex; justify-content: center; }
 
-  /* oak tag */
+  /* oak tag — kraft paper with a grain, hand-tilted */
   .oaktag {
     position: relative; width: 100%; max-width: 230px; border: 0; cursor: pointer;
-    text-align: left; padding: 30px 18px 16px; margin-top: 14px;
+    text-align: left; padding: 30px 18px 16px; margin-top: 18px;
     display: flex; flex-direction: column; gap: .35rem;
     background:
-      repeating-linear-gradient(125deg, transparent 0 6px, rgba(120,96,58,.04) 6px 7px),
-      linear-gradient(160deg, #d8c49b, #c9b083);
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.06'/%3E%3C/svg%3E"),
+      radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.5), transparent 60%),
+      linear-gradient(158deg, #d9c59c, #c6ad7f);
     color: #3c3324;
-    clip-path: polygon(22% 0, 78% 0, 100% 11%, 100% 100%, 0 100%, 0 11%);
-    box-shadow: 0 10px 22px rgba(0,0,0,.4);
-    transform-origin: 50% 8px; transform: rotate(calc((var(--i) % 3 - 1) * 1.6deg));
-    transition: transform .35s cubic-bezier(.3,1.4,.5,1), box-shadow .2s;
+    clip-path: polygon(20% 0, 80% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    box-shadow: 0 10px 22px rgba(0,0,0,.4), inset 0 0 22px rgba(120,92,48,.18);
+    transform-origin: 50% 6px;
+    transform: rotate(calc((var(--i) % 4 - 1.5) * 1.5deg));
+    transition: transform .4s cubic-bezier(.3,1.4,.5,1), box-shadow .2s;
   }
+  /* twine knot tied through the eyelet (varies per tag) */
+  .tag-knot {
+    position: absolute; top: -19px; left: 50%; width: 24px; height: 30px; z-index: 2;
+    transform: translateX(-50%) scaleX(var(--knot-flip, 1)) rotate(var(--knot-rot, 0deg));
+  }
+  .tag-knot :global(svg) { width: 100%; height: 100%; overflow: visible; }
   /* the hole + grommet near the top */
   .tag-eyelet {
     position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
@@ -184,19 +197,27 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   .ph-blurb { color: var(--ink-soft); margin: 1rem 0 0; max-width: 60ch; }
 
   .plates { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4.5rem); }
-  .plate { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-    grid-template-areas: 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem); align-items: start; }
+  .plate { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    grid-template-areas: 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem);
+    align-items: center; /* side mini-gallery centers vertically to the final */ }
   @media (max-width: 680px) { .plate { grid-template-columns: 1fr; grid-template-areas: 'main' 'side' 'cap'; } }
 
   .plate-main { grid-area: main; position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
     background: none; line-height: 0; }
   .plate-main img { width: 100%; border-radius: 3px; box-shadow: 0 14px 36px rgba(0,0,0,.5);
     border: 6px solid #efe9dc; }
-  .plate-side { grid-area: side; display: flex; flex-direction: column; gap: clamp(1rem, 2.2vw, 1.5rem); padding-top: .5rem; }
+  /* the renderings/progress: compact, never taller than the final, centered to it */
+  .plate-side { grid-area: side; display: flex; flex-direction: column; justify-content: center;
+    gap: clamp(.9rem, 2vw, 1.4rem); }
   .plate-thumb { position: relative; display: block; padding: 0; border: 0; cursor: zoom-in; background: none; line-height: 0;
     transform: rotate(var(--r, -2deg)); transition: transform .2s; }
   @media (hover: hover) { .plate-thumb:hover { transform: rotate(0) scale(1.02); } }
-  .plate-thumb img { width: 100%; border-radius: 2px; border: 5px solid #efe9dc; box-shadow: 0 8px 20px rgba(0,0,0,.45); }
+  .plate-thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 2px; border: 5px solid #efe9dc; box-shadow: 0 8px 20px rgba(0,0,0,.45); }
+  @media (max-width: 680px) {
+    .plate-side { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
+    .plate-thumb { width: calc(50% - .7rem); }
+  }
   /* a little "tape" at the top of each pinned thumb */
   .plate-thumb::before { content: ''; position: absolute; top: -9px; left: 50%; transform: translateX(-50%) rotate(-3deg);
     width: 46px; height: 16px; background: color-mix(in srgb, var(--accent) 30%, #d8d2c4); opacity: .55; border-radius: 1px; }

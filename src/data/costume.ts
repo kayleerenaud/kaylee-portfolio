@@ -59,14 +59,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 'dolls-house',
-    show: "A Doll's House", company: 'Placeholder Rep', director: 'Dir. Placeholder', role: 'Associate Costume Designer', year: '2023', kind: 'realized',
-    pieces: [
-      { caption: 'Nora — Act III. Lorem ipsum on period tailoring and trim.', final: fin('cos-dh-1f'), rendering: ren('cos-dh-1r') },
-      { caption: 'Torvald. Lorem ipsum — placeholder note.', final: fin('cos-dh-2f'), rendering: ren('cos-dh-2r'), progress: [pro('cos-dh-2p1')] },
-    ],
-  },
-  {
     id: 'hadestown',
     show: 'Hadestown', company: 'Placeholder Regional', director: 'Dir. Placeholder', role: 'Costume Designer', year: '2022', kind: 'realized',
     pieces: [
