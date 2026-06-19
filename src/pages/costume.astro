@@ -222,8 +222,13 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
       linear-gradient(74deg, transparent 42%, rgba(255,250,235,.18) 48%, transparent 54%),
       radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.5), transparent 60%),
       linear-gradient(158deg, #d9c59c, #c6ad7f);
-    clip-path: polygon(18% 0, 82% 0, 100% 12%, 100% 100%, 0 100%, 0 12%);
-    filter: url(#paper-torn) drop-shadow(0 7px 13px rgba(0,0,0,.5));
+    /* crisp hand-torn deckle edge (no fuzzy displacement filter) */
+    clip-path: polygon(
+      1% 5%, 14% 1%, 27% 4%, 41% 1%, 56% 4%, 71% 1%, 86% 4%, 99% 2%,
+      97% 18%, 100% 33%, 98% 49%, 100% 64%, 97% 80%, 99% 96%,
+      85% 99%, 70% 96%, 55% 100%, 40% 96%, 25% 99%, 11% 96%, 1% 99%,
+      3% 82%, 0% 66%, 2% 50%, 0% 34%, 3% 19%);
+    filter: drop-shadow(0 7px 12px rgba(0,0,0,.5));
   }
   .gt-knot { position: absolute; top: -15px; left: 28px; width: 18px; height: 24px; z-index: 1;
     transform: translateX(-50%) scaleX(var(--knot-flip, 1)) rotate(var(--knot-rot, 0deg)); }
@@ -235,7 +240,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   .gt-year { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em; font-size: .58rem; color: #5a4a2e; opacity: .85; }
   @media (hover: hover) {
     .proj-card:hover .garment-tag { transform: rotate(0deg) translateY(-2px); }
-    .proj-card:hover .garment-tag::before { filter: url(#paper-torn) drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+    .proj-card:hover .garment-tag::before { filter: drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
   }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
