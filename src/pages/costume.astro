@@ -8,7 +8,10 @@ const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
 // a hand-drawn-ish twine knot; rotated/scaled slightly differently per tag so
 // no two look identical (organic)
 const knot = `<svg viewBox="0 0 30 38" fill="none" aria-hidden="true"><path d="M15 38 L15 25 C6 25 6 12 15 12 C24 12 23 23 12 19 M15 12 L15 2" stroke="#a8946a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const knotStyle = (i: number) => `--knot-rot:${((i * 41) % 9) - 4}deg; --knot-flip:${i % 2 ? -1 : 1};`;
+const knotStyle = (i: number) => `--knot-rot:${((i * 41) % 9) - 4}deg; --knot-flip:${i % 2 ? -1 : 1}; --gtrot:${((i * 53) % 7) - 3}deg;`;
+// the card's cover image: a finished look if there is one, else the lead rendering
+const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
+  p.pieces.find((x) => x.final)?.final ?? p.pieces.find((x) => x.rendering)?.rendering ?? '';
 type Img = { src: string; label: string };
 function pieceImages(piece: { final?: string; rendering?: string; progress?: string[]; swatches?: string[] }): Img[] {
   const out: Img[] = [];
@@ -35,34 +38,31 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     <p data-reveal style="--d:80ms">Research, illustration, and construction. Each tag is a production — pull one off the rail to see the finished looks alongside the renderings and the work behind them.</p>
   </section>
 
-  <!-- THE RAIL of oak tags -->
+  <!-- Project cards: the costume image, with an oak garment-tag pinned on it -->
   <section class="container rail-wrap">
     <ul class="rack">
       {projects.map((p, i) => (
-        <li class="tag-li" style={`--i:${i}`}>
-          <button class="oaktag" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
-            <span class="tag-knot" style={knotStyle(i)}><Fragment set:html={knot} /></span>
-            <span class="tag-eyelet" aria-hidden="true"></span>
-            <span class="tag-kicker stamp">{p.kind === 'paper' ? 'Paper Project' : 'Costume Design'}</span>
-            <span class="tag-show hand">{p.show}</span>
-            <span class="tag-row"><span class="stamp">Co.</span><span class="hand">{p.company}</span></span>
-            <span class="tag-row"><span class="stamp">Dir.</span><span class="hand">{dirName(p.director)}</span></span>
-            <span class="tag-row"><span class="stamp">Role</span><span class="hand">{p.role}</span></span>
-            <span class="tag-year stamp">{p.year}</span>
+        <li class="proj-li" data-reveal style={`--i:${i}; --d:${(i % 3) * 70}ms`}>
+          <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
+            <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
+            <span class="garment-tag" style={knotStyle(i)}>
+              <span class="gt-knot"><Fragment set:html={knot} /></span>
+              <span class="gt-hole" aria-hidden="true"></span>
+              <span class="gt-show hand">{p.show}</span>
+              <span class="gt-year stamp">{p.kind === 'paper' ? `Paper · ${p.year}` : p.year}</span>
+            </span>
           </button>
         </li>
       ))}
-      <li class="tag-li" style={`--i:${projects.length}`}>
-        <button class="oaktag oaktag-upcoming" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
-          <span class="tag-knot" style={knotStyle(projects.length)}><Fragment set:html={knot} /></span>
-          <span class="tag-eyelet" aria-hidden="true"></span>
-          <span class="tag-kicker stamp">Upcoming</span>
-          <span class="tag-show hand">{upcoming.show}</span>
-          <span class="tag-row"><span class="stamp">Co.</span><span class="hand">{upcoming.company}</span></span>
-          <span class="tag-row"><span class="stamp">Dir.</span><span class="hand">{dirName(upcoming.director)}</span></span>
-          <span class="tag-row"><span class="stamp">Role</span><span class="hand">{upcoming.role}</span></span>
-          <span class="tag-year stamp">{upcoming.date}</span>
-          <span class="upcoming-stamp">Coming Soon</span>
+      <li class="proj-li" data-reveal style={`--i:${projects.length}; --d:${(projects.length % 3) * 70}ms`}>
+        <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
+          <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
+          <span class="garment-tag" style={knotStyle(projects.length)}>
+            <span class="gt-knot"><Fragment set:html={knot} /></span>
+            <span class="gt-hole" aria-hidden="true"></span>
+            <span class="gt-show hand">{upcoming.show}</span>
+            <span class="gt-year stamp">{upcoming.date}</span>
+          </span>
         </button>
       </li>
     </ul>
@@ -148,91 +148,58 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 </BaseLayout>
 
 <style>
-  /* ---------- THE RAIL ---------- */
-  .rail-wrap { position: relative; padding-block: 2.25rem clamp(3rem, 7vw, 5rem); }
-  .rack { list-style: none; margin: 0; padding: 0; display: grid; --cgap: clamp(1.5rem, 3vw, 2.5rem);
-    grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3.5vw, 3rem) var(--cgap); }
+  /* ---------- PROJECT CARDS (cover image + pinned garment tag) ---------- */
+  .rail-wrap { position: relative; padding-block: 1rem clamp(3rem, 7vw, 5rem); }
+  .rack { list-style: none; margin: 0; padding: 0; display: grid;
+    grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
   @media (max-width: 760px) { .rack { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 430px) { .rack { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .rack { grid-template-columns: 1fr; } }
+  .proj-li { list-style: none; }
 
-  .tag-li { position: relative; display: flex; justify-content: center; }
-  /* twine running between horizontally-adjacent tags (a gentle sag) */
-  .tag-li::after {
-    content: ''; position: absolute; z-index: 0; pointer-events: none; top: 3px; left: 50%;
-    width: calc(100% + var(--cgap)); height: 22px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='24' fill='none'%3E%3Cpath d='M2 6 Q50 23 98 6' stroke='%23a8946a' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
-  }
-  .tag-li:nth-child(3n)::after, .tag-li:last-child::after { display: none; }
-  @media (max-width: 760px) {
-    .tag-li:nth-child(3n)::after { display: block; }
-    .tag-li:nth-child(2n)::after, .tag-li:last-child::after { display: none; }
-  }
-  @media (max-width: 430px) { .tag-li::after { display: none; } }
+  .proj-card { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+  .proj-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .proj-img { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; box-shadow: 0 14px 30px rgba(0,0,0,.45); }
+  .proj-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+  @media (hover: hover) { .proj-card:hover .proj-img img { transform: scale(1.05); } }
+  /* empty tile for the Upcoming card */
+  .proj-img-empty { display: flex; align-items: center; justify-content: center;
+    background: repeating-linear-gradient(135deg, #16130f 0 12px, #1b1712 12px 24px); }
+  .empty-stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .22em; font-size: .78rem;
+    color: color-mix(in srgb, var(--accent) 62%, #cfc9c0); border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
+    border-radius: 5px; padding: 6px 12px; transform: rotate(-5deg); }
 
-  /* oak tag — kraft paper with grain, torn edges, hand-tilted */
-  .oaktag {
-    position: relative; width: 100%; max-width: 230px; border: 0; cursor: pointer;
-    text-align: left; padding: 40px 18px 18px; margin-top: 18px;
-    display: flex; flex-direction: column; gap: .35rem;
-    background: none; color: #3c3324; z-index: 1;
-    transform-origin: 50% 6px;
-    transform: rotate(calc((var(--i) % 4 - 1.5) * 1.5deg));
-    transition: transform .4s cubic-bezier(.3,1.4,.5,1);
-  }
-  /* the paper itself lives on ::before so the torn-edge filter doesn't blur the
-     text. The displacement filter raggeds the edges; drop-shadow follows the
-     torn alpha so the shadow matches. A couple of soft creases add wrinkle. */
-  .oaktag::before {
-    content: ''; position: absolute; inset: 0; z-index: 0;
+  /* the oak garment tag pinned on the image */
+  .garment-tag { position: absolute; top: 18px; left: 14px; z-index: 2; color: #3c3324;
+    width: min(62%, 162px); padding: 26px 14px 12px; text-align: left;
+    display: flex; flex-direction: column; gap: .15rem;
+    transform-origin: 28px 4px; transform: rotate(var(--gtrot, -4deg));
+    transition: transform .4s cubic-bezier(.3,1.4,.5,1); }
+  .garment-tag::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
     background:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E"),
-      linear-gradient(74deg, transparent 40%, rgba(255,250,235,.18) 46%, transparent 52%),
-      linear-gradient(-66deg, transparent 62%, rgba(110,86,46,.12) 68%, transparent 73%),
+      linear-gradient(74deg, transparent 42%, rgba(255,250,235,.18) 48%, transparent 54%),
       radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.5), transparent 60%),
       linear-gradient(158deg, #d9c59c, #c6ad7f);
-    clip-path: polygon(20% 0, 80% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
-    filter: url(#paper-torn) drop-shadow(0 9px 16px rgba(0,0,0,.45));
+    clip-path: polygon(18% 0, 82% 0, 100% 12%, 100% 100%, 0 100%, 0 12%);
+    filter: url(#paper-torn) drop-shadow(0 7px 13px rgba(0,0,0,.5));
   }
-  .oaktag > * { position: relative; z-index: 1; }
-  .oaktag .tag-knot { z-index: 3; }
-  /* twine knot tied through the eyelet (varies per tag) */
-  .tag-knot {
-    position: absolute; top: -19px; left: 50%; width: 24px; height: 30px; z-index: 2;
-    transform: translateX(-50%) scaleX(var(--knot-flip, 1)) rotate(var(--knot-rot, 0deg));
-  }
-  .tag-knot :global(svg) { width: 100%; height: 100%; overflow: visible; }
-  /* the hole + grommet near the top */
-  .tag-eyelet {
-    position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
-    width: 13px; height: 13px; border-radius: 50%;
-    background: var(--bg); box-shadow: 0 0 0 2px #b09a72, inset 0 1px 2px rgba(0,0,0,.6);
-  }
+  .gt-knot { position: absolute; top: -15px; left: 28px; width: 18px; height: 24px; z-index: 1;
+    transform: translateX(-50%) scaleX(var(--knot-flip, 1)) rotate(var(--knot-rot, 0deg)); }
+  .gt-knot :global(svg) { width: 100%; height: 100%; overflow: visible; }
+  .gt-hole { position: absolute; top: 9px; left: 28px; transform: translateX(-50%);
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #6e5c3e; box-shadow: 0 0 0 2px #b09a72, inset 0 1px 2px rgba(0,0,0,.7); }
+  .gt-show { font-family: var(--font-hand); font-weight: 600; font-size: 1.35rem; line-height: 1; color: #2f2a20; }
+  .gt-year { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em; font-size: .58rem; color: #5a4a2e; opacity: .85; }
   @media (hover: hover) {
-    .oaktag:hover { transform: rotate(0deg) translateY(-4px); animation: tag-sway .9s ease; }
-    .oaktag:hover::before { filter: url(#paper-torn) drop-shadow(0 16px 24px rgba(0,0,0,.55)); }
+    .proj-card:hover .garment-tag { transform: rotate(0deg) translateY(-2px); }
+    .proj-card:hover .garment-tag::before { filter: url(#paper-torn) drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
   }
-  .oaktag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  @keyframes tag-sway { 0%{transform:rotate(-3deg) translateY(-4px)} 40%{transform:rotate(2deg) translateY(-4px)} 70%{transform:rotate(-1deg) translateY(-4px)} 100%{transform:rotate(0) translateY(-4px)} }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
     font-size: .62rem; color: #5a4a2e; opacity: .85; }
   .hand { font-family: var(--font-hand); font-weight: 600; color: #363024; line-height: 1; }
-
-  .tag-kicker { display: block; }
-  .tag-show { font-size: 1.7rem; line-height: .95; margin: .1rem 0 .3rem; }
-  .tag-row { display: flex; align-items: baseline; gap: .4rem; }
-  .tag-row .hand { font-size: 1.15rem; }
-  .tag-year { margin-top: .4rem; align-self: flex-end; font-size: .68rem; }
-
-  .oaktag-upcoming::before { background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E"),
-      radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.45), transparent 60%),
-      linear-gradient(158deg, #cdb88f, #bfa676); }
-  .upcoming-stamp {
-    position: absolute; bottom: 30px; right: -6px; transform: rotate(-9deg);
-    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem;
-    color: #8a3b3b; border: 2px solid #8a3b3b; border-radius: 4px; padding: 2px 7px; opacity: .8;
-  }
   .rack-more { margin-top: clamp(2rem, 4vw, 3rem); text-align: center; color: var(--ink-soft); }
 
   /* ---------- PLATE OVERLAY ---------- */
