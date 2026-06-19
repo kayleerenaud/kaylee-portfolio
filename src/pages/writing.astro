@@ -1,14 +1,85 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Gallery from '../components/Gallery.astro';
-import { writing } from '../data/galleries';
+import Sketch from '../components/Sketch.astro';
+import { pieces } from '../data/writing';
 ---
-<BaseLayout current="writing" title="Writing" description="Writing by Kaylee Renaud.">
+<BaseLayout current="writing" title="Writing" description="Writing by Kaylee Renaud — family-centered narratives for stage and screen.">
+  <!-- pencil filter for the scroll-drawn story doodles -->
+  <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <filter id="kr-pencil" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain" />
+        <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
+        <feComposite in="wob" in2="grainA" operator="in" />
+      </filter>
+    </defs>
+  </svg>
+
   <section class="container page-intro">
     <h1 data-reveal>Writing</h1>
-    <p data-reveal style="--d:80ms">Each cover opens to its piece. A title and excerpt preview in the corner — tap to enlarge and read it in full.</p>
+    <p data-reveal style="--d:80ms">Family-centered narratives for stage and screen — and the page. A logline and a taste of each, straight from the notebook.</p>
   </section>
-  <section class="container">
-    <Gallery items={writing} columns={3} />
+
+  <section class="container leaves">
+    {pieces.map((p, i) => (
+      <article class="leaf" data-reveal style={`--i:${i}`}>
+        <span class="leaf-holes" aria-hidden="true"></span>
+        <span class="leaf-tab">{p.tag}</span>
+        <div class="leaf-body">
+          <h2 class="leaf-title">{p.title}</h2>
+          <p class="leaf-logline">{p.logline}</p>
+          <p class="leaf-teaser">{p.teaser}</p>
+        </div>
+        <span class="leaf-doodle"><Sketch name={p.sketch} /></span>
+      </article>
+    ))}
   </section>
 </BaseLayout>
+
+<style>
+  .kr-defs { position: absolute; }
+  .leaves { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+
+  /* a notebook leaf: cream ruled paper, red margin, punched holes */
+  .leaf {
+    position: relative; color: #2a2620; border-radius: 4px; overflow: hidden;
+    padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 4vw, 2.75rem) 78px;
+    background-color: #f4edd8;
+    background-image:
+      linear-gradient(90deg, transparent 54px, rgba(192,86,74,.32) 54px 56px, transparent 56px),
+      repeating-linear-gradient(#f4edd8 0 31px, rgba(70,108,150,.16) 31px 32px);
+    background-size: 100% 100%, 100% 32px;
+    background-position: 0 0, 0 18px;
+    box-shadow: 0 16px 36px rgba(0,0,0,.45);
+    transform: rotate(calc((var(--i) - 1.5) * 0.45deg));
+  }
+  /* binder holes down the left margin (the dark page shows through) */
+  .leaf-holes {
+    position: absolute; left: 22px; top: 0; bottom: 0; width: 16px;
+    background-image: radial-gradient(circle at center, var(--bg) 0 6px, transparent 7px);
+    background-size: 16px 58px; background-repeat: repeat-y; background-position: center 34px;
+  }
+  /* format tab sticking out the top */
+  .leaf-tab {
+    position: absolute; top: 0; right: clamp(1.5rem, 6vw, 3.5rem); z-index: 2;
+    background: var(--accent); color: #1b1610;
+    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .68rem;
+    padding: 7px 13px 9px; border-radius: 0 0 4px 4px; box-shadow: 0 3px 6px rgba(0,0,0,.25);
+  }
+
+  .leaf-body { position: relative; z-index: 1; max-width: 60ch; }
+  .leaf-title { font-family: var(--font-hand); font-weight: 700; line-height: 1; color: #241f18;
+    font-size: clamp(1.9rem, 5vw, 2.9rem); margin: 0 0 .35rem; }
+  .leaf-logline { font-style: italic; font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: #4a4232; margin: 0 0 1rem; max-width: 50ch; }
+  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: #3a352a; max-width: 56ch; margin: 0; }
+
+  /* the scroll-drawn story doodle, in graphite on the cream page */
+  .leaf-doodle {
+    position: absolute; top: clamp(1.5rem, 4vw, 2.5rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 0;
+    width: clamp(78px, 12vw, 116px); --sketch-ink: #5b5446; pointer-events: none;
+  }
+  @media (max-width: 720px) { .leaf-doodle { width: 70px; top: auto; bottom: 1.25rem; opacity: .9; } }
+  @media (max-width: 480px) { .leaf-doodle { display: none; } }
+</style>
