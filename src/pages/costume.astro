@@ -15,6 +15,21 @@ const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
 // push-pin colours (one per card)
 const PINS = ['#c0476a', '#3f6fa0', '#d6a93e', '#5a8a5a', '#8a5a8f', '#c97b3f'];
 const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --pin:${PINS[i % PINS.length]};`;
+
+// a unique, slightly random hand-torn edge per tag (so no two look alike)
+function torn(seed: number): string {
+  const h = (k: number) => { const x = Math.sin(seed * 91.7 + k * 41.3) * 9999; return x - Math.floor(x); };
+  const pts: string[] = [];
+  [1, 14, 27, 41, 56, 71, 86, 99].forEach((x, k) => pts.push(`${x}% ${(1 + h(k) * 4).toFixed(1)}%`));
+  [18, 33, 49, 64, 80, 96].forEach((y, k) => pts.push(`${(100 - h(k + 10) * 3.5).toFixed(1)}% ${y}%`));
+  [85, 70, 55, 40, 25, 11, 1].forEach((x, k) => pts.push(`${x}% ${(100 - h(k + 20) * 4).toFixed(1)}%`));
+  [82, 66, 50, 34, 19].forEach((y, k) => pts.push(`${(h(k + 30) * 3.5).toFixed(1)}% ${y}%`));
+  return `polygon(${pts.join(', ')})`;
+}
+const tagStyle = (i: number) => `${knotStyle(i)} --clip:${torn(i)};`;
+
+// drawn ruler tick marks along the top of the frame
+const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
 type Img = { src: string; label: string };
 function pieceImages(piece: { final?: string; rendering?: string; progress?: string[]; swatches?: string[] }): Img[] {
   const out: Img[] = [];
@@ -26,12 +41,16 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 }
 ---
 <BaseLayout current="costume" title="Costume" description="Costume design by Kaylee Renaud — research, illustration, and construction.">
-  <!-- roughens the oak-tag paper edges into a torn / used look -->
+  <!-- pencil filter: roughens + grains any stroke into a hand-drawn line
+       (same language as the About-page doodles) -->
   <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
-      <filter id="paper-torn" x="-45%" y="-40%" width="190%" height="185%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.013 0.022" numOctaves="3" seed="11" result="n" />
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G" />
+      <filter id="kr-pencil" x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain" />
+        <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
+        <feComposite in="wob" in2="grainA" operator="in" />
       </filter>
     </defs>
   </svg>
@@ -44,14 +63,18 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   <!-- Cork board: costume photos tacked on, each with an oak garment-tag -->
   <section class="container rail-wrap">
     <div class="corkboard">
-      <div class="tape-measure" aria-hidden="true"></div>
+      <span class="draw-frame" aria-hidden="true"></span>
+      <svg class="draw-ruler" viewBox="0 0 600 22" preserveAspectRatio="none" aria-hidden="true" fill="none">
+        <line x1="2" y1="3" x2="598" y2="3" />
+        {ticks.map((t) => <line x1={t.x} y1="3" x2={t.x} y2={t.long ? 15 : 9} />)}
+      </svg>
       <ul class="rack">
         {projects.map((p, i) => (
           <li class="proj-li" data-reveal style={liStyle(i)}>
             <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
               <span class="pin" aria-hidden="true"></span>
               <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
-              <span class="garment-tag" style={knotStyle(i)}>
+              <span class="garment-tag" style={tagStyle(i)}>
                 <span class="gt-knot"><Fragment set:html={knot} /></span>
                 <span class="gt-hole" aria-hidden="true"></span>
                 <span class="gt-show hand">{p.show}</span>
@@ -64,7 +87,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
           <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
             <span class="pin" aria-hidden="true"></span>
             <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
-            <span class="garment-tag" style={knotStyle(projects.length)}>
+            <span class="garment-tag" style={tagStyle(projects.length)}>
               <span class="gt-knot"><Fragment set:html={knot} /></span>
               <span class="gt-hole" aria-hidden="true"></span>
               <span class="gt-show hand">{upcoming.show}</span>
@@ -161,27 +184,21 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 
   .corkboard {
     position: relative; border-radius: 4px;
-    padding: clamp(3.25rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem) clamp(2rem, 5vw, 3.25rem);
-    background-color: #bd8a52;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)' opacity='0.24'/%3E%3C/svg%3E");
-    background-size: 220px 220px;
-    border: 15px solid #5e3f22;
-    border-image: linear-gradient(135deg, #7c5631, #422b13 38%, #6e4c2a 60%, #3a2610) 1;
-    box-shadow: inset 0 0 0 2px rgba(0,0,0,.3), inset 0 0 75px rgba(66,40,14,.55), 0 22px 50px rgba(0,0,0,.55);
+    padding: clamp(3.5rem, 6vw, 5rem) clamp(2rem, 5vw, 3.5rem) clamp(2.5rem, 5vw, 3.5rem);
   }
-  /* a sewing tape-measure draped along the top (the "ruler edge") */
-  .tape-measure {
-    position: absolute; top: 14px; left: 22px; right: 22px; height: 26px; z-index: 1;
-    background-color: #ecdfbe; border-radius: 2px; transform: rotate(-0.7deg);
-    box-shadow: 0 3px 8px rgba(0,0,0,.45), inset 0 0 0 1px rgba(120,96,52,.35);
-    background-image:
-      repeating-linear-gradient(90deg, #2f2616 0 1.4px, transparent 1.4px 33px),
-      repeating-linear-gradient(90deg, #6a5836 0 1px, transparent 1px 6.6px);
-    background-size: 100% 100%, 100% 58%;
-    background-repeat: repeat-x, repeat-x;
-    background-position: top left, top left;
+  /* hand-drawn pencil frame (roughened by #kr-pencil, same as About doodles) */
+  .draw-frame {
+    position: absolute; inset: 8px; pointer-events: none; z-index: 0;
+    border: 2.5px solid var(--sketch-ink, #ece6d8); border-radius: 6px;
+    filter: url(#kr-pencil); opacity: .82;
   }
-  @media (max-width: 480px) { .tape-measure { display: none; } }
+  /* drawn ruler along the top inside edge */
+  .draw-ruler {
+    position: absolute; top: 18px; left: 28px; right: 28px; height: 22px; z-index: 0; pointer-events: none;
+    color: var(--sketch-ink, #ece6d8); opacity: .82; filter: url(#kr-pencil); overflow: visible;
+  }
+  .draw-ruler line { stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  @media (max-width: 480px) { .draw-ruler { display: none; } }
 
   .rack { list-style: none; margin: 0; padding: 0; display: grid; position: relative; z-index: 1;
     grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.5rem); }
@@ -197,7 +214,9 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   .pin::after { content: ''; position: absolute; top: 64%; left: 50%; transform: translateX(-50%);
     width: 2px; height: 6px; background: linear-gradient(#bbb, #777); border-radius: 0 0 1px 1px; }
 
-  .proj-card { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+  .proj-card { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer;
+    transform: rotate(calc((var(--i) % 5 - 2) * 1.1deg)); transition: transform .3s ease; }
+  @media (hover: hover) { .proj-card:hover { transform: rotate(0deg); } }
   .proj-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .proj-img { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; box-shadow: 0 14px 30px rgba(0,0,0,.45); }
   .proj-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
@@ -222,12 +241,8 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
       linear-gradient(74deg, transparent 42%, rgba(255,250,235,.18) 48%, transparent 54%),
       radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.5), transparent 60%),
       linear-gradient(158deg, #d9c59c, #c6ad7f);
-    /* crisp hand-torn deckle edge (no fuzzy displacement filter) */
-    clip-path: polygon(
-      1% 5%, 14% 1%, 27% 4%, 41% 1%, 56% 4%, 71% 1%, 86% 4%, 99% 2%,
-      97% 18%, 100% 33%, 98% 49%, 100% 64%, 97% 80%, 99% 96%,
-      85% 99%, 70% 96%, 55% 100%, 40% 96%, 25% 99%, 11% 96%, 1% 99%,
-      3% 82%, 0% 66%, 2% 50%, 0% 34%, 3% 19%);
+    /* crisp hand-torn deckle edge, unique per tag (set inline as --clip) */
+    clip-path: var(--clip, polygon(1% 4%, 50% 1%, 99% 3%, 98% 50%, 99% 97%, 50% 99%, 1% 98%, 2% 50%));
     filter: drop-shadow(0 7px 12px rgba(0,0,0,.5));
   }
   .gt-knot { position: absolute; top: -15px; left: 28px; width: 18px; height: 24px; z-index: 1;
