@@ -31,6 +31,12 @@
   --radius: 4px;
 }
 
+/* a little more breathing room on phones so text never touches the edges
+   (--gap drives the container side-padding everywhere, so this lifts it sitewide) */
+@media (max-width: 640px) {
+  :root { --gap: 1.5rem; }
+}
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
