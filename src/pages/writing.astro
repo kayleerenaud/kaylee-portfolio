@@ -19,32 +19,57 @@ import { pieces } from '../data/writing';
 
   <section class="container page-intro">
     <h1 data-reveal>Writing</h1>
-    <p data-reveal style="--d:80ms">Family-centered narratives for stage and screen — and the page. A logline and a taste of each, straight from the notebook.</p>
+    <p data-reveal style="--d:80ms">Family-centered narratives for stage and screen — and the page. A logline and a taste of each; open one for the full synopsis.</p>
   </section>
 
   <section class="container leaves">
     {pieces.map((p, i) => (
-      <article class="leaf" data-reveal style={`--i:${i}`}>
+      <article
+        class="leaf" data-reveal data-open={`w-${i}`} role="button" tabindex="0"
+        aria-haspopup="dialog" aria-label={`Open ${p.title}`} style={`--i:${i}`}
+      >
         <span class="leaf-holes" aria-hidden="true"></span>
         <span class="leaf-tab">{p.tag}</span>
         <div class="leaf-body">
           <h2 class="leaf-title">{p.title}</h2>
           <p class="leaf-logline">{p.logline}</p>
           <p class="leaf-teaser">{p.teaser}</p>
+          <span class="leaf-more">Read synopsis →</span>
         </div>
         <span class="leaf-doodle"><Sketch name={p.sketch} /></span>
       </article>
     ))}
   </section>
+
+  <!-- SYNOPSIS OVERLAYS -->
+  {pieces.map((p, i) => (
+    <div class="panel" id={`w-${i}`} role="dialog" aria-modal="true" aria-label={p.title}>
+      <div class="panel-inner">
+        <button class="panel-close" aria-label="Close">×</button>
+        <button class="panel-prev" aria-label="Previous piece">‹</button>
+        <button class="panel-next" aria-label="Next piece">›</button>
+        <div class="w-grid">
+          <div class="w-cover"><span class="cover-sketch"><Sketch name={p.sketch} /></span></div>
+          <div class="w-text">
+            <p class="w-tag">{p.tag}</p>
+            <h2 class="w-title">{p.title}</h2>
+            <p class="w-logline">{p.logline}</p>
+            {p.synopsis.split('\n\n').map((para) => <p class="w-para">{para}</p>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
 </BaseLayout>
 
 <style>
   .kr-defs { position: absolute; }
   .leaves { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
 
-  /* a notebook leaf: cream ruled paper, red margin, punched holes */
+  /* a notebook leaf: cream ruled paper, red margin, punched holes (no overflow:hidden —
+     it would trap the doodle's scroll-driven draw) */
   .leaf {
-    position: relative; color: #2a2620; border-radius: 4px; overflow: hidden;
+    position: relative; color: #2a2620; border-radius: 4px; cursor: pointer;
     padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 4vw, 2.75rem) 78px;
     background-color: #f4edd8;
     background-image:
@@ -54,32 +79,103 @@ import { pieces } from '../data/writing';
     background-position: 0 0, 0 18px;
     box-shadow: 0 16px 36px rgba(0,0,0,.45);
     transform: rotate(calc((var(--i) - 1.5) * 0.45deg));
+    transition: transform .25s ease, box-shadow .25s ease;
   }
-  /* binder holes down the left margin (the dark page shows through) */
+  @media (hover: hover) { .leaf:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 0 22px 44px rgba(0,0,0,.5); } }
+  .leaf:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   .leaf-holes {
     position: absolute; left: 22px; top: 0; bottom: 0; width: 16px;
     background-image: radial-gradient(circle at center, var(--bg) 0 6px, transparent 7px);
     background-size: 16px 58px; background-repeat: repeat-y; background-position: center 34px;
   }
-  /* format tab sticking out the top */
   .leaf-tab {
     position: absolute; top: 0; right: clamp(1.5rem, 6vw, 3.5rem); z-index: 2;
     background: var(--accent); color: #1b1610;
     font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .68rem;
     padding: 7px 13px 9px; border-radius: 0 0 4px 4px; box-shadow: 0 3px 6px rgba(0,0,0,.25);
   }
-
   .leaf-body { position: relative; z-index: 1; max-width: 60ch; }
   .leaf-title { font-family: var(--font-hand); font-weight: 700; line-height: 1; color: #241f18;
-    font-size: clamp(1.9rem, 5vw, 2.9rem); margin: 0 0 .35rem; }
+    font-size: clamp(2rem, 5.5vw, 3.1rem); margin: 0 0 .35rem; }
   .leaf-logline { font-style: italic; font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: #4a4232; margin: 0 0 1rem; max-width: 50ch; }
-  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: #3a352a; max-width: 56ch; margin: 0; }
+  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: #3a352a; max-width: 56ch; margin: 0 0 1rem; }
+  .leaf-more { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 55%, #6b5f3a); }
 
-  /* the scroll-drawn story doodle, in graphite on the cream page */
   .leaf-doodle {
     position: absolute; top: clamp(1.5rem, 4vw, 2.5rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 0;
     width: clamp(78px, 12vw, 116px); --sketch-ink: #5b5446; pointer-events: none;
   }
   @media (max-width: 720px) { .leaf-doodle { width: 70px; top: auto; bottom: 1.25rem; opacity: .9; } }
   @media (max-width: 480px) { .leaf-doodle { display: none; } }
+
+  /* ---------- SYNOPSIS OVERLAY ---------- */
+  .panel { position: fixed; inset: 0; z-index: 95; display: none; overflow-y: auto;
+    background: color-mix(in srgb, var(--bg) 92%, #000); }
+  .panel.open { display: block; animation: panel-in .32s ease; }
+  .panel.open.instant { animation: none; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .panel-inner { max-width: 1040px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 4rem) var(--gap) 5rem; }
+  .panel-close, .panel-prev, .panel-next {
+    position: fixed; z-index: 2; color: var(--ink); background: color-mix(in srgb, var(--accent) 20%, #1c1916);
+    border: 1px solid var(--line); border-radius: 50%; cursor: pointer; line-height: 1; transition: background .15s, transform .15s; }
+  @media (hover: hover) {
+    .panel-close:hover, .panel-prev:hover, .panel-next:hover { background: var(--accent); color: #14110f; }
+  }
+  .panel-close { top: 1rem; right: 1.1rem; width: 46px; height: 46px; font-size: 1.8rem; }
+  .panel-prev, .panel-next { top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 2rem; }
+  .panel-prev { left: 1rem; } .panel-next { right: 1rem; }
+  @media (hover: hover) { .panel-prev:hover, .panel-next:hover { transform: translateY(-50%) scale(1.06); } }
+  @media (max-width: 560px) { .panel-prev { left: .4rem; } .panel-next { right: .4rem; } }
+
+  .w-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+  @media (max-width: 760px) { .w-grid { grid-template-columns: 1fr; } }
+  /* the large "cover drawing" — draws itself when the overlay opens */
+  .w-cover { position: sticky; top: clamp(2rem, 6vw, 4rem); display: flex; justify-content: center; }
+  @media (max-width: 760px) { .w-cover { position: static; } }
+  .cover-sketch { display: block; width: min(80%, 280px); --sketch-ink: var(--accent); }
+  .w-tag { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .2em; font-size: .75rem; color: var(--accent); margin: 0 0 .4rem; }
+  .w-title { font-family: var(--font-hand); font-weight: 700; font-size: clamp(2.4rem, 7vw, 4rem); line-height: .95; margin: 0 0 .6rem; color: var(--ink); }
+  .w-logline { font-style: italic; font-size: 1.2rem; color: var(--ink-soft); margin: 0 0 1.5rem; }
+  .w-para { font-size: 1.05rem; line-height: 1.75; color: var(--ink-soft); margin: 0 0 1.1rem; max-width: 62ch; }
+
+  /* cover doodle: detach from scroll, draw once each time the overlay opens */
+  .cover-sketch :global(.sketch) { animation: none; }
+  .cover-sketch :global(.sketch path) { animation: none !important; animation-timeline: auto !important; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .panel.open .cover-sketch :global(.sketch path) { animation: w-cover-draw 1.5s ease both !important; }
+  @keyframes w-cover-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .cover-sketch :global(.sketch path), .panel.open .cover-sketch :global(.sketch path) { animation: none !important; stroke-dashoffset: 0 !important; }
+  }
 </style>
+
+<script>
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('.panel'));
+  let openEl: HTMLElement | null = null;
+  function show(p: HTMLElement, instant = false) {
+    if (openEl && openEl !== p) openEl.classList.remove('open', 'instant');
+    openEl = p; p.classList.toggle('instant', instant); p.classList.add('open');
+    p.scrollTop = 0; document.body.style.overflow = 'hidden';
+  }
+  function close() { if (!openEl) return; openEl.classList.remove('open', 'instant'); openEl = null; document.body.style.overflow = ''; }
+  function navigate(dir: number) { if (!openEl) return; const i = panels.indexOf(openEl); show(panels[(i + dir + panels.length) % panels.length], true); }
+
+  document.querySelectorAll<HTMLElement>('[data-open]').forEach((el) => {
+    el.addEventListener('click', () => { const p = document.getElementById(el.dataset.open!); if (p) show(p, false); });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const p = document.getElementById(el.dataset.open!); if (p) show(p, false); }
+    });
+  });
+  panels.forEach((p) => {
+    p.querySelector('.panel-close')?.addEventListener('click', close);
+    p.querySelector('.panel-prev')?.addEventListener('click', () => navigate(-1));
+    p.querySelector('.panel-next')?.addEventListener('click', () => navigate(1));
+    p.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('.panel-inner')) close(); });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!openEl) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') navigate(-1);
+    else if (e.key === 'ArrowRight') navigate(1);
+  });
+</script>
