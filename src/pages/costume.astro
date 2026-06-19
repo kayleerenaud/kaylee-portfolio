@@ -160,9 +160,12 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     border: 2.5px solid var(--sketch-ink, #ece6d8); border-radius: 6px;
     filter: url(#kr-rough); opacity: .82;
   }
-  /* drawn ruler — runs the full width of the board (frame edge to frame edge) */
+  /* drawn ruler — runs the full width of the board (frame edge to frame edge).
+     The SVG is a replaced element, so it needs an explicit width to stretch
+     (left+right alone fall back to its intrinsic size). */
   .draw-ruler {
-    position: absolute; top: 16px; left: 8px; right: 8px; height: 22px; z-index: 0; pointer-events: none;
+    position: absolute; top: 16px; left: 8px; width: calc(100% - 16px); height: 22px;
+    display: block; z-index: 0; pointer-events: none;
     color: var(--sketch-ink, #ece6d8); opacity: .82; filter: url(#kr-rough); overflow: visible;
   }
   .draw-ruler line { stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; vector-effect: non-scaling-stroke; }
@@ -188,20 +191,29 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     color: color-mix(in srgb, var(--accent) 62%, #cfc9c0); border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
     border-radius: 5px; padding: 6px 12px; transform: rotate(-5deg); }
 
-  /* a piece of low-opacity tape slapped across the top-left corner, outlined in
-     pencil (#kr-rough) to match the drawn frame, with the handwritten title */
+  /* clear, crinkled cellophane tape slapped across the top-left corner */
   .tape-label {
     position: absolute; top: 6%; left: 5%; z-index: 2;
     transform-origin: left center; transform: rotate(var(--taperot, -12deg));
-    max-width: 80%; padding: .5rem 1.1rem; text-align: center;
-    background: var(--tape, rgba(238, 231, 215, 0.5));
-    box-shadow: 0 3px 8px rgba(0,0,0,.25);
+    max-width: 80%; padding: .55rem 1.2rem; text-align: center;
+    background-color: rgba(236, 238, 235, 0.13);
+    -webkit-backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
+    backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
+    /* glossy highlights + fine crinkles */
+    background-image:
+      linear-gradient(112deg, transparent 22%, rgba(255,255,255,.30) 30%, transparent 38%),
+      linear-gradient(68deg, transparent 58%, rgba(255,255,255,.18) 65%, transparent 72%),
+      repeating-linear-gradient(116deg, rgba(255,255,255,0) 0 7px, rgba(255,255,255,.06) 8px 9px, rgba(255,255,255,0) 10px 16px);
+    box-shadow: 0 1px 3px rgba(0,0,0,.28);
+    /* torn / pressed tape ends */
+    clip-path: polygon(2% 10%, 7% 0, 95% 6%, 100% 0, 98% 92%, 94% 100%, 6% 96%, 0 100%);
   }
   .tape-label::before { content: ''; position: absolute; inset: 0; pointer-events: none;
-    border: 1.7px solid var(--sketch-ink, #ece6d8); border-radius: 2px; filter: url(#kr-rough); opacity: .9; }
-  .tl-name { position: relative; font-family: var(--font-hand); font-weight: 600;
-    font-size: clamp(1.15rem, 2.7vw, 1.55rem); line-height: 1.05; color: #2a2620;
-    text-shadow: 0 1px 1px rgba(255,255,255,.3); }
+    box-shadow: inset 0 0 9px rgba(0,0,0,.12);
+    background: linear-gradient(90deg, rgba(0,0,0,.07), transparent 12%, transparent 88%, rgba(0,0,0,.07)); }
+  .tl-name { position: relative; font-family: var(--font-hand); font-weight: 700;
+    font-size: clamp(1.15rem, 2.7vw, 1.55rem); line-height: 1.05; color: #201c17;
+    text-shadow: 0 0 3px rgba(255,255,255,.6), 0 1px 0 rgba(255,255,255,.4); }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
     font-size: .62rem; color: #5a4a2e; opacity: .85; }
