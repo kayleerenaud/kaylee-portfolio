@@ -8,7 +8,7 @@ const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
 // the card's cover image: a finished look if there is one, else the lead rendering
 const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
   p.pieces.find((x) => x.final)?.final ?? p.pieces.find((x) => x.rendering)?.rendering ?? '';
-const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --taperot:${((i * 53) % 7) - 3}deg;`;
+const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --taperot:${-12 + (((i * 53) % 7) - 3)}deg;`;
 
 // drawn ruler tick marks along the top of the frame
 const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
@@ -27,12 +27,10 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
        (same language as the About-page doodles) -->
   <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
-      <filter id="kr-pencil" x="-15%" y="-15%" width="130%" height="130%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="warp" />
-        <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain" />
-        <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
-        <feComposite in="wob" in2="grainA" operator="in" />
+      <!-- wobble only (no grain holes) so long structural lines stay continuous -->
+      <filter id="kr-rough" x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="w" />
+        <feDisplacementMap in="SourceGraphic" in2="w" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
   </svg>
@@ -47,7 +45,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     <div class="corkboard">
       <span class="draw-frame" aria-hidden="true"></span>
       <svg class="draw-ruler" viewBox="0 0 600 22" preserveAspectRatio="none" aria-hidden="true" fill="none">
-        <line x1="2" y1="3" x2="598" y2="3" />
+        <line x1="0" y1="3" x2="600" y2="3" />
         {ticks.map((t) => <line x1={t.x} y1="3" x2={t.x} y2={t.long ? 15 : 9} />)}
       </svg>
       <ul class="rack">
@@ -160,14 +158,14 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   .draw-frame {
     position: absolute; inset: 8px; pointer-events: none; z-index: 0;
     border: 2.5px solid var(--sketch-ink, #ece6d8); border-radius: 6px;
-    filter: url(#kr-pencil); opacity: .82;
+    filter: url(#kr-rough); opacity: .82;
   }
   /* drawn ruler — runs the full width of the board (frame edge to frame edge) */
   .draw-ruler {
     position: absolute; top: 16px; left: 8px; right: 8px; height: 22px; z-index: 0; pointer-events: none;
-    color: var(--sketch-ink, #ece6d8); opacity: .82; filter: url(#kr-pencil); overflow: visible;
+    color: var(--sketch-ink, #ece6d8); opacity: .82; filter: url(#kr-rough); overflow: visible;
   }
-  .draw-ruler line { stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .draw-ruler line { stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; vector-effect: non-scaling-stroke; }
   @media (max-width: 480px) { .draw-ruler { display: none; } }
 
   .rack { list-style: none; margin: 0; padding: 0; display: grid; position: relative; z-index: 1;
@@ -190,20 +188,19 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     color: color-mix(in srgb, var(--accent) 62%, #cfc9c0); border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
     border-radius: 5px; padding: 6px 12px; transform: rotate(-5deg); }
 
-  /* a piece of low-opacity tape across the photo, with the handwritten title */
+  /* a piece of low-opacity tape slapped across the top-left corner, outlined in
+     pencil (#kr-rough) to match the drawn frame, with the handwritten title */
   .tape-label {
-    position: absolute; left: 50%; bottom: 13%; z-index: 2;
-    transform: translateX(-50%) rotate(var(--taperot, -2deg));
-    max-width: 86%; padding: .5rem 1.15rem; text-align: center;
+    position: absolute; top: 6%; left: 5%; z-index: 2;
+    transform-origin: left center; transform: rotate(var(--taperot, -12deg));
+    max-width: 80%; padding: .5rem 1.1rem; text-align: center;
     background: var(--tape, rgba(238, 231, 215, 0.5));
-    box-shadow: 0 2px 7px rgba(0,0,0,.22);
-    /* torn tape ends (clean clip, slightly irregular) */
-    clip-path: polygon(0 14%, 4% 0, 96% 6%, 100% 0, 99% 88%, 95% 100%, 4% 95%, 1% 100%);
+    box-shadow: 0 3px 8px rgba(0,0,0,.25);
   }
   .tape-label::before { content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(102deg, transparent 28%, rgba(255,255,255,.18) 50%, transparent 72%); }
+    border: 1.7px solid var(--sketch-ink, #ece6d8); border-radius: 2px; filter: url(#kr-rough); opacity: .9; }
   .tl-name { position: relative; font-family: var(--font-hand); font-weight: 600;
-    font-size: clamp(1.15rem, 2.7vw, 1.6rem); line-height: 1.05; color: #2a2620;
+    font-size: clamp(1.15rem, 2.7vw, 1.55rem); line-height: 1.05; color: #2a2620;
     text-shadow: 0 1px 1px rgba(255,255,255,.3); }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
