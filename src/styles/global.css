@@ -75,7 +75,7 @@ img { display: block; max-width: 100%; height: auto; }
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gap); }
 
 /* page intro block */
-.page-intro { padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem); max-width: 60ch; }
+.page-intro { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem); max-width: 60ch; }
 .page-intro p { color: var(--ink-soft); font-size: 1.1rem; }
 
 /* placeholder note shown in scaffold mode */
