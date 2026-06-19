@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Gallery from '../components/Gallery.astro';
 import YouTube from '../components/YouTube.astro';
-import { filmStills, videos } from '../data/galleries';
+import { filmStills, videos, upcomingFilm } from '../data/galleries';
 ---
 <BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
   <section class="container page-intro">
@@ -13,7 +13,7 @@ import { filmStills, videos } from '../data/galleries';
 
   <section class="container">
     <h2 class="section-label" data-reveal>Stills <span class="strip-hint" aria-hidden="true">— scroll sideways →</span></h2>
-    <Gallery items={filmStills} layout="strip" />
+    <Gallery items={filmStills} layout="strip" coda={upcomingFilm} />
   </section>
 
   <section class="container videos">

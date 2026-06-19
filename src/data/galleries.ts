@@ -49,6 +49,14 @@ export const aboutPhotos: GalleryItem[] = [
   { src: ph('kr-me-3'), alt: 'Photo of Kaylee 3', caption: '' },
 ];
 
+// The "Coming Soon" slide at the end of the Film stills strip (movie-trailer
+// style). Fill in your upcoming film's title, your role, and the date.
+export const upcomingFilm = {
+  title: 'Untitled Film',
+  role: 'Writer / Director',
+  date: 'In Production · 2026',
+};
+
 // Video projects — YouTube video IDs (the part after watch?v= or youtu.be/).
 export const videos = [
   { id: 'dQw4w9WgXcQ', title: 'Project title — replace with your video', blurb: 'A sentence about this piece.' },

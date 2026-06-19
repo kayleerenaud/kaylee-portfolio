@@ -12,7 +12,10 @@
 export type GalleryItem = { src: string; alt: string; caption?: string; edge?: string };
 // layout: 'grid' (default vertical grid) or 'strip' (horizontal filmstrip of
 // landscape stills you scroll/swipe sideways — used for Film stills).
-const { items, columns = 3, layout = 'grid' } = Astro.props as { items: GalleryItem[]; columns?: number; layout?: 'grid' | 'strip' };
+const { items, columns = 3, layout = 'grid', coda } = Astro.props as {
+  items: GalleryItem[]; columns?: number; layout?: 'grid' | 'strip';
+  coda?: { title: string; role?: string; date?: string };
+};
 const isStrip = layout === 'strip';
 ---
 <div class:list={['gallery-wrap', isStrip && 'filmstrip']}>
@@ -34,6 +37,15 @@ const isStrip = layout === 'strip';
         {isStrip && it.edge && <span class="frame-edge">{it.edge}</span>}
       </li>
     ))}
+    {isStrip && coda && (
+      <li class="cell cell-coda" data-reveal>
+        <div class="coming-soon">
+          <span class="cs-kicker">Coming Soon</span>
+          <span class="cs-title">{coda.title}</span>
+          <span class="cs-meta">{[coda.role, coda.date].filter(Boolean).join(' · ')}</span>
+        </div>
+      </li>
+    )}
   </ul>
   {isStrip && (
     <>
@@ -92,6 +104,19 @@ const isStrip = layout === 'strip';
   .gallery.strip .cell { position: relative; flex: 0 0 auto; width: min(82vw, 540px); scroll-snap-align: center; }
   .gallery.strip .thumb { border-radius: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.6); }
   .gallery.strip .thumb img { aspect-ratio: 16 / 9; }
+
+  /* "Coming Soon" trailer slide at the end of the strip */
+  .gallery.strip .cell-coda { display: flex; }
+  .coming-soon {
+    width: 100%; aspect-ratio: 16 / 9; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .5rem; text-align: center; padding: 1rem;
+    background: radial-gradient(120% 100% at 50% 28%, color-mix(in srgb, var(--accent) 24%, #0c0a08), #0c0a08 72%);
+    border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.6);
+  }
+  .cs-kicker { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .3em; font-size: .68rem;
+    color: color-mix(in srgb, var(--accent) 72%, #fff); }
+  .cs-title { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2.1rem); color: #f3efe9; line-height: 1.05; }
+  .cs-meta { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; color: #b9b2a6; }
 
   /* per-frame sheen + vignette. Shading scales with --off (0 = dead-centre in
      the strip, 1 = at the edges), set live by JS — so whichever frame is
