@@ -1,14 +1,251 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Gallery from '../components/Gallery.astro';
-import { costume } from '../data/galleries';
+import Lightbox from '../components/Lightbox.astro';
+import { projects, upcoming } from '../data/costume';
+import { site } from '../config/site';
+
+const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
+type Img = { src: string; label: string };
+function pieceImages(piece: { final?: string; rendering?: string; progress?: string[]; swatches?: string[] }): Img[] {
+  const out: Img[] = [];
+  if (piece.final) out.push({ src: piece.final, label: 'Final' });
+  if (piece.rendering) out.push({ src: piece.rendering, label: 'Rendering' });
+  (piece.progress ?? []).forEach((s) => out.push({ src: s, label: 'Process' }));
+  (piece.swatches ?? []).forEach((s) => out.push({ src: s, label: 'Swatch' }));
+  return out;
+}
 ---
-<BaseLayout current="costume" title="Costume" description="Costume work by Kaylee Renaud.">
+<BaseLayout current="costume" title="Costume" description="Costume design by Kaylee Renaud — research, illustration, and construction.">
   <section class="container page-intro">
     <h1 data-reveal>Costume</h1>
-    <p data-reveal style="--d:80ms">Hand-made pieces and the details inside them. A short caption previews in the corner — tap to enlarge and read the full process note.</p>
+    <p data-reveal style="--d:80ms">Research, illustration, and construction. Each tag is a production — pull one off the rail to see the finished looks alongside the renderings and the work behind them.</p>
   </section>
-  <section class="container">
-    <Gallery items={costume} columns={3} />
+
+  <!-- THE RAIL of oak tags -->
+  <section class="container rail-wrap">
+    <div class="rail" aria-hidden="true"></div>
+    <ul class="rack">
+      {projects.map((p, i) => (
+        <li class="tag-li" style={`--i:${i}`}>
+          <button class="oaktag" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
+            <span class="tag-eyelet" aria-hidden="true"></span>
+            <span class="tag-kicker stamp">{p.kind === 'paper' ? 'Paper Project' : 'Costume Design'}</span>
+            <span class="tag-show hand">{p.show}</span>
+            <span class="tag-row"><span class="stamp">Co.</span><span class="hand">{p.company}</span></span>
+            <span class="tag-row"><span class="stamp">Dir.</span><span class="hand">{dirName(p.director)}</span></span>
+            <span class="tag-row"><span class="stamp">Role</span><span class="hand">{p.role}</span></span>
+            <span class="tag-year stamp">{p.year}</span>
+          </button>
+        </li>
+      ))}
+      <li class="tag-li" style={`--i:${projects.length}`}>
+        <div class="oaktag oaktag-upcoming">
+          <span class="tag-eyelet" aria-hidden="true"></span>
+          <span class="tag-kicker stamp">Upcoming</span>
+          <span class="tag-show hand">{upcoming.show}</span>
+          <span class="tag-row"><span class="stamp">Co.</span><span class="hand">{upcoming.company}</span></span>
+          <span class="tag-row"><span class="stamp">Dir.</span><span class="hand">{dirName(upcoming.director)}</span></span>
+          <span class="tag-row"><span class="stamp">Role</span><span class="hand">{upcoming.role}</span></span>
+          <span class="tag-year stamp">{upcoming.date}</span>
+          <span class="upcoming-stamp">Coming Soon</span>
+        </div>
+      </li>
+    </ul>
+    {site.social.instagram && (
+      <p class="rack-more" data-reveal>More productions on <a href={site.social.instagram} target="_blank" rel="noopener">Instagram ↗</a></p>
+    )}
   </section>
+
+  <!-- PLATE OVERLAYS — one per project, hidden until its tag is opened -->
+  {projects.map((p) => (
+    <div class="panel" id={`proj-${p.id}`} role="dialog" aria-modal="true" aria-label={p.show}>
+      <div class="panel-inner">
+        <button class="panel-close" aria-label="Close">×</button>
+        <header class="panel-head">
+          <p class="ph-kicker stamp">{p.kind === 'paper' ? 'Paper Project' : 'Production'}</p>
+          <h2 class="ph-show hand">{p.show}</h2>
+          <p class="ph-meta">
+            <span class="stamp">Co.</span> <span class="hand">{p.company}</span>
+            <span class="dot">·</span> <span class="hand">{p.director}</span>
+            <span class="dot">·</span> <span class="stamp">Role</span> <span class="hand">{p.role}</span>
+            <span class="dot">·</span> <span class="stamp">{p.year}</span>
+          </p>
+          {p.blurb && <p class="ph-blurb">{p.blurb}</p>}
+        </header>
+
+        <div class="plates">
+          {p.pieces.map((piece) => {
+            const imgs = pieceImages(piece);
+            const main = imgs[0];
+            const sides = imgs.slice(1);
+            return (
+              <article class="plate" data-gallery>
+                <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={piece.caption} data-caption={piece.caption}>
+                  <img src={main.src} alt={piece.caption} loading="lazy" decoding="async" />
+                  <span class="plate-label stamp">{main.label}</span>
+                </button>
+                {sides.length > 0 && (
+                  <div class="plate-side">
+                    {sides.map((im, k) => (
+                      <button class="plate-thumb" data-lightbox data-index={k + 1} data-src={im.src} data-alt={piece.caption} data-caption={piece.caption} style={`--r:${(k % 2 ? 1 : -1) * (1.5 + k)}deg`}>
+                        <img src={im.src} alt={`${im.label} — ${piece.caption}`} loading="lazy" decoding="async" />
+                        <span class="thumb-label stamp">{im.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <p class="plate-caption">{piece.caption}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  ))}
+
+  <Lightbox />
 </BaseLayout>
+
+<style>
+  /* ---------- THE RAIL ---------- */
+  .rail-wrap { position: relative; padding-block: 1rem clamp(3rem, 7vw, 5rem); }
+  .rail { position: absolute; left: var(--gap); right: var(--gap); top: 26px; height: 3px;
+    background: linear-gradient(90deg, transparent, #6b5d45 8%, #6b5d45 92%, transparent); border-radius: 3px; }
+  .rack { list-style: none; margin: 0; padding: 0; display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+
+  .tag-li { display: flex; justify-content: center; }
+
+  /* oak tag */
+  .oaktag {
+    position: relative; width: 100%; max-width: 230px; border: 0; cursor: pointer;
+    text-align: left; padding: 30px 18px 16px; margin-top: 14px;
+    display: flex; flex-direction: column; gap: .35rem;
+    background:
+      repeating-linear-gradient(125deg, transparent 0 6px, rgba(120,96,58,.04) 6px 7px),
+      linear-gradient(160deg, #d8c49b, #c9b083);
+    color: #3c3324;
+    clip-path: polygon(22% 0, 78% 0, 100% 11%, 100% 100%, 0 100%, 0 11%);
+    box-shadow: 0 10px 22px rgba(0,0,0,.4);
+    transform-origin: 50% 8px; transform: rotate(calc((var(--i) % 3 - 1) * 1.6deg));
+    transition: transform .35s cubic-bezier(.3,1.4,.5,1), box-shadow .2s;
+  }
+  /* the hole + grommet near the top */
+  .tag-eyelet {
+    position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
+    width: 13px; height: 13px; border-radius: 50%;
+    background: var(--bg); box-shadow: 0 0 0 2px #b09a72, inset 0 1px 2px rgba(0,0,0,.6);
+  }
+  @media (hover: hover) {
+    .oaktag:hover { transform: rotate(0deg) translateY(-4px); box-shadow: 0 16px 30px rgba(0,0,0,.5); animation: tag-sway .9s ease; }
+  }
+  .oaktag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @keyframes tag-sway { 0%{transform:rotate(-3deg) translateY(-4px)} 40%{transform:rotate(2deg) translateY(-4px)} 70%{transform:rotate(-1deg) translateY(-4px)} 100%{transform:rotate(0) translateY(-4px)} }
+
+  .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
+    font-size: .62rem; color: #5a4a2e; opacity: .85; }
+  .hand { font-family: var(--font-hand); font-weight: 600; color: #363024; line-height: 1; }
+
+  .tag-kicker { display: block; }
+  .tag-show { font-size: 1.7rem; line-height: .95; margin: .1rem 0 .3rem; }
+  .tag-row { display: flex; align-items: baseline; gap: .4rem; }
+  .tag-row .hand { font-size: 1.15rem; }
+  .tag-year { margin-top: .4rem; align-self: flex-end; font-size: .68rem; }
+
+  .oaktag-upcoming { cursor: default; background: linear-gradient(160deg, #cdb88f, #bfa676); }
+  .upcoming-stamp {
+    position: absolute; bottom: 30px; right: -6px; transform: rotate(-9deg);
+    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem;
+    color: #8a3b3b; border: 2px solid #8a3b3b; border-radius: 4px; padding: 2px 7px; opacity: .8;
+  }
+  .rack-more { margin-top: clamp(2rem, 4vw, 3rem); text-align: center; color: var(--ink-soft); }
+
+  /* ---------- PLATE OVERLAY ---------- */
+  .panel { position: fixed; inset: 0; z-index: 95; display: none; overflow-y: auto;
+    background: color-mix(in srgb, var(--bg) 94%, #000);
+    background-image: repeating-linear-gradient(90deg, transparent 0 3px, rgba(255,255,255,.012) 3px 4px),
+                      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.04) 3px 4px); }
+  .panel.open { display: block; animation: panel-in .32s ease; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .panel-inner { max-width: 1080px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 4rem) var(--gap) 5rem; }
+  .panel-close {
+    position: fixed; top: 1rem; right: 1.1rem; z-index: 2; width: 46px; height: 46px;
+    font-size: 1.8rem; line-height: 1; color: var(--ink); background: color-mix(in srgb, var(--accent) 22%, #1c1916);
+    border: 1px solid var(--line); border-radius: 50%; cursor: pointer; transition: background .15s, transform .15s;
+  }
+  @media (hover: hover) { .panel-close:hover { background: var(--accent); color: #14110f; transform: scale(1.06); } }
+
+  .panel-head { border-bottom: 2px dashed color-mix(in srgb, var(--accent) 40%, var(--line)); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+  .ph-kicker { color: var(--accent); }
+  .ph-show { font-family: var(--font-hand); font-size: clamp(2.4rem, 7vw, 4rem); line-height: .9; margin: .2rem 0 .6rem; color: var(--ink); }
+  .ph-meta { color: var(--ink-soft); font-size: .95rem; display: flex; flex-wrap: wrap; gap: .35rem; align-items: baseline; }
+  .ph-meta .hand { font-family: var(--font-hand); font-size: 1.2rem; color: var(--ink); }
+  .ph-meta .dot { opacity: .5; }
+  .ph-blurb { color: var(--ink-soft); margin: 1rem 0 0; max-width: 60ch; }
+
+  .plates { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4.5rem); }
+  .plate { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    grid-template-areas: 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem); align-items: start; }
+  @media (max-width: 680px) { .plate { grid-template-columns: 1fr; grid-template-areas: 'main' 'side' 'cap'; } }
+
+  .plate-main { grid-area: main; position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
+    background: none; line-height: 0; }
+  .plate-main img { width: 100%; border-radius: 3px; box-shadow: 0 14px 36px rgba(0,0,0,.5);
+    border: 6px solid #efe9dc; }
+  .plate-side { grid-area: side; display: flex; flex-direction: column; gap: clamp(1rem, 2.2vw, 1.5rem); padding-top: .5rem; }
+  .plate-thumb { position: relative; display: block; padding: 0; border: 0; cursor: zoom-in; background: none; line-height: 0;
+    transform: rotate(var(--r, -2deg)); transition: transform .2s; }
+  @media (hover: hover) { .plate-thumb:hover { transform: rotate(0) scale(1.02); } }
+  .plate-thumb img { width: 100%; border-radius: 2px; border: 5px solid #efe9dc; box-shadow: 0 8px 20px rgba(0,0,0,.45); }
+  /* a little "tape" at the top of each pinned thumb */
+  .plate-thumb::before { content: ''; position: absolute; top: -9px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+    width: 46px; height: 16px; background: color-mix(in srgb, var(--accent) 30%, #d8d2c4); opacity: .55; border-radius: 1px; }
+
+  .plate-label, .thumb-label { position: absolute; left: 8px; bottom: 8px;
+    background: rgba(20,16,18,.7); color: #f3efe9; padding: 2px 7px; border-radius: 3px; line-height: 1.4; }
+  .thumb-label { font-size: .56rem; }
+
+  .plate-caption { grid-area: cap; color: var(--ink-soft); font-size: 1rem; line-height: 1.6; max-width: 70ch;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line)); padding-left: 1rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .oaktag, .plate-thumb { transition: none; }
+    .oaktag:hover { animation: none; }
+    .panel.open { animation: none; }
+  }
+</style>
+
+<script>
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('.panel'));
+  let openEl: HTMLElement | null = null;
+
+  function open(id: string) {
+    const p = document.getElementById(id);
+    if (!p) return;
+    openEl = p;
+    p.classList.add('open');
+    p.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    if (!openEl) return;
+    openEl.classList.remove('open');
+    openEl = null;
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-open]').forEach((btn) =>
+    btn.addEventListener('click', () => open(btn.dataset.open!))
+  );
+  panels.forEach((p) => {
+    p.querySelector('.panel-close')?.addEventListener('click', close);
+    // click on the panel backdrop (outside the inner column) closes
+    p.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.panel-inner')) close();
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    // don't close the project panel while the image lightbox is up
+    if (e.key === 'Escape' && openEl && !document.querySelector('#lightbox[open]')) close();
+  });
+</script>
