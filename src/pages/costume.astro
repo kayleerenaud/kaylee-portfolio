@@ -12,7 +12,7 @@ const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
 const liStyle = (i: number) => {
   const r = (k: number) => { const x = Math.sin(i * 53.3 + k * 17.1) * 1e4; return x - Math.floor(x); };
   return `--i:${i}; --d:${(i % 3) * 70}ms; ` +
-    `--taperot:${(-14 + r(5) * 9).toFixed(1)}deg; ` +
+    `--jit:${(r(5) * 9 - 4.5).toFixed(1)}deg; ` +
     `--shineA:${(95 + r(1) * 55).toFixed(0)}deg; ` +
     `--s1:${(20 + r(2) * 28).toFixed(0)}%; ` +
     `--s2:${(54 + r(3) * 30).toFixed(0)}%; ` +
@@ -61,15 +61,27 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
         {projects.map((p, i) => (
           <li class="proj-li" data-reveal style={liStyle(i)}>
             <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
-              <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
-              <span class="tape-label"><span class="tl-name">{p.show}</span></span>
+              <span class="photo">
+                <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
+                <span class="tape tape-tl" aria-hidden="true"></span>
+                <span class="tape tape-tr" aria-hidden="true"></span>
+                <span class="tape tape-bl" aria-hidden="true"></span>
+                <span class="tape tape-br" aria-hidden="true"></span>
+              </span>
+              <span class="card-title">{p.show}</span>
             </button>
           </li>
         ))}
         <li class="proj-li" data-reveal style={liStyle(projects.length)}>
           <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
-            <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
-            <span class="tape-label"><span class="tl-name">{upcoming.show}</span></span>
+            <span class="photo">
+              <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
+              <span class="tape tape-tl" aria-hidden="true"></span>
+              <span class="tape tape-tr" aria-hidden="true"></span>
+              <span class="tape tape-bl" aria-hidden="true"></span>
+              <span class="tape tape-br" aria-hidden="true"></span>
+            </span>
+            <span class="card-title">{upcoming.show}</span>
           </button>
         </li>
       </ul>
@@ -200,30 +212,33 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     color: color-mix(in srgb, var(--accent) 62%, #cfc9c0); border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
     border-radius: 5px; padding: 6px 12px; transform: rotate(-5deg); }
 
-  /* clear, crinkled cellophane tape slapped across the top-left corner */
-  .tape-label {
-    position: absolute; top: 0; left: 0; z-index: 2;
-    /* the CENTRE of the tape sits on the image's top-left corner */
-    transform: translate(-50%, -50%) rotate(var(--taperot, -12deg));
-    max-width: 78%; padding: .55rem 1.2rem; text-align: center;
+  .photo { position: relative; display: block; }
+
+  /* a little wrinkled cellophane tape on each corner, holding the photo down */
+  .tape {
+    position: absolute; z-index: 2; width: 62px; height: 26px;
     background-color: rgba(236, 238, 235, 0.13);
     -webkit-backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
     backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
-    /* glossy highlights + crinkles — placed differently on every tape */
     background-image:
-      linear-gradient(var(--shineA, 112deg), transparent calc(var(--s1, 28%) - 9%), rgba(255,255,255,.32) var(--s1, 28%), transparent calc(var(--s1, 28%) + 9%)),
-      linear-gradient(var(--shineA, 70deg), transparent calc(var(--s2, 62%) - 6%), rgba(255,255,255,.17) var(--s2, 62%), transparent calc(var(--s2, 62%) + 6%)),
-      repeating-linear-gradient(var(--crA, 116deg), rgba(255,255,255,0) 0 6px, rgba(255,255,255,.055) 7px 8px, rgba(255,255,255,0) 9px 15px);
-    box-shadow: 0 1px 3px rgba(0,0,0,.28);
-    /* torn / pressed tape ends */
-    clip-path: polygon(2% 10%, 7% 0, 95% 6%, 100% 0, 98% 92%, 94% 100%, 6% 96%, 0 100%);
+      linear-gradient(var(--shineA, 112deg), transparent calc(var(--s1, 28%) - 13%), rgba(255,255,255,.34) var(--s1, 28%), transparent calc(var(--s1, 28%) + 13%)),
+      linear-gradient(var(--shineA, 70deg), transparent calc(var(--s2, 62%) - 9%), rgba(255,255,255,.18) var(--s2, 62%), transparent calc(var(--s2, 62%) + 9%)),
+      repeating-linear-gradient(var(--crA, 116deg), rgba(255,255,255,0) 0 5px, rgba(255,255,255,.06) 6px 7px, rgba(255,255,255,0) 8px 13px);
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    /* torn ends */
+    clip-path: polygon(3% 12%, 8% 0, 94% 7%, 100% 0, 97% 90%, 92% 100%, 5% 95%, 0 100%);
   }
-  .tape-label::before { content: ''; position: absolute; inset: 0; pointer-events: none;
-    box-shadow: inset 0 0 9px rgba(0,0,0,.12);
-    background: linear-gradient(90deg, rgba(0,0,0,.07), transparent 12%, transparent 88%, rgba(0,0,0,.07)); }
-  .tl-name { position: relative; font-family: var(--font-hand); font-weight: 700;
-    font-size: clamp(1.15rem, 2.7vw, 1.55rem); line-height: 1.05; color: #201c17;
-    text-shadow: 0 0 3px rgba(255,255,255,.6), 0 1px 0 rgba(255,255,255,.4); }
+  .tape-tl { top: 0; left: 0;  transform: translate(-50%, -50%) rotate(calc(-45deg + var(--jit, 0deg))); }
+  .tape-tr { top: 0; right: 0; transform: translate(50%, -50%) rotate(calc(45deg + var(--jit, 0deg))); }
+  .tape-bl { bottom: 0; left: 0;  transform: translate(-50%, 50%) rotate(calc(45deg + var(--jit, 0deg))); }
+  .tape-br { bottom: 0; right: 0; transform: translate(50%, 50%) rotate(calc(-45deg + var(--jit, 0deg))); }
+
+  /* handwritten title written under each taped photo */
+  .card-title {
+    display: block; margin-top: 1.1rem; text-align: center; line-height: 1.1;
+    font-family: var(--font-hand); font-weight: 700;
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem); color: var(--sketch-ink, #ece6d8);
+  }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
     font-size: .62rem; color: #5a4a2e; opacity: .85; }
