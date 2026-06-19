@@ -28,9 +28,9 @@ export const headshotFrames: string[] = [
 
 // The three crafts, each with a doodle motif + a link into that section.
 export const crafts = [
-  { label: 'Film',    sketch: 'clapper', href: '/film/',    blurb: 'Moving pictures and the frames behind them.' },
-  { label: 'Costume', sketch: 'thread',  href: '/costume/', blurb: 'Worlds you can wear, made by hand.' },
-  { label: 'Writing', sketch: 'quill',   href: '/writing/', blurb: 'Words, scenes, and small wonders.' },
+  { label: 'Film',    sketch: 'clapper', href: '/film/',    blurb: "Documentary · Narrative · Children's media" },
+  { label: 'Costume', sketch: 'thread',  href: '/costume/', blurb: 'Research · Design · Illustration · Construction' },
+  { label: 'Writing', sketch: 'quill',   href: '/writing/', blurb: 'Family-centered stories for stage & screen' },
 ];
 
 // End credits — Awards / Experience / Education. Keep entries short and real;
