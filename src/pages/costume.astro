@@ -8,7 +8,16 @@ const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
 // the card's cover image: a finished look if there is one, else the lead rendering
 const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
   p.pieces.find((x) => x.final)?.final ?? p.pieces.find((x) => x.rendering)?.rendering ?? '';
-const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --taperot:${-12 + (((i * 53) % 7) - 3)}deg;`;
+// per-card randomness: tilt + where the tape catches the light / crinkles
+const liStyle = (i: number) => {
+  const r = (k: number) => { const x = Math.sin(i * 53.3 + k * 17.1) * 1e4; return x - Math.floor(x); };
+  return `--i:${i}; --d:${(i % 3) * 70}ms; ` +
+    `--taperot:${(-14 + r(5) * 9).toFixed(1)}deg; ` +
+    `--shineA:${(95 + r(1) * 55).toFixed(0)}deg; ` +
+    `--s1:${(20 + r(2) * 28).toFixed(0)}%; ` +
+    `--s2:${(54 + r(3) * 30).toFixed(0)}%; ` +
+    `--crA:${(100 + r(4) * 40).toFixed(0)}deg;`;
+};
 
 // drawn ruler tick marks along the top of the frame
 const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
@@ -193,17 +202,18 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 
   /* clear, crinkled cellophane tape slapped across the top-left corner */
   .tape-label {
-    position: absolute; top: 6%; left: 5%; z-index: 2;
-    transform-origin: left center; transform: rotate(var(--taperot, -12deg));
-    max-width: 80%; padding: .55rem 1.2rem; text-align: center;
+    position: absolute; top: 0; left: 0; z-index: 2;
+    /* the CENTRE of the tape sits on the image's top-left corner */
+    transform: translate(-50%, -50%) rotate(var(--taperot, -12deg));
+    max-width: 78%; padding: .55rem 1.2rem; text-align: center;
     background-color: rgba(236, 238, 235, 0.13);
     -webkit-backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
     backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
-    /* glossy highlights + fine crinkles */
+    /* glossy highlights + crinkles — placed differently on every tape */
     background-image:
-      linear-gradient(112deg, transparent 22%, rgba(255,255,255,.30) 30%, transparent 38%),
-      linear-gradient(68deg, transparent 58%, rgba(255,255,255,.18) 65%, transparent 72%),
-      repeating-linear-gradient(116deg, rgba(255,255,255,0) 0 7px, rgba(255,255,255,.06) 8px 9px, rgba(255,255,255,0) 10px 16px);
+      linear-gradient(var(--shineA, 112deg), transparent calc(var(--s1, 28%) - 9%), rgba(255,255,255,.32) var(--s1, 28%), transparent calc(var(--s1, 28%) + 9%)),
+      linear-gradient(var(--shineA, 70deg), transparent calc(var(--s2, 62%) - 6%), rgba(255,255,255,.17) var(--s2, 62%), transparent calc(var(--s2, 62%) + 6%)),
+      repeating-linear-gradient(var(--crA, 116deg), rgba(255,255,255,0) 0 6px, rgba(255,255,255,.055) 7px 8px, rgba(255,255,255,0) 9px 15px);
     box-shadow: 0 1px 3px rgba(0,0,0,.28);
     /* torn / pressed tape ends */
     clip-path: polygon(2% 10%, 7% 0, 95% 6%, 100% 0, 98% 92%, 94% 100%, 6% 96%, 0 100%);
