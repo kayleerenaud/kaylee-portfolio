@@ -5,28 +5,10 @@ import { projects, upcoming } from '../data/costume';
 import { site } from '../config/site';
 
 const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
-// a hand-drawn-ish twine knot; rotated/scaled slightly differently per tag so
-// no two look identical (organic)
-const knot = `<svg viewBox="0 0 30 38" fill="none" aria-hidden="true"><path d="M15 38 L15 25 C6 25 6 12 15 12 C24 12 23 23 12 19 M15 12 L15 2" stroke="#a8946a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const knotStyle = (i: number) => `--knot-rot:${((i * 41) % 9) - 4}deg; --knot-flip:${i % 2 ? -1 : 1}; --gtrot:${((i * 53) % 7) - 3}deg;`;
 // the card's cover image: a finished look if there is one, else the lead rendering
 const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
   p.pieces.find((x) => x.final)?.final ?? p.pieces.find((x) => x.rendering)?.rendering ?? '';
-// push-pin colours (one per card)
-const PINS = ['#c0476a', '#3f6fa0', '#d6a93e', '#5a8a5a', '#8a5a8f', '#c97b3f'];
-const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --pin:${PINS[i % PINS.length]};`;
-
-// a unique, slightly random hand-torn edge per tag (so no two look alike)
-function torn(seed: number): string {
-  const h = (k: number) => { const x = Math.sin(seed * 91.7 + k * 41.3) * 9999; return x - Math.floor(x); };
-  const pts: string[] = [];
-  [1, 14, 27, 41, 56, 71, 86, 99].forEach((x, k) => pts.push(`${x}% ${(1 + h(k) * 4).toFixed(1)}%`));
-  [18, 33, 49, 64, 80, 96].forEach((y, k) => pts.push(`${(100 - h(k + 10) * 3.5).toFixed(1)}% ${y}%`));
-  [85, 70, 55, 40, 25, 11, 1].forEach((x, k) => pts.push(`${x}% ${(100 - h(k + 20) * 4).toFixed(1)}%`));
-  [82, 66, 50, 34, 19].forEach((y, k) => pts.push(`${(h(k + 30) * 3.5).toFixed(1)}% ${y}%`));
-  return `polygon(${pts.join(', ')})`;
-}
-const tagStyle = (i: number) => `${knotStyle(i)} --clip:${torn(i)};`;
+const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --taperot:${((i * 53) % 7) - 3}deg;`;
 
 // drawn ruler tick marks along the top of the frame
 const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
@@ -72,27 +54,15 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
         {projects.map((p, i) => (
           <li class="proj-li" data-reveal style={liStyle(i)}>
             <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
-              <span class="pin" aria-hidden="true"></span>
               <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
-              <span class="garment-tag" style={tagStyle(i)}>
-                <span class="gt-knot"><Fragment set:html={knot} /></span>
-                <span class="gt-hole" aria-hidden="true"></span>
-                <span class="gt-show hand">{p.show}</span>
-                <span class="gt-year stamp">{p.kind === 'paper' ? `Paper · ${p.year}` : p.year}</span>
-              </span>
+              <span class="tape-label"><span class="tl-name">{p.show}</span></span>
             </button>
           </li>
         ))}
         <li class="proj-li" data-reveal style={liStyle(projects.length)}>
           <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
-            <span class="pin" aria-hidden="true"></span>
             <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
-            <span class="garment-tag" style={tagStyle(projects.length)}>
-              <span class="gt-knot"><Fragment set:html={knot} /></span>
-              <span class="gt-hole" aria-hidden="true"></span>
-              <span class="gt-show hand">{upcoming.show}</span>
-              <span class="gt-year stamp">{upcoming.date}</span>
-            </span>
+            <span class="tape-label"><span class="tl-name">{upcoming.show}</span></span>
           </button>
         </li>
       </ul>
@@ -192,9 +162,9 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     border: 2.5px solid var(--sketch-ink, #ece6d8); border-radius: 6px;
     filter: url(#kr-pencil); opacity: .82;
   }
-  /* drawn ruler along the top inside edge */
+  /* drawn ruler — runs the full width of the board (frame edge to frame edge) */
   .draw-ruler {
-    position: absolute; top: 18px; left: 28px; right: 28px; height: 22px; z-index: 0; pointer-events: none;
+    position: absolute; top: 16px; left: 8px; right: 8px; height: 22px; z-index: 0; pointer-events: none;
     color: var(--sketch-ink, #ece6d8); opacity: .82; filter: url(#kr-pencil); overflow: visible;
   }
   .draw-ruler line { stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
@@ -205,14 +175,6 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
   @media (max-width: 760px) { .rack { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 480px) { .rack { grid-template-columns: 1fr; } }
   .proj-li { list-style: none; }
-
-  /* push-pin tacking each photo to the board */
-  .pin { position: absolute; top: 9px; right: 15px; z-index: 4; width: 17px; height: 17px; border-radius: 50%;
-    background: radial-gradient(circle at 34% 30%, rgba(255,255,255,.9), var(--pin, #c0476a) 55%,
-      color-mix(in srgb, var(--pin, #c0476a) 58%, #000) 100%);
-    box-shadow: 0 4px 6px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.3); }
-  .pin::after { content: ''; position: absolute; top: 64%; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 6px; background: linear-gradient(#bbb, #777); border-radius: 0 0 1px 1px; }
 
   .proj-card { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer;
     transform: rotate(calc((var(--i) % 5 - 2) * 1.1deg)); transition: transform .3s ease; }
@@ -228,35 +190,21 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     color: color-mix(in srgb, var(--accent) 62%, #cfc9c0); border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
     border-radius: 5px; padding: 6px 12px; transform: rotate(-5deg); }
 
-  /* the oak garment tag pinned on the image */
-  .garment-tag { position: absolute; top: 18px; left: 14px; z-index: 2; color: #3c3324;
-    width: min(62%, 162px); padding: 26px 14px 12px; text-align: left;
-    display: flex; flex-direction: column; gap: .15rem;
-    transform-origin: 28px 4px; transform: rotate(var(--gtrot, -4deg));
-    transition: transform .4s cubic-bezier(.3,1.4,.5,1); }
-  .garment-tag::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E"),
-      linear-gradient(74deg, transparent 42%, rgba(255,250,235,.18) 48%, transparent 54%),
-      radial-gradient(120% 80% at 30% 10%, rgba(255,248,230,.5), transparent 60%),
-      linear-gradient(158deg, #d9c59c, #c6ad7f);
-    /* crisp hand-torn deckle edge, unique per tag (set inline as --clip) */
-    clip-path: var(--clip, polygon(1% 4%, 50% 1%, 99% 3%, 98% 50%, 99% 97%, 50% 99%, 1% 98%, 2% 50%));
-    filter: drop-shadow(0 7px 12px rgba(0,0,0,.5));
+  /* a piece of low-opacity tape across the photo, with the handwritten title */
+  .tape-label {
+    position: absolute; left: 50%; bottom: 13%; z-index: 2;
+    transform: translateX(-50%) rotate(var(--taperot, -2deg));
+    max-width: 86%; padding: .5rem 1.15rem; text-align: center;
+    background: var(--tape, rgba(238, 231, 215, 0.5));
+    box-shadow: 0 2px 7px rgba(0,0,0,.22);
+    /* torn tape ends (clean clip, slightly irregular) */
+    clip-path: polygon(0 14%, 4% 0, 96% 6%, 100% 0, 99% 88%, 95% 100%, 4% 95%, 1% 100%);
   }
-  .gt-knot { position: absolute; top: -15px; left: 28px; width: 18px; height: 24px; z-index: 1;
-    transform: translateX(-50%) scaleX(var(--knot-flip, 1)) rotate(var(--knot-rot, 0deg)); }
-  .gt-knot :global(svg) { width: 100%; height: 100%; overflow: visible; }
-  .gt-hole { position: absolute; top: 9px; left: 28px; transform: translateX(-50%);
-    width: 11px; height: 11px; border-radius: 50%;
-    background: #6e5c3e; box-shadow: 0 0 0 2px #b09a72, inset 0 1px 2px rgba(0,0,0,.7); }
-  .gt-show { font-family: var(--font-hand); font-weight: 600; font-size: 1.35rem; line-height: 1; color: #2f2a20; }
-  .gt-year { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em; font-size: .58rem; color: #5a4a2e; opacity: .85; }
-  @media (hover: hover) {
-    .proj-card:hover .garment-tag { transform: rotate(0deg) translateY(-2px); }
-    .proj-card:hover .garment-tag::before { filter: drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
-  }
+  .tape-label::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(102deg, transparent 28%, rgba(255,255,255,.18) 50%, transparent 72%); }
+  .tl-name { position: relative; font-family: var(--font-hand); font-weight: 600;
+    font-size: clamp(1.15rem, 2.7vw, 1.6rem); line-height: 1.05; color: #2a2620;
+    text-shadow: 0 1px 1px rgba(255,255,255,.3); }
 
   .stamp { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .1em;
     font-size: .62rem; color: #5a4a2e; opacity: .85; }
