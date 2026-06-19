@@ -12,6 +12,9 @@ const knotStyle = (i: number) => `--knot-rot:${((i * 41) % 9) - 4}deg; --knot-fl
 // the card's cover image: a finished look if there is one, else the lead rendering
 const cover = (p: { pieces: { final?: string; rendering?: string }[] }) =>
   p.pieces.find((x) => x.final)?.final ?? p.pieces.find((x) => x.rendering)?.rendering ?? '';
+// push-pin colours (one per card)
+const PINS = ['#c0476a', '#3f6fa0', '#d6a93e', '#5a8a5a', '#8a5a8f', '#c97b3f'];
+const liStyle = (i: number) => `--i:${i}; --d:${(i % 3) * 70}ms; --pin:${PINS[i % PINS.length]};`;
 type Img = { src: string; label: string };
 function pieceImages(piece: { final?: string; rendering?: string; progress?: string[]; swatches?: string[] }): Img[] {
   const out: Img[] = [];
@@ -38,34 +41,39 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     <p data-reveal style="--d:80ms">Research, illustration, and construction. Each tag is a production — pull one off the rail to see the finished looks alongside the renderings and the work behind them.</p>
   </section>
 
-  <!-- Project cards: the costume image, with an oak garment-tag pinned on it -->
+  <!-- Cork board: costume photos tacked on, each with an oak garment-tag -->
   <section class="container rail-wrap">
-    <ul class="rack">
-      {projects.map((p, i) => (
-        <li class="proj-li" data-reveal style={`--i:${i}; --d:${(i % 3) * 70}ms`}>
-          <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
-            <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
-            <span class="garment-tag" style={knotStyle(i)}>
+    <div class="corkboard">
+      <div class="tape-measure" aria-hidden="true"></div>
+      <ul class="rack">
+        {projects.map((p, i) => (
+          <li class="proj-li" data-reveal style={liStyle(i)}>
+            <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
+              <span class="pin" aria-hidden="true"></span>
+              <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" /></span>
+              <span class="garment-tag" style={knotStyle(i)}>
+                <span class="gt-knot"><Fragment set:html={knot} /></span>
+                <span class="gt-hole" aria-hidden="true"></span>
+                <span class="gt-show hand">{p.show}</span>
+                <span class="gt-year stamp">{p.kind === 'paper' ? `Paper · ${p.year}` : p.year}</span>
+              </span>
+            </button>
+          </li>
+        ))}
+        <li class="proj-li" data-reveal style={liStyle(projects.length)}>
+          <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
+            <span class="pin" aria-hidden="true"></span>
+            <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
+            <span class="garment-tag" style={knotStyle(projects.length)}>
               <span class="gt-knot"><Fragment set:html={knot} /></span>
               <span class="gt-hole" aria-hidden="true"></span>
-              <span class="gt-show hand">{p.show}</span>
-              <span class="gt-year stamp">{p.kind === 'paper' ? `Paper · ${p.year}` : p.year}</span>
+              <span class="gt-show hand">{upcoming.show}</span>
+              <span class="gt-year stamp">{upcoming.date}</span>
             </span>
           </button>
         </li>
-      ))}
-      <li class="proj-li" data-reveal style={`--i:${projects.length}; --d:${(projects.length % 3) * 70}ms`}>
-        <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
-          <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
-          <span class="garment-tag" style={knotStyle(projects.length)}>
-            <span class="gt-knot"><Fragment set:html={knot} /></span>
-            <span class="gt-hole" aria-hidden="true"></span>
-            <span class="gt-show hand">{upcoming.show}</span>
-            <span class="gt-year stamp">{upcoming.date}</span>
-          </span>
-        </button>
-      </li>
-    </ul>
+      </ul>
+    </div>
     {site.social.instagram && (
       <p class="rack-more" data-reveal>More productions on <a href={site.social.instagram} target="_blank" rel="noopener">Instagram ↗</a></p>
     )}
@@ -148,13 +156,46 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 </BaseLayout>
 
 <style>
-  /* ---------- PROJECT CARDS (cover image + pinned garment tag) ---------- */
+  /* ---------- CORK BOARD + PROJECT CARDS ---------- */
   .rail-wrap { position: relative; padding-block: 1rem clamp(3rem, 7vw, 5rem); }
-  .rack { list-style: none; margin: 0; padding: 0; display: grid;
-    grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+
+  .corkboard {
+    position: relative; border-radius: 4px;
+    padding: clamp(3.25rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem) clamp(2rem, 5vw, 3.25rem);
+    background-color: #bd8a52;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)' opacity='0.24'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    border: 15px solid #5e3f22;
+    border-image: linear-gradient(135deg, #7c5631, #422b13 38%, #6e4c2a 60%, #3a2610) 1;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.3), inset 0 0 75px rgba(66,40,14,.55), 0 22px 50px rgba(0,0,0,.55);
+  }
+  /* a sewing tape-measure draped along the top (the "ruler edge") */
+  .tape-measure {
+    position: absolute; top: 14px; left: 22px; right: 22px; height: 26px; z-index: 1;
+    background-color: #ecdfbe; border-radius: 2px; transform: rotate(-0.7deg);
+    box-shadow: 0 3px 8px rgba(0,0,0,.45), inset 0 0 0 1px rgba(120,96,52,.35);
+    background-image:
+      repeating-linear-gradient(90deg, #2f2616 0 1.4px, transparent 1.4px 33px),
+      repeating-linear-gradient(90deg, #6a5836 0 1px, transparent 1px 6.6px);
+    background-size: 100% 100%, 100% 58%;
+    background-repeat: repeat-x, repeat-x;
+    background-position: top left, top left;
+  }
+  @media (max-width: 480px) { .tape-measure { display: none; } }
+
+  .rack { list-style: none; margin: 0; padding: 0; display: grid; position: relative; z-index: 1;
+    grid-template-columns: repeat(3, 1fr); gap: clamp(1.75rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.5rem); }
   @media (max-width: 760px) { .rack { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 480px) { .rack { grid-template-columns: 1fr; } }
   .proj-li { list-style: none; }
+
+  /* push-pin tacking each photo to the board */
+  .pin { position: absolute; top: 9px; right: 15px; z-index: 4; width: 17px; height: 17px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, rgba(255,255,255,.9), var(--pin, #c0476a) 55%,
+      color-mix(in srgb, var(--pin, #c0476a) 58%, #000) 100%);
+    box-shadow: 0 4px 6px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.3); }
+  .pin::after { content: ''; position: absolute; top: 64%; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 6px; background: linear-gradient(#bbb, #777); border-radius: 0 0 1px 1px; }
 
   .proj-card { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
   .proj-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
