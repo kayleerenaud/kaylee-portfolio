@@ -6,12 +6,10 @@ import { site, pages, pageHref } from '../config/site';
 const SKETCHES: Record<string, string> = {
   about: 'star', film: 'clapper', costume: 'thread', writing: 'book', contact: 'heart',
 };
-// tour the work, then END at About — the thread arrows into it
-const ORDER = ['film', 'costume', 'writing', 'contact', 'about'];
-const nodes = ORDER.map((slug, i) => {
-  const p = pages.find((x) => x.slug === slug)!;
-  return { ...p, sketch: SKETCHES[slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' };
-});
+// About → Film → Costume → Writing → Contact; the thread ends with an arrow into Contact
+const nodes = pages
+  .filter((p) => p.slug !== '')
+  .map((p, i) => ({ ...p, sketch: SKETCHES[p.slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' }));
 ---
 <BaseLayout current="">
   <!-- hand-drawn filters: kr-pencil (grainy, for doodles + card edges),
@@ -92,13 +90,13 @@ const nodes = ORDER.map((slug, i) => {
   .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
   /* drawn red tacks (organic, hand-drawn blobs) */
-  .tack, .start-tack {
-    position: absolute; width: 17px; height: 17px; background: #c8463c;
+  .tack {
+    position: absolute; top: -9px; left: 50%; width: 17px; height: 17px; background: #c8463c;
     border-radius: 49% 51% 53% 47%; filter: url(#kr-rough);
+    transform: translateX(-50%) rotate(calc(var(--i) * 40deg));
   }
-  .tack { top: -9px; left: 50%; transform: translateX(-50%) rotate(calc(var(--i) * 40deg)); }
-  /* the thread's starting point, tucked just under the "follow the thread" cue */
-  .start-tack { top: -8px; left: clamp(0.5rem, 4vw, 2.5rem); z-index: 1; }
+  /* invisible origin point — just shifts where the thread begins (no tack) */
+  .start-tack { position: absolute; top: -6px; left: clamp(0.5rem, 4vw, 2.5rem); width: 1px; height: 1px; }
 
   .card-doodle { display: block; width: clamp(46px, 7vw, 62px); margin-bottom: .4rem; --sketch-ink: var(--accent); }
   .card-label { display: block; font-family: var(--font-hand); font-weight: 700; line-height: 1;
@@ -123,8 +121,9 @@ const nodes = ORDER.map((slug, i) => {
       let d = `M ${p[0].x.toFixed(1)} ${p[0].y.toFixed(1)}`;
       for (let i = 0; i < p.length - 1; i++) {
         const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
-        const c1x = p1.x + (p2.x - p0.x) / 6, c1y = p1.y + (p2.y - p0.y) / 6;
-        const c2x = p2.x - (p3.x - p1.x) / 6, c2y = p2.y - (p3.y - p1.y) / 6;
+        /* /9 (tighter than the usual /6) so the curve hugs the points and turns right at each tack */
+        const c1x = p1.x + (p2.x - p0.x) / 9, c1y = p1.y + (p2.y - p0.y) / 9;
+        const c2x = p2.x - (p3.x - p1.x) / 9, c2y = p2.y - (p3.y - p1.y) / 9;
         d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
       }
       return d;
