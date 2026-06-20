@@ -11,22 +11,10 @@ const nodes = pages
   .filter((p) => p.slug !== '')
   .map((p, i) => ({ ...p, sketch: SKETCHES[p.slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' }));
 
-// --- HERO WATERCOLOR REEL (prototype) -------------------------------------
-// A soft "watercolor transfer" blob, generated procedurally: a white ellipse
-// pushed through turbulence + blur so its edge feathers like pigment bleeding
-// into wet paper. Used as a CSS mask whose SIZE animates small->large = bleed-in.
-// A wide blob (sides overflow off-canvas so it stays seamless edge-to-edge),
-// whose top + bottom edges shatter into fine dendritic "ink-bleed" tendrils:
-// coarse turbulence makes the big lobes, a finer layer adds the capillary hairs,
-// then an alpha threshold keeps the thin tendrils opaque (a plain blur would just
-// smear them into a soft fade). Grown from the centre, it bleeds out radially.
-// NB: this is only the SSR fallback — the client regenerates it with a fresh
-// random seed on every appearance so no two bleeds share the same edge.
-const wcBlob = (seed: number) =>
-  'data:image/svg+xml,' +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" preserveAspectRatio="none"><filter id="f" x="-15%" y="-35%" width="130%" height="180%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="3" seed="${seed}" result="c"/><feDisplacementMap in="SourceGraphic" in2="c" scale="84" result="d1"/><feTurbulence type="turbulence" baseFrequency="0.05 0.11" numOctaves="3" seed="${seed + 5}" result="h"/><feDisplacementMap in="d1" in2="h" scale="38" result="d2"/><feGaussianBlur in="d2" stdDeviation="0.6" result="b"/><feComponentTransfer in="b"><feFuncA type="linear" slope="2.6" intercept="-0.3"/></feComponentTransfer></filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`
-  );
+// --- HERO REEL (prototype) ------------------------------------------------
+// A sleek cross-dissolve between a few photos behind the name; soft-edged in CSS
+// so each melts into the black. (Watercolor-bleed edges were tried and parked —
+// revisit if we source a proper free watercolor-transition asset.)
 // PLACEHOLDER imagery (random stand-ins) — swap for real stills/renderings/pages.
 const reelSlides = [
   { img: 'https://picsum.photos/seed/kr-film-a/1280/860', tag: 'Film · Still', seed: 4 },
@@ -59,7 +47,7 @@ const reelSlides = [
   <section class="hero container">
     <div class="reel" data-reel aria-hidden="true">
       {reelSlides.map((s) => (
-        <div class="reel-slide" style={`--img:url('${s.img}'); --wc:url("${wcBlob(s.seed)}")`}>
+        <div class="reel-slide" style={`--img:url('${s.img}')`}>
           <span class="reel-tag">{s.tag}</span>
         </div>
       ))}
@@ -96,42 +84,26 @@ const reelSlides = [
   .hero { position: relative; min-height: 84vh; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(3rem, 9vw, 7rem) 0; }
   .hero-copy { position: relative; z-index: 2; }
 
-  /* ---------- HERO WATERCOLOR REEL (prototype) ----------
-     Each slide is a tinted photo masked by a feathered turbulence blob; the
-     mask GROWS to "bleed" the image through the page, then holds (never fully
-     un-bleeds — outgoing slide just fades while the next bleeds in over it). */
+  /* ---------- HERO REEL (prototype) ----------
+     A sleek cross-dissolve of soft-edged photos behind the name. Each slide is a
+     muted dark wash with feathered (radial-mask) edges so it melts into the black;
+     the .in opacity transition does the dissolve, with a barely-there slow drift. */
   /* full-bleed: break out of the centered container so the band runs edge-to-edge */
   .reel { position: absolute; top: clamp(-1.5rem, -4vw, -3rem); bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: 0; overflow: visible; pointer-events: none; }
   .reel-slide {
     position: absolute; inset: 0; opacity: 0;
-    background-image: var(--img); background-size: cover; background-position: center 38%;
+    background-image: var(--img); background-size: cover; background-position: center 40%;
     /* a muted dark wash so it dissolves into the black, never fights the name */
-    filter: grayscale(.32) contrast(.96) brightness(.62);
-    -webkit-mask-image: var(--wc); mask-image: var(--wc);
-    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-    /* centred on the title; grows radially from a point so it bleeds OUTWARD */
-    -webkit-mask-position: center; mask-position: center;
-    -webkit-mask-size: 14% 14%; mask-size: 14% 14%;
-    will-change: opacity, mask-size, transform;
+    filter: grayscale(.3) contrast(.96) brightness(.6);
+    /* soft feathered edges so the photo melts into the black — no hard box */
+    -webkit-mask-image: radial-gradient(ellipse 84% 78% at 50% 46%, #000 44%, transparent 92%);
+    mask-image: radial-gradient(ellipse 84% 78% at 50% 46%, #000 44%, transparent 92%);
+    transition: opacity 2.6s ease;
+    will-change: opacity, transform;
   }
-  .reel-slide.in {
-    opacity: .5;
-    -webkit-mask-size: 104% 112%; mask-size: 104% 112%;
-    transition: opacity 2.4s ease, mask-size 3.6s cubic-bezier(.22,.68,.2,1), -webkit-mask-size 3.6s cubic-bezier(.22,.68,.2,1);
-    animation: wc-wobble 9s ease-in-out infinite;
-  }
-  .reel-slide.out {
-    opacity: 0;
-    -webkit-mask-size: 104% 112%; mask-size: 104% 112%;
-    /* DELAY the fade so the old photo lingers under the incoming bleed, then
-       clears once it has soaked over — keeps a moment of a single clean image */
-    transition: opacity 2.4s ease 2.4s;
-  }
-  /* a watercolor "wobble": a slow shimmer of the wet pigment, never a hard move */
-  @keyframes wc-wobble {
-    0%, 100% { transform: scale(1.004) translate(0, 0); }
-    50%      { transform: scale(1.013) translate(.3%, .25%); }
-  }
+  /* sleek cross-dissolve + a barely-there slow drift so it feels alive, not static */
+  .reel-slide.in { opacity: .5; animation: kb 14s ease-out forwards; }
+  @keyframes kb { from { transform: scale(1.005); } to { transform: scale(1.055); } }
   /* no tint, no scrim box — the fingered blot just dissolves into the black bg.
      Title legibility is handled by the text-shadow on .brand-name / .lede. */
   .reel-tag {
@@ -198,68 +170,21 @@ const reelSlides = [
 </style>
 
 <script>
-  // --- hero watercolor reel: bleed one slide in, hold, then bleed the next ---
+  // --- hero reel: sleek cross-dissolve between photos (soft-edged so they melt
+  //     into the black; the fade comes from the .in opacity transition in CSS) ---
   const reel = document.querySelector<HTMLElement>('[data-reel]');
   if (reel) {
     const slides = Array.from(reel.querySelectorAll<HTMLElement>('.reel-slide'));
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // build a fresh watercolor-bleed mask with a RANDOM seed + slightly varied
-    // displacement each call, so every appearance has a unique organic edge
-    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-    const wcMask = () => {
-      const s1 = Math.floor(Math.random() * 9000) + 1;
-      const s2 = Math.floor(Math.random() * 9000) + 1;
-      const sc1 = Math.round(rnd(74, 96));   // coarse lobe displacement
-      const sc2 = Math.round(rnd(32, 46));   // fine capillary hairs
-      const bf = rnd(0.046, 0.058).toFixed(3);
-      const svg =
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" preserveAspectRatio="none">` +
-        `<filter id="f" x="-15%" y="-35%" width="130%" height="180%" color-interpolation-filters="sRGB">` +
-        `<feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="3" seed="${s1}" result="c"/>` +
-        `<feDisplacementMap in="SourceGraphic" in2="c" scale="${sc1}" result="d1"/>` +
-        `<feTurbulence type="turbulence" baseFrequency="${bf} 0.11" numOctaves="3" seed="${s2}" result="h"/>` +
-        `<feDisplacementMap in="d1" in2="h" scale="${sc2}" result="d2"/>` +
-        `<feGaussianBlur in="d2" stdDeviation="0.6" result="b"/>` +
-        `<feComponentTransfer in="b"><feFuncA type="linear" slope="2.6" intercept="-0.3"/></feComponentTransfer>` +
-        `</filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`;
-      return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-    };
-    const freshBleed = (el: HTMLElement) => {
-      const m = wcMask();
-      el.style.setProperty('-webkit-mask-image', m);
-      el.style.setProperty('mask-image', m);
-    };
-    // bleed a slide in: fresh edge, a RANDOM origin point (the bleed grows from
-    // there), and a z-index that puts it on top of the photo still showing — so
-    // it soaks INTO the old image instead of re-opening from the same place. The
-    // outgoing photo's fade is DELAYED (see .out CSS) so it lingers underneath
-    // through the bleed, then quietly clears once the new one has covered it.
-    let z = 1;
-    const origin = (centred: boolean) =>
-      centred ? '50% 50%'
-              : `${Math.round(rnd(22, 78))}% ${Math.round(rnd(30, 70))}%`;
-    const bleedIn = (el: HTMLElement, centred: boolean) => {
-      const pos = origin(centred);
-      el.style.setProperty('-webkit-mask-position', pos);
-      el.style.setProperty('mask-position', pos);
-      freshBleed(el);                       // unique edge for this appearance
-      el.style.zIndex = String(++z);        // newest photo on top
-      el.classList.remove('out');           // snap mask back to its origin point
-      void el.offsetWidth;                  // reflow so the bleed re-runs
-      el.classList.add('in');
-    };
-
     if (slides.length) {
       let i = 0;
-      bleedIn(slides[0], true);              // first = a full opening from centre
+      slides[0].classList.add('in');
       if (!reduce && slides.length > 1) {
         setInterval(() => {
-          slides[i].classList.remove('in');
-          slides[i].classList.add('out');    // lingers, then fades (delayed)
+          slides[i].classList.remove('in');     // fade current out
           i = (i + 1) % slides.length;
-          bleedIn(slides[i], false);         // rest = random-origin bleed-ins
-        }, 5600);
+          slides[i].classList.add('in');        // fade next in (cross-dissolve)
+        }, 5200);
       }
     }
   }
