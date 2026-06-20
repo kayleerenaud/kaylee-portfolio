@@ -61,7 +61,6 @@ const reelSlides = [
           <span class="reel-tag">{s.tag}</span>
         </div>
       ))}
-      <div class="reel-tint" aria-hidden="true"></div>
     </div>
     <div class="hero-copy">
       <p class="kicker" data-reveal>Portfolio</p>
@@ -104,8 +103,8 @@ const reelSlides = [
   .reel-slide {
     position: absolute; inset: 0; opacity: 0;
     background-image: var(--img); background-size: cover; background-position: center 38%;
-    /* wash the photo into the charcoal/pink palette so it never fights the name */
-    filter: grayscale(.4) contrast(.92) brightness(.6) sepia(.1);
+    /* a muted dark wash so it dissolves into the black, never fights the name */
+    filter: grayscale(.32) contrast(.96) brightness(.62);
     -webkit-mask-image: var(--wc); mask-image: var(--wc);
     -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
     /* centred on the title; grows radially from a point so it bleeds OUTWARD */
@@ -129,15 +128,8 @@ const reelSlides = [
     0%, 100% { transform: scale(1.004) translate(0, 0); }
     50%      { transform: scale(1.013) translate(.3%, .25%); }
   }
-  /* unify into the brand hue — let the wash read as our usual accent gradient */
-  .reel-tint { position: absolute; inset: 0; background: var(--accent); mix-blend-mode: color; opacity: .3; }
-  /* NO panel/scrim box — the blot is fingered on all sides and simply dissolves
-     into the black background. A soft radial keeps the title legible without a
-     visible edge (transparent behind the text, fading to nothing). */
-  .reel::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(120% 130% at 30% 50%, color-mix(in srgb, var(--bg) 55%, transparent) 0%, transparent 46%);
-  }
+  /* no tint, no scrim box — the fingered blot just dissolves into the black bg.
+     Title legibility is handled by the text-shadow on .brand-name / .lede. */
   .reel-tag {
     position: absolute; right: clamp(.8rem, 4vw, 2.5rem); top: 50%;
     font-family: var(--font-mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase;
