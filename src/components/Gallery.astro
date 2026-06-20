@@ -303,7 +303,7 @@ const isStrip = layout === 'strip';
       #lightbox .lb-prev:hover, #lightbox .lb-next:hover { transform: translateY(-50%) scale(1.06); }
       #lightbox .lb-prev { left:1rem; } #lightbox .lb-next { right:1rem; }
       #lightbox.is-single .lb-prev, #lightbox.is-single .lb-next { display:none; }
-      @media (max-width:560px){ #lightbox .lb-prev{ left:.4rem } #lightbox .lb-next{ right:.4rem } #lightbox .lb-img{ max-height:64vh } }
+      @media (max-width:560px){ #lightbox .lb-prev, #lightbox .lb-next{ top:auto; bottom:1.4rem; transform:none } #lightbox .lb-prev:hover, #lightbox .lb-next:hover{ transform:scale(1.06) } #lightbox .lb-prev{ left:1.4rem } #lightbox .lb-next{ right:1.4rem } #lightbox .lb-img{ max-height:58vh } #lightbox .lb-cap{ max-width:calc(100vw - 2.5rem) } }
     `;
     document.head.appendChild(style);
 
