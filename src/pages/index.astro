@@ -10,6 +10,23 @@ const SKETCHES: Record<string, string> = {
 const nodes = pages
   .filter((p) => p.slug !== '')
   .map((p, i) => ({ ...p, sketch: SKETCHES[p.slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' }));
+
+// --- HERO WATERCOLOR REEL (prototype) -------------------------------------
+// A soft "watercolor transfer" blob, generated procedurally: a white ellipse
+// pushed through turbulence + blur so its edge feathers like pigment bleeding
+// into wet paper. Used as a CSS mask whose SIZE animates small->large = bleed-in.
+const wcBlob = (seed: number) =>
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200"><filter id="f" x="-45%" y="-45%" width="190%" height="190%"><feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="3" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="92"/><feGaussianBlur stdDeviation="7"/></filter><g filter="url(#f)"><ellipse cx="120" cy="100" rx="94" ry="80" fill="#ffffff"/></g></svg>`
+  );
+// PLACEHOLDER imagery (random stand-ins) — swap for real stills/renderings/pages.
+const reelSlides = [
+  { img: 'https://picsum.photos/seed/kr-film-a/1280/860', tag: 'Film · Still', seed: 4 },
+  { img: 'https://picsum.photos/seed/kr-costume-b/1280/860', tag: 'Costume · Rendering', seed: 11 },
+  { img: 'https://picsum.photos/seed/kr-set-c/1280/860', tag: 'Film · On set', seed: 2 },
+  { img: 'https://picsum.photos/seed/kr-writing-d/1280/860', tag: 'Writing · Page', seed: 8 },
+];
 ---
 <BaseLayout current="">
   <!-- hand-drawn filters: kr-pencil (grainy, for doodles + card edges),
@@ -31,10 +48,20 @@ const nodes = pages
   </svg>
 
   <section class="hero container">
-    <p class="kicker" data-reveal>Portfolio</p>
-    <h1 class="brand-name" data-reveal style="--d:60ms">{site.brand}</h1>
-    <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
-    <p class="follow" data-reveal style="--d:240ms">Follow the thread&nbsp;↓</p>
+    <div class="reel" data-reel aria-hidden="true">
+      {reelSlides.map((s) => (
+        <div class="reel-slide" style={`--img:url('${s.img}'); --wc:url("${wcBlob(s.seed)}")`}>
+          <span class="reel-tag">{s.tag}</span>
+        </div>
+      ))}
+      <div class="reel-tint" aria-hidden="true"></div>
+    </div>
+    <div class="hero-copy">
+      <p class="kicker" data-reveal>Portfolio</p>
+      <h1 class="brand-name" data-reveal style="--d:60ms">{site.brand}</h1>
+      <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
+      <p class="follow" data-reveal style="--d:240ms">Follow the thread&nbsp;↓</p>
+    </div>
   </section>
 
   <section class="map" aria-label="Explore the portfolio">
@@ -58,7 +85,58 @@ const nodes = pages
 <style>
   .kr-defs { position: absolute; }
 
-  .hero { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(3rem, 9vw, 7rem) 0; }
+  .hero { position: relative; min-height: 84vh; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(3rem, 9vw, 7rem) 0; }
+  .hero-copy { position: relative; z-index: 2; }
+
+  /* ---------- HERO WATERCOLOR REEL (prototype) ----------
+     Each slide is a tinted photo masked by a feathered turbulence blob; the
+     mask GROWS to "bleed" the image through the page, then holds (never fully
+     un-bleeds — outgoing slide just fades while the next bleeds in over it). */
+  .reel { position: absolute; inset: clamp(-1rem, -3vw, -2.5rem) 0; z-index: 0; overflow: visible; pointer-events: none; }
+  .reel-slide {
+    position: absolute; inset: 0; opacity: 0;
+    background-image: var(--img); background-size: cover; background-position: center;
+    /* wash the photo into the charcoal/pink palette so it never fights the name */
+    filter: grayscale(.4) contrast(.92) brightness(.6) sepia(.1);
+    -webkit-mask-image: var(--wc); mask-image: var(--wc);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: 9% 9%; mask-size: 9% 9%;
+    will-change: opacity, mask-size, transform;
+  }
+  .reel-slide.in {
+    opacity: .5;
+    -webkit-mask-size: 168% 168%; mask-size: 168% 168%;
+    transition: opacity 2.4s ease, mask-size 3.4s cubic-bezier(.22,.68,.2,1), -webkit-mask-size 3.4s cubic-bezier(.22,.68,.2,1);
+    animation: wc-wobble 8.5s ease-in-out infinite;
+  }
+  .reel-slide.out {
+    opacity: 0;
+    -webkit-mask-size: 168% 168%; mask-size: 168% 168%;
+    transition: opacity 3s ease;
+  }
+  /* a watercolor "wobble": a slow shimmer of the wet edge, never a hard move */
+  @keyframes wc-wobble {
+    0%, 100% { transform: scale(1) translate(0, 0); -webkit-mask-position: 50% 50%; mask-position: 50% 50%; }
+    50%      { transform: scale(1.018) translate(.5%, -.4%); -webkit-mask-position: 47% 52%; mask-position: 47% 52%; }
+  }
+  /* unify into the brand hue */
+  .reel-tint { position: absolute; inset: 0; background: var(--accent); mix-blend-mode: color; opacity: .22; }
+  /* legibility scrim: darkest at left (under the name), image breathes to the right */
+  .reel::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--bg) 88%, transparent) 0%, color-mix(in srgb, var(--bg) 52%, transparent) 52%, transparent 100%),
+      linear-gradient(0deg, var(--bg) 2%, transparent 38%, transparent 80%, color-mix(in srgb, var(--bg) 70%, transparent) 100%);
+  }
+  .reel-tag {
+    position: absolute; right: clamp(.6rem, 3vw, 1.5rem); bottom: clamp(.6rem, 3vw, 1.4rem);
+    font-family: var(--font-mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 60%, #fff); opacity: 0; transition: opacity 1.4s ease;
+  }
+  .reel-slide.in .reel-tag { opacity: .85; }
+  @media (max-width: 720px) { .reel-slide { filter: grayscale(.45) contrast(.9) brightness(.5) sepia(.1); } .reel-slide.in { opacity: .42; } }
+  @media (prefers-reduced-motion: reduce) { .reel-slide.in { animation: none; } }
   .kicker { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; }
   .brand-name { font-size: clamp(2.8rem, 10vw, 6.5rem); line-height: 0.95; margin: 0; }
   .lede { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: var(--ink-soft); max-width: 44ch; margin: 1rem 0 0; }
@@ -115,6 +193,28 @@ const nodes = pages
 </style>
 
 <script>
+  // --- hero watercolor reel: bleed one slide in, hold, then bleed the next ---
+  const reel = document.querySelector<HTMLElement>('[data-reel]');
+  if (reel) {
+    const slides = Array.from(reel.querySelectorAll<HTMLElement>('.reel-slide'));
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (slides.length) {
+      let i = 0;
+      slides[0].classList.add('in');
+      if (!reduce && slides.length > 1) {
+        setInterval(() => {
+          slides[i].classList.remove('in');
+          slides[i].classList.add('out');
+          i = (i + 1) % slides.length;
+          const next = slides[i];
+          next.classList.remove('out');   // snap mask back to small
+          void next.offsetWidth;          // reflow so the bleed re-runs
+          next.classList.add('in');
+        }, 5600);
+      }
+    }
+  }
+
   const map = document.querySelector<HTMLElement>('.map');
   const svg = map?.querySelector<SVGSVGElement>('.thread');
   const path = svg?.querySelector('path');
