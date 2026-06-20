@@ -65,7 +65,7 @@ export const videos = [
     title: "Together, I'm Pieces",
     meta: 'Documentary · Honorable Mention, Fusion Film Festival 2026 · Official Selection, WinterFest 2025',
     blurb:
-      "An auto-documentary. I sit down with my three parents to ask how they raised me across the political and religious spectrum, and kept love at the center. They agree on nothing, except (inconveniently) me.",
+      "An auto-documentary. I sit down with my three parents to ask how they raised me across the political and religious spectrum, and kept love at the center. No tables were flipped in the making of this film.",
   },
   {
     id: 's1aRxygTD6s',
@@ -79,6 +79,6 @@ export const videos = [
     title: 'Elli',
     meta: 'Documentary · Archival short',
     blurb:
-      "A short archival portrait of Elli, a concentration camp survivor, told in the words of her daughter Dianna, and voiced by me: Dianna's granddaughter, and Elli's great-granddaughter. Three generations carrying a single voice.",
+      "A short archival portrait of Elli, a concentration camp survivor, told in the words of her daughter Dianna, and voiced by me: Dianna's granddaughter, and Elli's great-granddaughter. Three generations carry a single voice.",
   },
 ];
