@@ -52,6 +52,7 @@ const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
 
   <button type="submit" class="btn">Send message</button>
 
+  <p class="form-status" role="status" aria-live="polite" hidden></p>
   <p class="fallback">Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a></p>
 </form>
 
@@ -72,5 +73,47 @@ const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
     padding: 0.7rem 1.4rem; border-radius: var(--radius); font-size: 1rem; cursor: pointer;
   }
   .btn:hover { filter: brightness(1.05); }
+  .btn[disabled] { opacity: .6; cursor: progress; }
+  .form-status { margin: 0; padding: .75rem 1rem; border-radius: var(--radius); font-size: .95rem; }
+  .form-status.ok { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); border: 1px solid var(--accent); color: var(--ink); }
+  .form-status.err { background: color-mix(in srgb, #c0564a 14%, var(--surface)); border: 1px solid #c0564a; color: var(--ink); }
   .fallback { font-size: 0.9rem; color: var(--ink-soft); margin: 0.25rem 0 0; }
 </style>
+
+<script>
+  // Submit via fetch so the visitor stays on the page and sees an inline
+  // confirmation (instead of being redirected to Formspree's thank-you page).
+  document.querySelectorAll<HTMLFormElement>('form.contact').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status');
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const setStatus = (msg: string, kind: 'ok' | 'err') => {
+      if (!status) return;
+      status.textContent = msg; status.hidden = false;
+      status.classList.remove('ok', 'err'); status.classList.add(kind);
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return; // honeypot: silently drop bots
+      if (btn) btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST', body: data, headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.reset();
+          setStatus("Thank you — your message is on its way. I'll get back to you soon!", 'ok');
+        } else {
+          const j = await res.json().catch(() => null);
+          const m = j?.errors?.map((x: { message: string }) => x.message).join(', ');
+          setStatus(m || 'Something went wrong sending that. Please try again, or email me directly.', 'err');
+        }
+      } catch {
+        setStatus('Network error — please try again, or email me directly.', 'err');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  });
+</script>

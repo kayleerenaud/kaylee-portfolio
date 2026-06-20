@@ -12,9 +12,8 @@ export const site = {
   // A short tagline shown on the home page + in search results.
   tagline: 'Film · Costume · Writing',
 
-  // Where the contact form delivers. See src/pages/contact.astro for setup.
-  // Paste your Formspree form ID here once you create a (free) account.
-  formspreeId: 'YOUR_FORM_ID',
+  // Where the contact form delivers (Formspree form ID).
+  formspreeId: 'xojzgpdg',
 
   // Direct email shown on the contact page as a fallback.
   // (Once you own kayleerenaud.com you can switch this to hello@kayleerenaud.com.)
