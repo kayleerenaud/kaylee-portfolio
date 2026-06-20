@@ -33,6 +33,8 @@ const reelSlides = [
   { img: 'https://picsum.photos/seed/kr-costume-b/1280/860', tag: 'Costume · Rendering', seed: 11 },
   { img: 'https://picsum.photos/seed/kr-set-c/1280/860', tag: 'Film · On set', seed: 2 },
   { img: 'https://picsum.photos/seed/kr-writing-d/1280/860', tag: 'Writing · Page', seed: 8 },
+  { img: 'https://picsum.photos/seed/kr-costume-e/1280/860', tag: 'Costume · Fitting', seed: 15 },
+  { img: 'https://picsum.photos/seed/kr-film-f/1280/860', tag: 'Film · Frame', seed: 21 },
 ];
 ---
 <BaseLayout current="">
@@ -121,7 +123,9 @@ const reelSlides = [
   .reel-slide.out {
     opacity: 0;
     -webkit-mask-size: 104% 112%; mask-size: 104% 112%;
-    transition: opacity 3s ease;
+    /* DELAY the fade so the old photo lingers under the incoming bleed, then
+       clears once it has soaked over — keeps a moment of a single clean image */
+    transition: opacity 2.4s ease 2.4s;
   }
   /* a watercolor "wobble": a slow shimmer of the wet pigment, never a hard move */
   @keyframes wc-wobble {
@@ -221,26 +225,35 @@ const reelSlides = [
         `</filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`;
       return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
     };
-    const freshBleed = (el: HTMLElement) => {
-      const m = wcMask();
-      el.style.setProperty('-webkit-mask-image', m);
-      el.style.setProperty('mask-image', m);
+    // bleed a slide in: fresh edge, a RANDOM origin point (the bleed grows from
+    // there), and a z-index that puts it on top of the photo still showing — so
+    // it soaks INTO the old image instead of re-opening from the same place. The
+    // outgoing photo's fade is DELAYED (see .out CSS) so it lingers underneath
+    // through the bleed, then quietly clears once the new one has covered it.
+    let z = 1;
+    const origin = (centred: boolean) =>
+      centred ? '50% 50%'
+              : `${Math.round(rnd(22, 78))}% ${Math.round(rnd(30, 70))}%`;
+    const bleedIn = (el: HTMLElement, centred: boolean) => {
+      const pos = origin(centred);
+      el.style.setProperty('-webkit-mask-position', pos);
+      el.style.setProperty('mask-position', pos);
+      freshBleed(el);                       // unique edge for this appearance
+      el.style.zIndex = String(++z);        // newest photo on top
+      el.classList.remove('out');           // snap mask back to its origin point
+      void el.offsetWidth;                  // reflow so the bleed re-runs
+      el.classList.add('in');
     };
 
     if (slides.length) {
       let i = 0;
-      freshBleed(slides[0]);
-      slides[0].classList.add('in');
+      bleedIn(slides[0], true);              // first = a full opening from centre
       if (!reduce && slides.length > 1) {
         setInterval(() => {
           slides[i].classList.remove('in');
-          slides[i].classList.add('out');
+          slides[i].classList.add('out');    // lingers, then fades (delayed)
           i = (i + 1) % slides.length;
-          const next = slides[i];
-          next.classList.remove('out');   // snap mask back to small
-          freshBleed(next);               // unique edge for this appearance
-          void next.offsetWidth;          // reflow so the bleed re-runs
-          next.classList.add('in');
+          bleedIn(slides[i], false);         // rest = random-origin bleed-ins
         }, 5600);
       }
     }
