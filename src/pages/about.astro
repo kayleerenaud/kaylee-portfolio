@@ -39,6 +39,7 @@ import { site, pageHref } from '../config/site';
   <section class="blurb-section">
     <div class="container blurb-inner">
       {blurb.map((p, i) => <p class="blurb-p" data-reveal style={`--d:${i * 80}ms`} set:html={p} />)}
+      <img class="signature" src="/signature.png" alt="Kaylee Renaud's signature" data-reveal style="--d:120ms" />
     </div>
   </section>
 
@@ -102,6 +103,7 @@ import { site, pageHref } from '../config/site';
   .blurb-section { position: relative; }
   .blurb-inner { padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 3.5rem); max-width: 64ch; }
   .blurb-p { font-size: 1.2rem; line-height: 1.75; color: var(--ink); margin: 0 0 1.5rem; }
+  .signature { display: block; width: clamp(170px, 34%, 270px); height: auto; margin: 1.25rem 0 0 auto; opacity: .92; }
   .blurb-p em {
     font-family: var(--font-hand); font-style: normal; font-weight: 600;
     font-size: 1.4em; line-height: 1; color: var(--accent);

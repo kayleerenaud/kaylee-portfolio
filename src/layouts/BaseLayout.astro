@@ -33,7 +33,6 @@ const desc = description ?? site.tagline;
   </head>
   <!-- this page's signature accent; the Atmosphere layer shifts it as you scroll -->
   <body style={`--accent:${page.accent}`}>
-    <div class="paper-grain" aria-hidden="true"></div>
     <Nav current={current} />
     <main id="main">
       <slot />
