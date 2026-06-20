@@ -65,12 +65,12 @@ export const videos = [
     title: "Together, I'm Pieces",
     meta: 'Documentary · Honorable Mention, Fusion Film Festival 2026 · Official Selection, WinterFest 2025',
     blurb:
-      "An auto-documentary. I sit down with my three parents to ask how they raised me across the political and religious spectrum, and kept love at the center. A portrait of a family that agrees on almost nothing except each other.",
+      "An auto-documentary. I sit down with my three parents to ask how they raised me across the political and religious spectrum, and kept love at the center. They agree on nothing, except (inconveniently) me.",
   },
   {
     id: 's1aRxygTD6s',
     title: 'Spirit Temple No. 7',
-    meta: 'Documentary',
+    meta: 'Documentary · Artist portrait',
     blurb:
       "I follow two artists to the furthest edge of New York City, where they're raising a temple out of driftwood and coastal trash. Somewhere between the tide line and the offering, we meet the spirit himself: Chris.",
   },

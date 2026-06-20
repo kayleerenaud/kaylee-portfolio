@@ -7,7 +7,6 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
 <BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
   <section class="container page-intro">
     <h1 data-reveal>Film</h1>
-    <p data-reveal style="--d:80ms">Mostly documentaries: true stories about family, faith, and memory. A narrative comedy is up next.</p>
   </section>
 
   <section class="container">
@@ -16,7 +15,7 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
   </section>
 
   <section class="container videos">
-    <h2 class="section-label hand" data-reveal>Documentary</h2>
+    <h2 class="section-label hand" data-reveal>Made by me</h2>
     {videos.map((v, i) => (
       <article class="video" data-reveal style={`--d:${i * 80}ms`}>
         <YouTube id={v.id} title={v.title} />
