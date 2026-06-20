@@ -51,9 +51,9 @@ export type PageDef = {
 export const pages: PageDef[] = [
   { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#d98a9e', tone: 196.00 },
   { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#b58ac0', tone: 220.00 },
-  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#7e89c2', tone: 174.61 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#8a72c2', tone: 174.61 },
   { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#c8688e', tone: 261.63 },
-  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#d6a06e', tone: 207.65 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#d6926e', tone: 207.65 },
   { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#df8b93', tone: 246.94 },
 ];
 

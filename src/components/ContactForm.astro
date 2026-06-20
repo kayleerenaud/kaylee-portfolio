@@ -58,14 +58,15 @@ const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
 
 <style>
   .contact { max-width: 640px; display: grid; gap: 1.1rem; }
+  .contact > *, .row > * { min-width: 0; }   /* let grid items shrink (no horizontal overflow) */
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
   @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
-  label { display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--ink-soft); }
+  label { display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--ink-soft); min-width: 0; }
   .opt { color: var(--ink-soft); font-weight: 400; }
   input, select, textarea {
     font: inherit; font-size: 1rem; color: var(--ink);
     padding: 0.65rem 0.75rem; border: 1px solid var(--line); border-radius: var(--radius);
-    background: var(--surface); width: 100%;
+    background: var(--surface); width: 100%; min-width: 0; max-width: 100%;
   }
   textarea { resize: vertical; }
   .btn {
