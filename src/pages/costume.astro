@@ -256,7 +256,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     border-radius: 50%; cursor: pointer; transition: background .15s, transform .15s; }
   .panel-prev { left: 1rem; } .panel-next { right: 1rem; }
   @media (hover: hover) { .panel-prev:hover, .panel-next:hover { background: var(--accent); color: var(--on-accent); transform: translateY(-50%) scale(1.06); } }
-  @media (max-width: 560px) { .panel-prev { left: .4rem; } .panel-next { right: .4rem; } }
+  @media (max-width: 560px) { .panel-prev, .panel-next { top: auto; bottom: 1.4rem; transform: none; } .panel-prev { left: 1.4rem; } .panel-next { right: 1.4rem; } }
 
   /* Upcoming overlay — no images, kept cohesive */
   .cs-frame { margin-top: 2rem; min-height: 46vh; display: flex; flex-direction: column;

@@ -140,7 +140,7 @@ import { pieces } from '../data/writing';
   .panel-prev, .panel-next { top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 2rem; }
   .panel-prev { left: 1rem; } .panel-next { right: 1rem; }
   @media (hover: hover) { .panel-prev:hover, .panel-next:hover { transform: translateY(-50%) scale(1.06); } }
-  @media (max-width: 560px) { .panel-prev { left: .4rem; } .panel-next { right: .4rem; } }
+  @media (max-width: 560px) { .panel-prev, .panel-next { top: auto; bottom: 1.4rem; transform: none; } .panel-prev { left: 1.4rem; } .panel-next { right: 1.4rem; } }
 
   .w-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
   @media (max-width: 760px) { .w-grid { grid-template-columns: 1fr; } }
