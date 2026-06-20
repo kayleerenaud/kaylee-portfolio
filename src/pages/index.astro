@@ -43,7 +43,7 @@ const nodes = pages
     <ul class="nodes">
       {nodes.map((n, i) => (
         <li class:list={['node', n.side]} style={`--i:${i}; --accent:${n.accent}`}>
-          <a class="card" href={pageHref(n.slug)} aria-label={n.label} data-reveal>
+          <a class="card" href={pageHref(n.slug)} aria-label={n.label}>
             <span class="tack" aria-hidden="true"></span>
             <span class="card-doodle"><Sketch name={n.sketch} /></span>
             <span class="card-label">{n.label}</span>
@@ -155,6 +155,9 @@ const nodes = pages
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', build, { passive: true });
     build();
-    setTimeout(build, 300); // re-measure after fonts/doodles settle
+    setTimeout(build, 300);
+    // re-measure once the webfonts (Spectral + handwriting) have loaded, since
+    // they reflow the text-heavy cards and shift their tacks
+    if ((document as any).fonts?.ready) (document as any).fonts.ready.then(build);
   }
 </script>
