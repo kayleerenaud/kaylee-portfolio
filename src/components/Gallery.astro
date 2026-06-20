@@ -88,7 +88,7 @@ const isStrip = layout === 'strip';
     --perf-band: 30px;          /* height of each sprocket margin */
     display: flex; grid-template-columns: none; gap: 7px;
     overflow-x: auto; overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
     background-color: var(--film); border-radius: 6px;
     padding: var(--perf-band) 7px;
     /* two perforation rows (top + bottom), one rounded-rect tile repeated-x */
@@ -293,7 +293,7 @@ const isStrip = layout === 'strip';
       #lightbox .lb-img { max-width:92vw; max-height:72vh; width:auto; height:auto; border-radius:4px; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
       #lightbox.is-swap .lb-img { opacity:0; transform: translateY(8px); }
       #lightbox .lb-img { transition: opacity .18s ease, transform .18s ease; }
-      #lightbox .lb-cap { color:#f3efe9; font-size:1.02rem; line-height:1.55; max-width:68ch; text-align:center; padding:0 1rem; }
+      #lightbox .lb-cap { color:#f3efe9; font-size:1.02rem; line-height:1.55; max-width:min(68ch, calc(100vw - 8rem)); text-align:center; padding:0 1rem; }
       #lightbox .lb-cap:empty { display:none; }
       #lightbox .lb-count { color: color-mix(in srgb, var(--accent) 55%, #cfc9c0); font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; }
       #lightbox .lb-btn { position:fixed; color:#fff; background:rgba(0,0,0,.42); border:0; cursor:pointer; border-radius:50%; line-height:1; transition: background .15s, transform .15s; }

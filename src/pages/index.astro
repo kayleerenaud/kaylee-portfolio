@@ -74,7 +74,12 @@ const nodes = pages
   .node { width: min(62%, 460px); }
   .node.left { margin-right: auto; }
   .node.right { margin-left: auto; }
-  @media (max-width: 720px) { .node { width: min(90%, 460px); margin-inline: auto; } }
+  @media (max-width: 720px) {
+    .node { width: min(90%, 460px); margin-inline: auto; }
+    /* cards centre on mobile, so offset the tacks left/right to keep the thread curvy */
+    .node.left .tack { left: 24%; }
+    .node.right .tack { left: 76%; }
+  }
 
   /* a drawn index card */
   .card {
