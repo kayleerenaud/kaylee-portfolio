@@ -28,6 +28,8 @@ import { pieces } from '../data/writing';
         class="leaf" data-reveal data-open={`w-${i}`} role="button" tabindex="0"
         aria-haspopup="dialog" aria-label={`Open ${p.title}`} style={`--i:${i}`}
       >
+        <span class="leaf-rules" aria-hidden="true"></span>
+        <span class="leaf-margin" aria-hidden="true"></span>
         <span class="leaf-holes" aria-hidden="true"></span>
         <span class="leaf-tab">{p.tag}</span>
         <div class="leaf-body">
@@ -66,45 +68,57 @@ import { pieces } from '../data/writing';
   .kr-defs { position: absolute; }
   .leaves { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
 
-  /* a notebook leaf: cream ruled paper, red margin, punched holes (no overflow:hidden —
-     it would trap the doodle's scroll-driven draw) */
+  /* a DRAWN notebook leaf — pencil paper on the dark background (cohesive with
+     the Costume frame + About doodles). No overflow:hidden (it would trap the
+     doodle's scroll-driven draw). */
   .leaf {
-    position: relative; color: #2a2620; border-radius: 4px; cursor: pointer;
+    position: relative; color: var(--ink); cursor: pointer;
     padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 4vw, 2.75rem) 78px;
-    background-color: #f4edd8;
-    background-image:
-      linear-gradient(90deg, transparent 54px, rgba(192,86,74,.32) 54px 56px, transparent 56px),
-      repeating-linear-gradient(#f4edd8 0 31px, rgba(70,108,150,.16) 31px 32px);
-    background-size: 100% 100%, 100% 32px;
-    background-position: 0 0, 0 18px;
-    box-shadow: 0 16px 36px rgba(0,0,0,.45);
     transform: rotate(calc((var(--i) - 1.5) * 0.45deg));
-    transition: transform .25s ease, box-shadow .25s ease;
+    transition: transform .25s ease;
   }
-  @media (hover: hover) { .leaf:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 0 22px 44px rgba(0,0,0,.5); } }
-  .leaf:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  /* the drawn paper edge */
+  .leaf::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    border: 2px solid var(--sketch-ink, #ece6d8); border-radius: 6px;
+    filter: url(#kr-pencil); opacity: .7;
+  }
+  @media (hover: hover) { .leaf:hover { transform: rotate(0deg) translateY(-3px); } }
+  .leaf:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  /* drawn ruled lines */
+  .leaf-rules {
+    position: absolute; inset: 12px 12px 12px 54px; z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(transparent 0 31px, color-mix(in srgb, var(--ink) 26%, transparent) 31px 32px);
+    background-position: 0 18px; filter: url(#kr-pencil); opacity: .55;
+  }
+  /* drawn margin line */
+  .leaf-margin {
+    position: absolute; top: 10px; bottom: 10px; left: 50px; width: 2px; z-index: 0; pointer-events: none;
+    background: color-mix(in srgb, #d06a5e 75%, transparent); filter: url(#kr-pencil); opacity: .7;
+  }
+  /* drawn binder holes (hollow rings) down the left margin */
   .leaf-holes {
-    position: absolute; left: 22px; top: 0; bottom: 0; width: 16px;
-    background-image: radial-gradient(circle at center, var(--bg) 0 6px, transparent 7px);
-    background-size: 16px 58px; background-repeat: repeat-y; background-position: center 34px;
+    position: absolute; left: 22px; top: 12px; bottom: 12px; width: 16px; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle at center, transparent 0 4px, var(--sketch-ink, #ece6d8) 4px 5.5px, transparent 6px);
+    background-size: 16px 56px; background-repeat: repeat-y; background-position: center 30px;
+    filter: url(#kr-pencil); opacity: .6;
   }
   .leaf-tab {
-    position: absolute; top: 0; right: clamp(1.5rem, 6vw, 3.5rem); z-index: 2;
+    position: absolute; top: -1px; right: clamp(1.5rem, 6vw, 3.5rem); z-index: 2;
     background: var(--accent); color: #1b1610;
     font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; font-size: .68rem;
-    padding: 7px 13px 9px; border-radius: 0 0 4px 4px; box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    padding: 7px 13px 9px; border-radius: 0 0 4px 4px;
   }
   .leaf-body { position: relative; z-index: 1; max-width: 60ch; }
-  .leaf-title { font-family: var(--font-hand); font-weight: 700; line-height: 1; color: #241f18;
+  .leaf-title { font-family: var(--font-hand); font-weight: 700; line-height: 1; color: var(--ink);
     font-size: clamp(2rem, 5.5vw, 3.1rem); margin: 0 0 .35rem; }
-  .leaf-logline { font-style: italic; font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: #4a4232; margin: 0 0 1rem; max-width: 50ch; }
-  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: #3a352a; max-width: 56ch; margin: 0 0 1rem; }
-  .leaf-more { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
-    color: color-mix(in srgb, var(--accent) 55%, #6b5f3a); }
+  .leaf-logline { font-style: italic; font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: var(--ink-soft); margin: 0 0 1rem; max-width: 50ch; }
+  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: var(--ink-soft); max-width: 56ch; margin: 0 0 1rem; }
+  .leaf-more { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 
   .leaf-doodle {
     position: absolute; top: clamp(1.5rem, 4vw, 2.5rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 0;
-    width: clamp(78px, 12vw, 116px); --sketch-ink: #5b5446; pointer-events: none;
+    width: clamp(78px, 12vw, 116px); --sketch-ink: #cfc8b8; pointer-events: none;
   }
   @media (max-width: 720px) { .leaf-doodle { width: 70px; top: auto; bottom: 1.25rem; opacity: .9; } }
   @media (max-width: 480px) { .leaf-doodle { display: none; } }
