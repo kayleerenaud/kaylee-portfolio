@@ -21,10 +21,10 @@
   /* palette (Conté à Paris on toned kraft paper — light marks on a mid ground) */
   --bg:        #7d6d51;   /* toned kraft paper */
   --surface:   #8c7c5d;   /* a slightly fresher sheet for cards / inputs */
-  --ink:       #efe5cb;   /* warm cream (white-Conté) */
-  --ink-soft:  #cdbe98;   /* softer cream */
+  --ink:       #f6efdd;   /* warm cream (white-Conté), a hair lighter for contrast */
+  --ink-soft:  #dbccac;   /* softer cream */
   --accent:    #c47352;   /* sanguine (per-section default; overridden by site.ts) */
-  --line:      #9a8b69;   /* warm pencil line */
+  --line:      #593b2e;   /* dark Conté line */
 
   /* type */
   --font-display: 'Georgia', 'Times New Roman', serif;
@@ -33,7 +33,7 @@
   --font-hand:    'Kaylee Script', 'Segoe Print', 'Bradley Hand', cursive;
 
   /* pencil-doodle ink color — cream Conté on the toned ground */
-  --sketch-ink:   #e9ddbf;
+  --sketch-ink:   #f2e9ce;
 
   /* rhythm */
   --maxw: 1200px;
