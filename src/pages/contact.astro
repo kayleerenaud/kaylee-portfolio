@@ -6,7 +6,7 @@ import { site } from '../config/site';
 <BaseLayout current="contact" title="Contact" description="Get in touch with Kaylee Renaud.">
   <section class="container page-intro">
     <h1 data-reveal>Contact</h1>
-    <p data-reveal style="--d:80ms">Have a project, a question, or just want to say hello? Send a note! I read everything and I'll get back to you.</p>
+    <p data-reveal style="--d:80ms">Have a project, a question, or just want to say hello?<br class="br-desk" /> Send a note! I read everything and I'll get back to you.</p>
     <p class="socials" data-reveal style="--d:140ms">
       {site.social.instagram && <a href={site.social.instagram} target="_blank" rel="noopener">Instagram ↗</a>}
       {site.social.youtube && <a href={site.social.youtube} target="_blank" rel="noopener">YouTube ↗</a>}
@@ -33,6 +33,9 @@ import { site } from '../config/site';
 </BaseLayout>
 
 <style>
+  /* only break that intro line on wider (computer) layouts */
+  .br-desk { display: none; }
+  @media (min-width: 720px) { .br-desk { display: inline; } }
   .socials { display: flex; gap: 1.5rem; }
   .downloads { margin-top: clamp(2.5rem, 6vw, 4rem); }
   .dl-head { font-size: 1.15rem; letter-spacing: .03em; color: var(--ink-soft); margin: 0 0 1rem; }
