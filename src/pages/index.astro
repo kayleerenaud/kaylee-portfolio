@@ -67,7 +67,7 @@ const nodes = pages
   /* ---------- THE BRAINSTORM MAP ---------- */
   .map { position: relative; max-width: var(--maxw); margin: 0 auto; padding: 2rem var(--gap) clamp(4rem, 10vw, 8rem); }
   .thread { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; }
-  .thread path { fill: none; stroke: #c47352; stroke-width: 3; stroke-linecap: round; filter: url(#kr-rough); }
+  .thread path { fill: none; stroke: #a8593f; stroke-width: 3; stroke-linecap: round; filter: url(#kr-rough); }
 
   .nodes { list-style: none; margin: 0; padding: 0; position: relative; z-index: 1;
     display: flex; flex-direction: column; gap: clamp(3.5rem, 9vw, 7rem); }
@@ -91,7 +91,7 @@ const nodes = pages
 
   /* drawn red tacks (organic, hand-drawn blobs) */
   .tack {
-    position: absolute; top: -9px; left: 50%; width: 17px; height: 17px; background: #c47352;
+    position: absolute; top: -9px; left: 50%; width: 17px; height: 17px; background: #a8593f;
     border-radius: 49% 51% 53% 47%; filter: url(#kr-rough);
     transform: translateX(-50%) rotate(calc(var(--i) * 40deg));
   }

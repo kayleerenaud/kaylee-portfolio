@@ -18,13 +18,14 @@
    data-accent. The smooth transition below is what makes the color "travel".
    =========================================================================== */
 :root {
-  /* palette (Conté à Paris on toned kraft paper — light marks on a mid ground) */
-  --bg:        #7d6d51;   /* toned kraft paper */
-  --surface:   #8c7c5d;   /* a slightly fresher sheet for cards / inputs */
-  --ink:       #f6efdd;   /* warm cream (white-Conté), a hair lighter for contrast */
-  --ink-soft:  #dbccac;   /* softer cream */
-  --accent:    #c47352;   /* sanguine (per-section default; overridden by site.ts) */
-  --line:      #593b2e;   /* dark Conté line */
+  /* palette (Conté à Paris on warm natural-fiber paper — sanguine/sepia marks) */
+  --bg:        #c8b48e;   /* warm tan paper */
+  --surface:   #d2bf99;   /* a fresher sheet for cards / inputs */
+  --ink:       #3a2719;   /* dark sepia / bistre */
+  --ink-soft:  #6e503a;   /* softer sepia */
+  --accent:    #a8593f;   /* sanguine (per-section default; overridden by site.ts) */
+  --line:      #5e4331;   /* sepia line */
+  --on-accent: #f4ecd9;   /* cream text that sits on an accent fill */
 
   /* type */
   --font-display: 'Georgia', 'Times New Roman', serif;
@@ -32,8 +33,8 @@
   --font-mono:    ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   --font-hand:    'Kaylee Script', 'Segoe Print', 'Bradley Hand', cursive;
 
-  /* pencil-doodle ink color — cream Conté on the toned ground */
-  --sketch-ink:   #f2e9ce;
+  /* pencil-doodle ink color — sanguine Conté on the paper */
+  --sketch-ink:   #a05a42;
 
   /* rhythm */
   --maxw: 1200px;

@@ -49,12 +49,12 @@ export type PageDef = {
 
 // Conté à Paris earth tones on newsprint; sanguine thread ties Home + Contact.
 export const pages: PageDef[] = [
-  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#c47352', tone: 196.00 },
-  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#5c2c1f', tone: 220.00 },
-  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#3b3939', tone: 174.61 },
-  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#cd8259', tone: 261.63 },
-  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#826b03', tone: 207.65 },
-  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#c47352', tone: 246.94 },
+  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#a8593f', tone: 196.00 },
+  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#b07444', tone: 220.00 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#4e3a2c', tone: 174.61 },
+  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#9c5039', tone: 261.63 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#80552e', tone: 207.65 },
+  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#a8593f', tone: 246.94 },
 ];
 
 export function pageHref(slug: string) {
