@@ -18,13 +18,13 @@
    data-accent. The smooth transition below is what makes the color "travel".
    =========================================================================== */
 :root {
-  /* palette (dark, cinematic — warm near-black with soft light type) */
-  --bg:        #14110f;
-  --surface:   #1d1916;
-  --ink:       #f1ece4;
-  --ink-soft:  #a59c90;
-  --accent:    #d4805f;   /* per-section default; overridden by site.ts */
-  --line:      #2c2722;
+  /* palette (Conté à Paris pencils on warm newsprint) */
+  --bg:        #cdc09f;   /* warm toned newsprint */
+  --surface:   #ddd0b3;   /* a fresher sheet for cards / inputs */
+  --ink:       #2e2418;   /* bistre / sepia ink */
+  --ink-soft:  #685739;   /* softer brown */
+  --accent:    #a8604a;   /* sanguine (per-section default; overridden by site.ts) */
+  --line:      #a89878;   /* warm pencil line */
 
   /* type */
   --font-display: 'Georgia', 'Times New Roman', serif;
@@ -32,8 +32,8 @@
   --font-mono:    ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   --font-hand:    'Kaylee Script', 'Segoe Print', 'Bradley Hand', cursive;
 
-  /* pencil-doodle ink color (off-white for now; swap to taste) */
-  --sketch-ink:   #ece6d8;
+  /* pencil-doodle ink color — Conté sepia on paper */
+  --sketch-ink:   #5d4934;
 
   /* rhythm */
   --maxw: 1200px;

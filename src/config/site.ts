@@ -47,14 +47,14 @@ export type PageDef = {
   inNav?: boolean;
 };
 
-// Chalk-pastel palette on charcoal; chalk-red thread ties Home + Contact together.
+// Conté à Paris earth tones on newsprint; sanguine thread ties Home + Contact.
 export const pages: PageDef[] = [
-  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#db8473', tone: 196.00 },
-  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#aecb8d', tone: 220.00 },
-  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#8fbcc9', tone: 174.61 },
-  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#e0a6ab', tone: 261.63 },
-  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#ebc97c', tone: 207.65 },
-  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#db8473', tone: 246.94 },
+  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#a8604a', tone: 196.00 },
+  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#6f7546', tone: 220.00 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#51697a', tone: 174.61 },
+  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#b06a45', tone: 261.63 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#997a35', tone: 207.65 },
+  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#a8604a', tone: 246.94 },
 ];
 
 export function pageHref(slug: string) {
