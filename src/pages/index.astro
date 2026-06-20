@@ -225,6 +225,11 @@ const reelSlides = [
         `</filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`;
       return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
     };
+    const freshBleed = (el: HTMLElement) => {
+      const m = wcMask();
+      el.style.setProperty('-webkit-mask-image', m);
+      el.style.setProperty('mask-image', m);
+    };
     // bleed a slide in: fresh edge, a RANDOM origin point (the bleed grows from
     // there), and a z-index that puts it on top of the photo still showing — so
     // it soaks INTO the old image instead of re-opening from the same place. The
