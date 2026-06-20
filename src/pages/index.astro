@@ -115,16 +115,15 @@ const nodes = pages
     const cardTacks = Array.from(map.querySelectorAll<HTMLElement>('.card .tack'));
     let len = 0;
 
-    // a smooth Catmull-Rom curve through the points
+    // vertical tangents at every point => the curve's left/right turn lands
+    // exactly on each tack (not below it)
     const smooth = (p: { x: number; y: number }[]) => {
       if (p.length < 2) return '';
       let d = `M ${p[0].x.toFixed(1)} ${p[0].y.toFixed(1)}`;
-      for (let i = 0; i < p.length - 1; i++) {
-        const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
-        /* /9 (tighter than the usual /6) so the curve hugs the points and turns right at each tack */
-        const c1x = p1.x + (p2.x - p0.x) / 9, c1y = p1.y + (p2.y - p0.y) / 9;
-        const c2x = p2.x - (p3.x - p1.x) / 9, c2y = p2.y - (p3.y - p1.y) / 9;
-        d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+      for (let i = 1; i < p.length; i++) {
+        const a = p[i - 1], b = p[i];
+        const dy = (b.y - a.y) * 0.5;
+        d += ` C ${a.x.toFixed(1)} ${(a.y + dy).toFixed(1)} ${b.x.toFixed(1)} ${(b.y - dy).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
       }
       return d;
     };
@@ -136,14 +135,7 @@ const nodes = pages
       const pts: { x: number; y: number }[] = [];
       if (startTack) pts.push(center(startTack));
       cardTacks.forEach((t) => pts.push(center(t)));
-      let d = smooth(pts);
-      // hand-drawn arrowhead into the final (About) tack
-      const E = pts[pts.length - 1], P = pts[pts.length - 2] || E;
-      const ang = Math.atan2(E.y - P.y, E.x - P.x), L2 = 18, sp = 0.5;
-      const a1 = { x: E.x - L2 * Math.cos(ang - sp), y: E.y - L2 * Math.sin(ang - sp) };
-      const a2 = { x: E.x - L2 * Math.cos(ang + sp), y: E.y - L2 * Math.sin(ang + sp) };
-      d += ` M ${E.x.toFixed(1)} ${E.y.toFixed(1)} L ${a1.x.toFixed(1)} ${a1.y.toFixed(1)} M ${E.x.toFixed(1)} ${E.y.toFixed(1)} L ${a2.x.toFixed(1)} ${a2.y.toFixed(1)}`;
-      path.setAttribute('d', d);
+      path.setAttribute('d', smooth(pts));
       len = (path as SVGPathElement).getTotalLength();
       path.style.strokeDasharray = String(len);
       update();
