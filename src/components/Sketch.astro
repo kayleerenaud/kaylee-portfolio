@@ -50,13 +50,13 @@ const LIB: Record<string, { vb: string; d: string[] }> = {
     'M50 10 L50 20', 'M40 20 H60 L55 30 H45 Z',
     'M45 30 L28 78', 'M55 30 L72 78', 'M28 78 H72',
   ] },
-  // dress form / tailor's mannequin — Costume (curvy body, neck loop, tripod foot)
+  // dress form / tailor's mannequin — Costume (hourglass body, neck, tripod foot)
   mannequin: { vb: '0 0 100 100', d: [
-    'M50 27 C45 27 42 30 41 35 C39 43 36 47 38 53 C39 59 33 62 38 68 C43 74 47 75 50 75 C53 75 57 74 62 68 C67 62 61 59 62 53 C64 47 61 43 59 35 C58 30 55 27 50 27 Z',
-    'M45 27 C44 20 47 16 50 16 C53 16 56 20 55 27',  // neck loop
-    'M45 28 Q50 32 55 28',                            // collar line
-    'M50 75 L50 86',                                  // stand pole
-    'M50 86 L39 96', 'M50 86 L61 96',                 // splayed foot
+    'M50 28 C44 28 39 30 36 36 C32 43 40 49 42 55 C43 61 36 62 37 67 C38 73 45 78 50 78 C55 78 62 73 63 67 C64 62 57 61 58 55 C60 49 68 43 64 36 C61 30 56 28 50 28 Z',
+    'M46 28 C45 22 46 18 50 18 C54 18 55 22 54 28',  // neck
+    'M43 31 Q50 36 57 31',                            // neckline
+    'M50 78 L50 87',                                  // stand pole
+    'M50 87 L40 96', 'M50 87 L60 96', 'M50 87 L50 96',// tripod foot
   ] },
   // comedy + tragedy theater masks — stage / performance
   mask: { vb: '0 0 100 100', d: [
