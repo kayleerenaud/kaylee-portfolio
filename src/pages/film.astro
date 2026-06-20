@@ -7,12 +7,16 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
 <BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
   <section class="container page-intro">
     <h1 data-reveal>Film</h1>
-    <p data-reveal style="--d:80ms">Documentary work, mostly — true stories about family, faith, memory, and the people who build something at the edge of things. A narrative comedy is up next.</p>
-    <p class="placeholder-note" data-reveal style="--d:140ms">Film stills are placeholders for now — real frames coming soon.</p>
+    <p data-reveal style="--d:80ms">Mostly documentaries: true stories about family, faith, and memory. A narrative comedy is up next.</p>
+  </section>
+
+  <section class="container">
+    <h2 class="section-label" data-reveal>Stills <span class="strip-hint" aria-hidden="true">· scroll sideways →</span></h2>
+    <Gallery items={filmStills} layout="strip" coda={upcomingFilm} />
   </section>
 
   <section class="container videos">
-    <h2 class="section-label" data-reveal>Documentary</h2>
+    <h2 class="section-label hand" data-reveal>Documentary</h2>
     {videos.map((v, i) => (
       <article class="video" data-reveal style={`--d:${i * 80}ms`}>
         <YouTube id={v.id} title={v.title} />
@@ -22,15 +26,11 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
       </article>
     ))}
   </section>
-
-  <section class="container">
-    <h2 class="section-label" data-reveal>Stills <span class="strip-hint" aria-hidden="true">— scroll sideways →</span></h2>
-    <Gallery items={filmStills} layout="strip" coda={upcomingFilm} />
-  </section>
 </BaseLayout>
 
 <style>
   .section-label { font-size: 1.1rem; letter-spacing: .04em; color: var(--ink-soft); margin: 2.5rem 0 1rem; }
+  .section-label.hand { font-family: var(--font-hand); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 0; color: var(--ink); -webkit-text-stroke: .7px currentColor; margin-top: 3rem; }
   .strip-hint { font-size: 0.85rem; color: color-mix(in srgb, var(--accent) 70%, var(--ink-soft)); font-family: var(--font-body); }
   .videos { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
   .video h3 { margin: 1rem 0 0.25rem; font-size: 1.4rem; font-family: var(--font-display); }

@@ -65,20 +65,20 @@ export const videos = [
     title: "Together, I'm Pieces",
     meta: 'Documentary · Honorable Mention, Fusion Film Festival 2026 · Official Selection, WinterFest 2025',
     blurb:
-      "An auto-documentary: I sit down with my three parents to ask how they raised me across the political and religious spectrum — and kept love at the center. A portrait of a family that agrees on almost nothing except each other.",
+      "An auto-documentary. I sit down with my three parents to ask how they raised me across the political and religious spectrum, and kept love at the center. A portrait of a family that agrees on almost nothing except each other.",
   },
   {
     id: 's1aRxygTD6s',
     title: 'Spirit Temple No. 7',
     meta: 'Documentary',
     blurb:
-      "I follow two artists to the furthest edge of New York City, where they're raising a temple out of driftwood and coastal trash — and where, somewhere between the tide line and the offering, we meet the spirit himself: Chris.",
+      "I follow two artists to the furthest edge of New York City, where they're raising a temple out of driftwood and coastal trash. Somewhere between the tide line and the offering, we meet the spirit himself: Chris.",
   },
   {
     id: 'uAGjuZFWCis',
     title: 'Elli',
     meta: 'Documentary · Archival short',
     blurb:
-      "A short archival portrait of Elli, a concentration-camp survivor, told in the words of her daughter Dianna — and voiced by me, Dianna's granddaughter and Elli's great-granddaughter. Three generations carrying a single voice.",
+      "A short archival portrait of Elli, a concentration camp survivor, told in the words of her daughter Dianna, and voiced by me: Dianna's granddaughter, and Elli's great-granddaughter. Three generations carrying a single voice.",
   },
 ];
