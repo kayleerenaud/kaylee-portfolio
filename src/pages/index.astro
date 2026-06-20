@@ -1,89 +1,152 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ScrollScene from '../components/ScrollScene.astro';
-import { site, pages, pageHref, getPage } from '../config/site';
-// The "movements" of the home-page story: the work, between About and Contact.
-const movements = pages.filter((p) => !['', 'about', 'contact'].includes(p.slug));
-const about = getPage('about');
-const contact = getPage('contact');
+import Sketch from '../components/Sketch.astro';
+import { site, pages, pageHref } from '../config/site';
+
+const SKETCHES: Record<string, string> = {
+  about: 'star', film: 'clapper', costume: 'thread', writing: 'book', contact: 'heart',
+};
+// the destination cards on the map (everything except Home)
+const nodes = pages
+  .filter((p) => p.slug !== '')
+  .map((p, i) => ({ ...p, sketch: SKETCHES[p.slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' }));
 ---
 <BaseLayout current="">
-  <ScrollScene />
+  <!-- hand-drawn filters: kr-pencil (grainy, for doodles + card edges),
+       kr-rough (wobble only, for the long continuous thread) -->
+  <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <filter id="kr-pencil" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain" />
+        <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
+        <feComposite in="wob" in2="grainA" operator="in" />
+      </filter>
+      <filter id="kr-rough" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="3" result="w" />
+        <feDisplacementMap in="SourceGraphic" in2="w" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
 
-  <!-- OPEN with About -->
-  <section class="movement intro" data-accent={about.accent} data-tone={about.tone}>
-    <div class="container m-inner">
-      <p class="m-index" data-reveal aria-hidden="true">Hello</p>
-      <a class="m-link" href={pageHref('about')}>
-        <h2 class="m-title" data-reveal style="--d:80ms">About</h2>
-      </a>
-      <p class="m-teaser about-teaser" data-reveal style="--d:160ms">
-        I'm Kaylee — I work across film, costume, and writing. <em>[Your short intro lands here.]</em>
-        This is where the story starts.
-      </p>
-      <a class="m-cta" href={pageHref('about')} data-reveal style="--d:220ms">More about me →</a>
-    </div>
+  <section class="hero container">
+    <p class="kicker" data-reveal>Portfolio</p>
+    <h1 class="brand-name" data-reveal style="--d:60ms">{site.brand}</h1>
+    <p class="lede" data-reveal style="--d:140ms">{site.tagline}</p>
+    <p class="follow" data-reveal style="--d:240ms">Follow the thread&nbsp;↓</p>
   </section>
 
-  <!-- THE WORK — each movement repaints the site with its own mood color. -->
-  {movements.map((p, i) => (
-    <section class="movement" data-accent={p.accent} data-tone={p.tone}>
-      <div class="container m-inner">
-        <p class="m-index" data-reveal aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
-        <a class="m-link" href={pageHref(p.slug)}>
-          <h2 class="m-title" data-reveal style="--d:80ms">{p.label}</h2>
-        </a>
-        <p class="m-teaser" data-reveal style="--d:160ms">{p.teaser}</p>
-        <a class="m-cta" href={pageHref(p.slug)} data-reveal style="--d:220ms">Enter {p.label} →</a>
-      </div>
-    </section>
-  ))}
-
-  <!-- CLOSE with Contact -->
-  <section class="movement outro" data-accent={contact.accent} data-tone={contact.tone}>
-    <div class="container m-inner">
-      <p class="m-index" data-reveal aria-hidden="true">The end, or a beginning</p>
-      <h2 class="m-title" data-reveal style="--d:80ms">Let's make something.</h2>
-      <p class="m-teaser" data-reveal style="--d:160ms">
-        Have a project, a question, or just want to say hello? I read everything.
-      </p>
-      <div class="outro-actions" data-reveal style="--d:220ms">
-        <a class="btn-solid" href={pageHref('contact')}>Get in touch →</a>
-        <a class="btn-ghost" href={`mailto:${site.email}`}>{site.email}</a>
-      </div>
-    </div>
+  <section class="map" aria-label="Explore the portfolio">
+    <svg class="thread" aria-hidden="true" preserveAspectRatio="none"><path /></svg>
+    <ul class="nodes">
+      {nodes.map((n, i) => (
+        <li class:list={['node', n.side]} style={`--i:${i}; --accent:${n.accent}`}>
+          <a class="card" href={pageHref(n.slug)} aria-label={n.label} data-reveal>
+            <span class="tack" aria-hidden="true"></span>
+            <span class="card-doodle"><Sketch name={n.sketch} /></span>
+            <span class="card-label">{n.label}</span>
+            {n.teaser && <span class="card-teaser">{n.teaser}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 </BaseLayout>
 
 <style>
-  .movement {
-    min-height: 80vh; display: flex; align-items: center;
-    border-top: 1px solid var(--line);
-    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 9%, transparent));
-  }
-  .intro { border-top: 0; }
-  .m-inner { width: 100%; }
-  .m-index { font-family: var(--font-display); font-size: 1rem; color: var(--accent); letter-spacing: .2em; margin: 0 0 .5rem; }
-  .m-link { text-decoration: none; }
-  .m-title {
-    font-size: clamp(2.5rem, 11vw, 7rem); line-height: 0.95; margin: 0; color: var(--ink);
-    transition: color .3s, letter-spacing .3s;
-  }
-  .m-link:hover .m-title { color: var(--accent); letter-spacing: .005em; }
-  .m-teaser { font-size: 1.25rem; color: var(--ink-soft); margin: 1rem 0 1.5rem; max-width: 44ch; }
-  .about-teaser { max-width: 52ch; }
-  .m-cta {
-    display: inline-block; font-size: 1rem; color: var(--accent);
-    border-bottom: 1px solid currentColor; padding-bottom: 2px;
-  }
-  .m-cta:hover { text-decoration: none; }
+  .kr-defs { position: absolute; }
 
-  .outro-actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-  .btn-solid {
-    background: var(--accent); color: #14110f; font-weight: 600;
-    padding: 0.7rem 1.5rem; border-radius: var(--radius); transition: filter .15s;
+  .hero { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; padding-block: clamp(3rem, 9vw, 7rem) 0; }
+  .kicker { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; }
+  .brand-name { font-size: clamp(2.8rem, 10vw, 6.5rem); line-height: 0.95; margin: 0; }
+  .lede { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: var(--ink-soft); max-width: 44ch; margin: 1rem 0 0; }
+  .follow { font-family: var(--font-hand); font-size: 1.6rem; color: var(--accent); margin: 2.5rem 0 0; }
+
+  /* ---------- THE BRAINSTORM MAP ---------- */
+  .map { position: relative; max-width: var(--maxw); margin: 0 auto; padding: 2rem var(--gap) clamp(4rem, 10vw, 8rem); }
+  .thread { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; }
+  .thread path { fill: none; stroke: #c8463c; stroke-width: 3; stroke-linecap: round; filter: url(#kr-rough); }
+
+  .nodes { list-style: none; margin: 0; padding: 0; position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: clamp(3.5rem, 9vw, 7rem); }
+  .node { width: min(62%, 460px); }
+  .node.left { margin-right: auto; }
+  .node.right { margin-left: auto; }
+  @media (max-width: 720px) { .node { width: min(90%, 460px); margin-inline: auto; } }
+
+  /* a drawn index card */
+  .card {
+    position: relative; display: block; text-decoration: none; color: var(--ink);
+    padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.75rem) clamp(1.1rem, 2.5vw, 1.4rem);
+    background: rgba(255,255,255,0.015);
+    transform: rotate(calc((var(--i) - 2) * 0.9deg)); transition: transform .2s ease;
   }
-  .btn-solid:hover { text-decoration: none; filter: brightness(1.08); }
-  .btn-ghost { color: var(--ink-soft); border-bottom: 1px solid var(--line); padding-bottom: 2px; }
-  .btn-ghost:hover { color: var(--ink); text-decoration: none; }
+  .card::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    border: 2px solid var(--sketch-ink, #ece6d8); border-radius: 5px; filter: url(#kr-pencil); opacity: .75; }
+  @media (hover: hover) { .card:hover { transform: rotate(0deg) translateY(-4px); }
+    .card:hover .card-label { color: var(--accent); } }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+  /* red tack where the thread meets the card */
+  .tack { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff8a7e, #c8463c 60%, #8f2d26); box-shadow: 0 3px 5px rgba(0,0,0,.5); }
+
+  .card-doodle { display: block; width: clamp(46px, 7vw, 62px); margin-bottom: .4rem; --sketch-ink: var(--accent); }
+  .card-label { display: block; font-family: var(--font-hand); font-weight: 700; line-height: 1;
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem); color: var(--ink); transition: color .2s; }
+  .card-teaser { display: block; color: var(--ink-soft); font-size: .98rem; margin-top: .35rem; }
+
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
 </style>
+
+<script>
+  const map = document.querySelector<HTMLElement>('.map');
+  const svg = map?.querySelector<SVGSVGElement>('.thread');
+  const path = svg?.querySelector('path');
+  if (map && svg && path) {
+    const tacks = Array.from(map.querySelectorAll<HTMLElement>('.tack'));
+    let len = 0;
+
+    // a smooth Catmull-Rom curve through the points
+    const smooth = (p: { x: number; y: number }[]) => {
+      if (p.length < 2) return '';
+      let d = `M ${p[0].x.toFixed(1)} ${p[0].y.toFixed(1)}`;
+      for (let i = 0; i < p.length - 1; i++) {
+        const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+        const c1x = p1.x + (p2.x - p0.x) / 6, c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6, c2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+      }
+      return d;
+    };
+
+    const build = () => {
+      const mr = map.getBoundingClientRect();
+      svg.setAttribute('viewBox', `0 0 ${mr.width} ${mr.height}`);
+      const pts = tacks.map((t) => { const r = t.getBoundingClientRect(); return { x: r.left + r.width / 2 - mr.left, y: r.top + r.height / 2 - mr.top }; });
+      pts.unshift({ x: mr.width / 2, y: 0 });
+      pts.push({ x: pts[pts.length - 1].x, y: mr.height });
+      path.setAttribute('d', smooth(pts));
+      len = (path as SVGPathElement).getTotalLength();
+      path.style.strokeDasharray = String(len);
+      update();
+    };
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const mr = map.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 when the map's top reaches mid-screen, 1 once it's scrolled fully past
+      const progress = Math.min(1, Math.max(0, (vh * 0.55 - mr.top) / mr.height));
+      path.style.strokeDashoffset = String(len * (1 - progress));
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', build, { passive: true });
+    build();
+    setTimeout(build, 300); // re-measure after fonts/doodles settle
+  }
+</script>
