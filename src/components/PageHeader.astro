@@ -1,20 +1,16 @@
 ---
-// Composed page header in the hand-drawn language: handwritten title with a
-// wobbly accent underline, a tilted line-art doodle beside it, and a three-line
-// editorial italic tagline with one emphasized (accent caps) word + ellipsis.
+// Composed page header in the hand-drawn language: a handwritten title with a
+// tilted line-art doodle beside it, anchored by an extended hand-drawn squiggle
+// that underlines the title and trails off past the doodle.
 //
 // The doodle uses the page's #kr-pencil filter (each page that uses this header
-// must define one); the underline uses #kr-line, defined here.
+// must define one); the squiggle uses #kr-line, defined here.
 import Sketch from './Sketch.astro';
 interface Props {
   title: string;   // page title, e.g. "Film"
   doodle: string;  // Sketch name, e.g. "clapper"
-  lead: string;    // tagline line 1
-  pre?: string;    // small normal text before the emphasized word (e.g. "the ")
-  emph: string;    // the emphasized word (rendered upright, accent, caps)
-  tail: string;    // tagline line 3 (ellipsis appended automatically)
 }
-const { title, doodle, lead, pre = '', emph, tail } = Astro.props as Props;
+const { title, doodle } = Astro.props as Props;
 ---
 <svg width="0" height="0" class="ph-defs" aria-hidden="true" focusable="false" style="position:absolute">
   <defs>
@@ -29,30 +25,24 @@ const { title, doodle, lead, pre = '', emph, tail } = Astro.props as Props;
   <div class="ph-row">
     <span class="ph-titlewrap" data-reveal>
       <h1>{title}</h1>
-      <svg class="ph-underline" aria-hidden="true" viewBox="0 0 220 14" preserveAspectRatio="none" fill="none">
-        <path d="M4 8 C46 2 86 12 120 7 C154 2 196 12 216 6" vector-effect="non-scaling-stroke" />
+      <svg class="ph-underline" aria-hidden="true" viewBox="0 0 320 16" preserveAspectRatio="none" fill="none">
+        <path d="M3 9 C42 3 72 14 106 8 C142 2 174 14 210 8 C246 3 280 13 317 9" vector-effect="non-scaling-stroke" />
       </svg>
     </span>
     <span class="ph-doodle" aria-hidden="true"><Sketch name={doodle} hold /></span>
   </div>
-  <p class="ph-tag" data-reveal style="--d:160ms">{lead}<br />{pre}<span class="ph-em">{emph}</span><br />{tail}<span class="ph-dots">…</span></p>
 </section>
 
 <style>
   .ph-defs { position: absolute; }
-  .page-head { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3.5vw, 2.75rem); }
+  .page-head { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 5vw, 3.5rem); }
   .ph-row { display: flex; align-items: center; gap: clamp(.6rem, 3vw, 1.75rem); }
   .ph-titlewrap { position: relative; display: inline-block; }
   .ph-titlewrap h1 { margin: 0; }
-  /* hand-drawn accent underline spanning the word */
-  .ph-underline { position: absolute; left: -2%; bottom: -.04em; width: 104%; height: .42em; overflow: visible; }
+  /* extended hand-drawn squiggle: underlines the title and trails past the doodle */
+  .ph-underline { position: absolute; left: -3%; bottom: -.12em; width: 188%; height: .5em; overflow: visible; pointer-events: none; }
   .ph-underline path { stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; filter: url(#kr-line); }
   @media (pointer: coarse) { .ph-underline path { filter: none; } }
-  /* tilted line-art doodle beside the title */
-  .ph-doodle { flex: none; width: clamp(50px, 9vw, 84px); display: block; --sketch-ink: var(--accent); transform: rotate(-7deg); }
-  /* three-line tagline: regular body text (Spectral), no italics */
-  .ph-tag { font-family: var(--font-body); font-size: clamp(1.15rem, 2.6vw, 1.55rem); line-height: 1.4; color: var(--ink); margin: 1.25rem 0 0; }
-  /* emphasized word: uppercase handwriting in the page accent color */
-  .ph-em { font-family: var(--font-hand); text-transform: uppercase; color: var(--accent); font-size: 1.55em; line-height: 1; letter-spacing: .02em; -webkit-text-stroke: .6px currentColor; }
-  .ph-dots { color: var(--ink-soft); }
+  /* tilted line-art doodle beside the title (sits above the trailing squiggle) */
+  .ph-doodle { position: relative; flex: none; width: clamp(50px, 9vw, 84px); display: block; --sketch-ink: var(--accent); transform: rotate(-7deg); }
 </style>
