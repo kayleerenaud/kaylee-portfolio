@@ -86,9 +86,10 @@ img { display: block; max-width: 100%; height: auto; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gap); }
 
-/* page intro block */
-.page-intro { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem); max-width: 60ch; }
-.page-intro p { color: var(--ink-soft); font-size: 1.1rem; }
+/* page intro block — left-aligns to the container edge (so it lines up with the
+   content below); only the paragraph width is constrained for readability */
+.page-intro { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem); }
+.page-intro p { color: var(--ink-soft); font-size: 1.1rem; max-width: 60ch; }
 
 /* placeholder note shown in scaffold mode */
 .placeholder-note {
