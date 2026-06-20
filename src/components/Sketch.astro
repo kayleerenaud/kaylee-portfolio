@@ -52,11 +52,13 @@ const LIB: Record<string, { vb: string; d: string[] }> = {
   ] },
 };
 
-interface Props { name: string; class?: string; }
-const { name, class: className } = Astro.props as Props;
+interface Props { name: string; class?: string; hold?: boolean; }
+// hold = draw in as it enters, then STAY drawn (no unravel) — for doodles that
+// sit at the bottom of a page where there's no scroll left to finish the pass.
+const { name, class: className, hold = false } = Astro.props as Props;
 const item = LIB[name] ?? LIB.star;
 ---
-<svg class:list={['sketch', className]} viewBox={item.vb} fill="none" aria-hidden="true">
+<svg class:list={['sketch', className, hold && 'hold']} viewBox={item.vb} fill="none" aria-hidden="true">
   {item.d.map((d) => <path d={d} pathLength="1" />)}
 </svg>
 
@@ -87,6 +89,9 @@ const item = LIB[name] ?? LIB.star;
       61%  { stroke-dashoffset: 0; }   /* stays whole through the middle of the screen */
       100% { stroke-dashoffset: 1; }   /* unravels as it leaves the top */
     }
+    /* hold variant: draw in as it enters, then stay drawn (never unravels) */
+    .sketch.hold path { animation-name: kr-draw-keep; animation-range: entry 6% cover 42%; }
+    @keyframes kr-draw-keep { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
   }
   @keyframes kr-float {
     0%, 100% { transform: translateY(0) rotate(-1.5deg); }

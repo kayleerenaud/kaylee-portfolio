@@ -45,7 +45,7 @@ const nodes = pages
         <li class:list={['node', n.side]} style={`--i:${i}; --accent:${n.accent}`}>
           <a class="card" href={pageHref(n.slug)} aria-label={n.label}>
             <span class="tack" aria-hidden="true"></span>
-            <span class="card-doodle"><Sketch name={n.sketch} /></span>
+            <span class="card-doodle"><Sketch name={n.sketch} hold /></span>
             <span class="card-label">{n.label}</span>
             {n.teaser && <span class="card-teaser">{n.teaser}</span>}
           </a>
