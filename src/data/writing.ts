@@ -34,7 +34,7 @@ export const pieces: Piece[] = [
     teaser:
       'A short teaser paragraph for the stage piece. Set the room, the tension, the question the audience leans toward. Keep it warm and specific.',
     synopsis: ph,
-    sketch: 'spotlight',
+    sketch: 'mask',
   },
   {
     tag: 'Pilot',

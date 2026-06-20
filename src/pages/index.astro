@@ -4,7 +4,7 @@ import Sketch from '../components/Sketch.astro';
 import { site, pages, pageHref } from '../config/site';
 
 const SKETCHES: Record<string, string> = {
-  about: 'star', film: 'clapper', costume: 'thread', writing: 'book', contact: 'heart',
+  about: 'star', film: 'clapper', costume: 'mannequin', writing: 'book', contact: 'heart',
 };
 // About → Film → Costume → Writing → Contact; the thread ends with an arrow into Contact
 const nodes = pages
@@ -70,7 +70,6 @@ const reelSlides = [
             <span class="tack" aria-hidden="true"></span>
             <span class="card-doodle"><Sketch name={n.sketch} hold /></span>
             <span class="card-label">{n.label}</span>
-            {n.teaser && <span class="card-teaser">{n.teaser}</span>}
           </a>
         </li>
       ))}
@@ -163,10 +162,9 @@ const reelSlides = [
   /* invisible origin point — just shifts where the thread begins (no tack) */
   .start-tack { position: absolute; top: -6px; left: clamp(0.5rem, 4vw, 2.5rem); width: 1px; height: 1px; }
 
-  .card-doodle { display: block; width: clamp(46px, 7vw, 62px); margin-bottom: .4rem; --sketch-ink: var(--accent); }
+  .card-doodle { display: block; width: clamp(64px, 10vw, 96px); margin-bottom: .55rem; --sketch-ink: var(--accent); }
   .card-label { display: block; font-family: var(--font-hand); font-weight: 700; line-height: 1;
-    font-size: clamp(1.8rem, 4.5vw, 2.6rem); color: var(--ink); transition: color .2s; }
-  .card-teaser { display: block; color: var(--ink-soft); font-size: .98rem; margin-top: .35rem; }
+    font-size: clamp(2.3rem, 6vw, 3.5rem); color: var(--ink); transition: color .2s; }
 
   @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
 </style>
@@ -186,7 +184,7 @@ const reelSlides = [
           slides[i].classList.remove('in');     // fade current out
           i = (i + 1) % slides.length;
           slides[i].classList.add('in');        // fade next in (cross-dissolve)
-        }, 5200);
+        }, 4200);
       }
     }
   }
