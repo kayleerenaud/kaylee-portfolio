@@ -62,6 +62,9 @@ body {
   -webkit-font-smoothing: antialiased;
   /* the mood color eases between sections instead of snapping */
   transition: background-color .6s ease;
+  /* guard against any sub-pixel horizontal overflow (no scroll container —
+     keeps sticky nav + scroll-driven animations intact) */
+  overflow-x: clip;
 }
 
 /* a faint wash of the active section's accent at the top of the page —
