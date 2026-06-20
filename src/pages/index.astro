@@ -25,7 +25,7 @@ const nodes = pages
 const wcBlob = (seed: number) =>
   'data:image/svg+xml,' +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" preserveAspectRatio="none"><filter id="f" x="-15%" y="-35%" width="130%" height="180%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="3" seed="${seed}" result="c"/><feDisplacementMap in="SourceGraphic" in2="c" scale="84" result="d1"/><feTurbulence type="turbulence" baseFrequency="0.05 0.11" numOctaves="3" seed="${seed + 5}" result="h"/><feDisplacementMap in="d1" in2="h" scale="38" result="d2"/><feGaussianBlur in="d2" stdDeviation="0.6" result="b"/><feComponentTransfer in="b"><feFuncA type="linear" slope="2.6" intercept="-0.3"/></feComponentTransfer></filter><ellipse cx="800" cy="350" rx="900" ry="250" fill="#ffffff" filter="url(#f)"/></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" preserveAspectRatio="none"><filter id="f" x="-15%" y="-35%" width="130%" height="180%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="3" seed="${seed}" result="c"/><feDisplacementMap in="SourceGraphic" in2="c" scale="84" result="d1"/><feTurbulence type="turbulence" baseFrequency="0.05 0.11" numOctaves="3" seed="${seed + 5}" result="h"/><feDisplacementMap in="d1" in2="h" scale="38" result="d2"/><feGaussianBlur in="d2" stdDeviation="0.6" result="b"/><feComponentTransfer in="b"><feFuncA type="linear" slope="2.6" intercept="-0.3"/></feComponentTransfer></filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`
   );
 // PLACEHOLDER imagery (random stand-ins) — swap for real stills/renderings/pages.
 const reelSlides = [
@@ -115,13 +115,13 @@ const reelSlides = [
   }
   .reel-slide.in {
     opacity: .5;
-    -webkit-mask-size: 122% 116%; mask-size: 122% 116%;
+    -webkit-mask-size: 104% 112%; mask-size: 104% 112%;
     transition: opacity 2.4s ease, mask-size 3.6s cubic-bezier(.22,.68,.2,1), -webkit-mask-size 3.6s cubic-bezier(.22,.68,.2,1);
     animation: wc-wobble 9s ease-in-out infinite;
   }
   .reel-slide.out {
     opacity: 0;
-    -webkit-mask-size: 122% 116%; mask-size: 122% 116%;
+    -webkit-mask-size: 104% 112%; mask-size: 104% 112%;
     transition: opacity 3s ease;
   }
   /* a watercolor "wobble": a slow shimmer of the wet pigment, never a hard move */
@@ -129,13 +129,14 @@ const reelSlides = [
     0%, 100% { transform: scale(1.004) translate(0, 0); }
     50%      { transform: scale(1.013) translate(.3%, .25%); }
   }
-  /* unify into the brand hue */
-  .reel-tint { position: absolute; inset: 0; background: var(--accent); mix-blend-mode: color; opacity: .22; }
-  /* legibility scrim: darkest at left (under the name). No top/bottom fade —
-     the fingered mask edges dissolve into the page on their own (seamless). */
+  /* unify into the brand hue — let the wash read as our usual accent gradient */
+  .reel-tint { position: absolute; inset: 0; background: var(--accent); mix-blend-mode: color; opacity: .3; }
+  /* NO panel/scrim box — the blot is fingered on all sides and simply dissolves
+     into the black background. A soft radial keeps the title legible without a
+     visible edge (transparent behind the text, fading to nothing). */
   .reel::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--bg) 84%, transparent) 0%, color-mix(in srgb, var(--bg) 38%, transparent) 50%, transparent 86%);
+    background: radial-gradient(120% 130% at 30% 50%, color-mix(in srgb, var(--bg) 55%, transparent) 0%, transparent 46%);
   }
   .reel-tag {
     position: absolute; right: clamp(.8rem, 4vw, 2.5rem); top: 50%;
@@ -146,8 +147,8 @@ const reelSlides = [
   @media (max-width: 720px) { .reel-slide { filter: grayscale(.45) contrast(.9) brightness(.5) sepia(.1); } .reel-slide.in { opacity: .42; } }
   @media (prefers-reduced-motion: reduce) { .reel-slide.in { animation: none; } }
   .kicker { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; }
-  .brand-name { font-size: clamp(2.8rem, 10vw, 6.5rem); line-height: 0.95; margin: 0; }
-  .lede { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: var(--ink-soft); max-width: 44ch; margin: 1rem 0 0; }
+  .brand-name { font-size: clamp(2.8rem, 10vw, 6.5rem); line-height: 0.95; margin: 0; text-shadow: 0 2px 26px color-mix(in srgb, var(--bg) 70%, transparent); }
+  .lede { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: var(--ink-soft); max-width: 44ch; margin: 1rem 0 0; text-shadow: 0 1px 16px color-mix(in srgb, var(--bg) 65%, transparent); }
   .follow { font-family: var(--font-hand); font-size: 1.6rem; color: var(--accent); margin: 2.5rem 0 0; }
 
   /* ---------- THE BRAINSTORM MAP ---------- */
@@ -225,7 +226,7 @@ const reelSlides = [
         `<feDisplacementMap in="d1" in2="h" scale="${sc2}" result="d2"/>` +
         `<feGaussianBlur in="d2" stdDeviation="0.6" result="b"/>` +
         `<feComponentTransfer in="b"><feFuncA type="linear" slope="2.6" intercept="-0.3"/></feComponentTransfer>` +
-        `</filter><ellipse cx="800" cy="350" rx="900" ry="250" fill="#ffffff" filter="url(#f)"/></svg>`;
+        `</filter><ellipse cx="800" cy="350" rx="660" ry="240" fill="#ffffff" filter="url(#f)"/></svg>`;
       return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
     };
     const freshBleed = (el: HTMLElement) => {
