@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sketch from '../components/Sketch.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { pieces } from '../data/writing';
 ---
 <BaseLayout current="writing" title="Writing" description="Writing by Kaylee Renaud — family-centered narratives for stage and screen.">
@@ -17,10 +18,7 @@ import { pieces } from '../data/writing';
     </defs>
   </svg>
 
-  <section class="container page-intro">
-    <h1 data-reveal>Writing</h1>
-    <p data-reveal style="--d:80ms">Family-centered narratives for stage and screen — and the page. A logline and a taste of each; open one for the full synopsis.</p>
-  </section>
+  <PageHeader title="Writing" doodle="quill" lead="I write the" emph="FAMILIES" tail="we never stop becoming" />
 
   <section class="container leaves">
     {pieces.map((p, i) => (

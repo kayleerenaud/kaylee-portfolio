@@ -2,11 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Gallery from '../components/Gallery.astro';
 import YouTube from '../components/YouTube.astro';
-import Sketch from '../components/Sketch.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { filmStills, videos, upcomingFilm } from '../data/galleries';
 ---
 <BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
-  <!-- hand-drawn filters: kr-pencil (grainy, for the doodle), kr-rough (wobble, for the underline) -->
+  <!-- kr-pencil: grainy hand-drawn filter for the header doodle -->
   <svg width="0" height="0" class="kr-defs" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
       <filter id="kr-pencil" x="-30%" y="-30%" width="160%" height="160%">
@@ -16,25 +16,10 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
         <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
         <feComposite in="wob" in2="grainA" operator="in" />
       </filter>
-      <filter id="kr-rough" x="-12%" y="-40%" width="124%" height="180%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="5" result="w" />
-        <feDisplacementMap in="SourceGraphic" in2="w" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
-      </filter>
     </defs>
   </svg>
 
-  <section class="container film-intro">
-    <div class="fi-head">
-      <span class="fi-titlewrap" data-reveal>
-        <h1>Film</h1>
-        <svg class="fi-underline" aria-hidden="true" viewBox="0 0 220 14" preserveAspectRatio="none" fill="none">
-          <path d="M4 8 C46 2 86 12 120 7 C154 2 196 12 216 6" vector-effect="non-scaling-stroke" />
-        </svg>
-      </span>
-      <span class="fi-doodle" aria-hidden="true"><Sketch name="clapper" hold /></span>
-    </div>
-    <p class="fi-tag" data-reveal style="--d:160ms">I make films about<br />the <span class="fi-em">PEOPLE</span><br />I can't stop thinking about<span class="fi-dots">…</span></p>
-  </section>
+  <PageHeader title="Film" doodle="clapper" lead="I make films about" pre="the " emph="PEOPLE" tail="I can't stop thinking about" />
 
   <section class="container">
     <h2 class="section-label" data-reveal>Stills <span class="strip-hint" aria-hidden="true">· scroll sideways →</span></h2>
@@ -56,28 +41,6 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
 
 <style>
   .kr-defs { position: absolute; }
-
-  /* ---- composed Film header: title + drawn underline + clapper + tagline ---- */
-  .film-intro { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3.5vw, 2.75rem); }
-  .fi-head { display: flex; align-items: center; gap: clamp(.6rem, 3vw, 1.75rem); }
-  .fi-titlewrap { position: relative; display: inline-block; }
-  .fi-titlewrap h1 { margin: 0; }
-  /* hand-drawn accent underline that spans the word */
-  .fi-underline { position: absolute; left: -2%; bottom: -.04em; width: 104%; height: .42em; overflow: visible; }
-  .fi-underline path { stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; filter: url(#kr-rough); }
-  @media (pointer: coarse) { .fi-underline path { filter: none; } }
-  /* clapperboard doodle, tilted, beside the title */
-  .fi-doodle { flex: none; width: clamp(50px, 9vw, 84px); display: block; --sketch-ink: var(--accent); transform: rotate(-7deg); }
-  /* the line, reset as an editorial italic tagline */
-  .fi-tag {
-    font-family: var(--font-display); font-style: italic;
-    font-size: clamp(1.15rem, 2.6vw, 1.55rem); line-height: 1.3;
-    color: var(--ink); margin: 1.25rem 0 0;
-  }
-  /* the emphasized word — upright caps, accent, tracked + scaled up to pop */
-  .fi-em { font-style: normal; color: var(--accent); font-size: 1.32em; letter-spacing: .06em; }
-  .fi-dots { color: var(--ink-soft); }
-
   .section-label { font-size: 1.1rem; letter-spacing: .04em; color: var(--ink-soft); margin: 2.5rem 0 1rem; }
   .section-label.hand { font-family: var(--font-hand); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 0; color: var(--ink); -webkit-text-stroke: .7px currentColor; margin-top: 4rem; }
   .strip-hint { font-size: 0.85rem; color: color-mix(in srgb, var(--accent) 70%, var(--ink-soft)); font-family: var(--font-body); }

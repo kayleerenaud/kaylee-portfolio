@@ -1,0 +1,57 @@
+---
+// Composed page header in the hand-drawn language: handwritten title with a
+// wobbly accent underline, a tilted line-art doodle beside it, and a three-line
+// editorial italic tagline with one emphasized (accent caps) word + ellipsis.
+//
+// The doodle uses the page's #kr-pencil filter (each page that uses this header
+// must define one); the underline uses #kr-line, defined here.
+import Sketch from './Sketch.astro';
+interface Props {
+  title: string;   // page title, e.g. "Film"
+  doodle: string;  // Sketch name, e.g. "clapper"
+  lead: string;    // tagline line 1
+  pre?: string;    // small normal text before the emphasized word (e.g. "the ")
+  emph: string;    // the emphasized word (rendered upright, accent, caps)
+  tail: string;    // tagline line 3 (ellipsis appended automatically)
+}
+const { title, doodle, lead, pre = '', emph, tail } = Astro.props as Props;
+---
+<svg width="0" height="0" class="ph-defs" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <filter id="kr-line" x="-5%" y="-70%" width="110%" height="240%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.05" numOctaves="2" seed="5" result="w" />
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+</svg>
+
+<section class="container page-head">
+  <div class="ph-row">
+    <span class="ph-titlewrap" data-reveal>
+      <h1>{title}</h1>
+      <svg class="ph-underline" aria-hidden="true" viewBox="0 0 220 14" preserveAspectRatio="none" fill="none">
+        <path d="M4 8 C46 2 86 12 120 7 C154 2 196 12 216 6" vector-effect="non-scaling-stroke" />
+      </svg>
+    </span>
+    <span class="ph-doodle" aria-hidden="true"><Sketch name={doodle} hold /></span>
+  </div>
+  <p class="ph-tag" data-reveal style="--d:160ms">{lead}<br />{pre}<span class="ph-em">{emph}</span><br />{tail}<span class="ph-dots">…</span></p>
+</section>
+
+<style>
+  .ph-defs { position: absolute; }
+  .page-head { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3.5vw, 2.75rem); }
+  .ph-row { display: flex; align-items: center; gap: clamp(.6rem, 3vw, 1.75rem); }
+  .ph-titlewrap { position: relative; display: inline-block; }
+  .ph-titlewrap h1 { margin: 0; }
+  /* hand-drawn accent underline spanning the word */
+  .ph-underline { position: absolute; left: -2%; bottom: -.04em; width: 104%; height: .42em; overflow: visible; }
+  .ph-underline path { stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; filter: url(#kr-line); }
+  @media (pointer: coarse) { .ph-underline path { filter: none; } }
+  /* tilted line-art doodle beside the title */
+  .ph-doodle { flex: none; width: clamp(50px, 9vw, 84px); display: block; --sketch-ink: var(--accent); transform: rotate(-7deg); }
+  /* three-line editorial tagline */
+  .ph-tag { font-family: var(--font-display); font-style: italic; font-size: clamp(1.15rem, 2.6vw, 1.55rem); line-height: 1.3; color: var(--ink); margin: 1.25rem 0 0; }
+  .ph-em { font-style: normal; color: var(--accent); font-size: 1.32em; letter-spacing: .06em; }
+  .ph-dots { color: var(--ink-soft); }
+</style>

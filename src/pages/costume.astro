@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Lightbox from '../components/Lightbox.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { projects, upcoming } from '../data/costume';
 import { site } from '../config/site';
 
@@ -41,13 +42,18 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
         <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="w" />
         <feDisplacementMap in="SourceGraphic" in2="w" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
       </filter>
+      <!-- grainy pencil filter for the header doodle -->
+      <filter id="kr-pencil" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain" />
+        <feComponentTransfer in="grain" result="grainA"><feFuncA type="discrete" tableValues="1 1 1 0 1 1 0 1 1 1" /></feComponentTransfer>
+        <feComposite in="wob" in2="grainA" operator="in" />
+      </filter>
     </defs>
   </svg>
 
-  <section class="container page-intro">
-    <h1 data-reveal>Costume</h1>
-    <p data-reveal style="--d:80ms">Research, illustration, and construction. Each tag is a production — pull one off the rail to see the finished looks alongside the renderings and the work behind them.</p>
-  </section>
+  <PageHeader title="Costume" doodle="thread" lead="I dress the" emph="BODIES" tail="a story moves through" />
 
   <!-- Cork board: costume photos tacked on, each with an oak garment-tag -->
   <section class="container rail-wrap">
