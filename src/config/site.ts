@@ -50,10 +50,10 @@ export type PageDef = {
 // "Warm Atelier" palette on charcoal; red thread ties Home + Contact together.
 export const pages: PageDef[] = [
   { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#c8463c', tone: 196.00 },
-  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#8a9a6b', tone: 220.00 },
-  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#5a8b97', tone: 174.61 },
-  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#c47a6d', tone: 261.63 },
-  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#d9a441', tone: 207.65 },
+  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#a3b061', tone: 220.00 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#4fa3b2', tone: 174.61 },
+  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#d0826e', tone: 261.63 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#e0a843', tone: 207.65 },
   { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#c8463c', tone: 246.94 },
 ];
 

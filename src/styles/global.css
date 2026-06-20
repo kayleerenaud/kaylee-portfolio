@@ -66,10 +66,11 @@ body {
 /* a faint wash of the active section's accent at the top of the page —
    subtle atmosphere that changes as the mood changes */
 body::before {
-  content: ''; position: fixed; inset: 0 0 auto 0; height: 40vh; z-index: -1;
+  content: ''; position: fixed; inset: 0 0 auto 0; height: 56vh; z-index: -1;
   pointer-events: none;
-  background: radial-gradient(120% 80% at 50% -10%,
-      color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
+  background: radial-gradient(135% 95% at 50% -14%,
+      color-mix(in srgb, var(--accent) 30%, transparent),
+      color-mix(in srgb, var(--accent) 9%, transparent) 46%, transparent 74%);
   transition: background .6s ease;
 }
 
