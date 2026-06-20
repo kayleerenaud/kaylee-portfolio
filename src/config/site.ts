@@ -47,14 +47,14 @@ export type PageDef = {
   inNav?: boolean;
 };
 
-// Accents are tuned a touch brighter so they read well on the dark base.
+// "Warm Atelier" palette on charcoal; red thread ties Home + Contact together.
 export const pages: PageDef[] = [
-  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#d4805f', tone: 196.00 },
-  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#8faa8d', tone: 220.00 },
-  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#6f93b8', tone: 174.61 },
-  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#b884a6', tone: 261.63 },
-  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#c2a06a', tone: 207.65 },
-  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#6fb0a4', tone: 246.94 },
+  { slug: '',        label: 'Home',    teaser: 'Start here.',           accent: '#c8463c', tone: 196.00 },
+  { slug: 'about',   label: 'About',   teaser: 'A little about me.',    accent: '#8a9a6b', tone: 220.00 },
+  { slug: 'film',    label: 'Film',    teaser: 'Moving pictures.',      accent: '#5a8b97', tone: 174.61 },
+  { slug: 'costume', label: 'Costume', teaser: 'Made by hand.',         accent: '#c47a6d', tone: 261.63 },
+  { slug: 'writing', label: 'Writing', teaser: 'Words and worlds.',     accent: '#d9a441', tone: 207.65 },
+  { slug: 'contact', label: 'Contact', teaser: "Let's make something.", accent: '#c8463c', tone: 246.94 },
 ];
 
 export function pageHref(slug: string) {
