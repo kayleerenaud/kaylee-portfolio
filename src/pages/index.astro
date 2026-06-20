@@ -6,10 +6,12 @@ import { site, pages, pageHref } from '../config/site';
 const SKETCHES: Record<string, string> = {
   about: 'star', film: 'clapper', costume: 'thread', writing: 'book', contact: 'heart',
 };
-// the destination cards on the map (everything except Home)
-const nodes = pages
-  .filter((p) => p.slug !== '')
-  .map((p, i) => ({ ...p, sketch: SKETCHES[p.slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' }));
+// tour the work, then END at About — the thread arrows into it
+const ORDER = ['film', 'costume', 'writing', 'contact', 'about'];
+const nodes = ORDER.map((slug, i) => {
+  const p = pages.find((x) => x.slug === slug)!;
+  return { ...p, sketch: SKETCHES[slug] ?? 'star', side: i % 2 === 0 ? 'left' : 'right' };
+});
 ---
 <BaseLayout current="">
   <!-- hand-drawn filters: kr-pencil (grainy, for doodles + card edges),
@@ -38,6 +40,7 @@ const nodes = pages
   </section>
 
   <section class="map" aria-label="Explore the portfolio">
+    <span class="start-tack" aria-hidden="true"></span>
     <svg class="thread" aria-hidden="true" preserveAspectRatio="none"><path /></svg>
     <ul class="nodes">
       {nodes.map((n, i) => (
@@ -88,9 +91,14 @@ const nodes = pages
     .card:hover .card-label { color: var(--accent); } }
   .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
-  /* red tack where the thread meets the card */
-  .tack { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #ff8a7e, #c8463c 60%, #8f2d26); box-shadow: 0 3px 5px rgba(0,0,0,.5); }
+  /* drawn red tacks (organic, hand-drawn blobs) */
+  .tack, .start-tack {
+    position: absolute; width: 17px; height: 17px; background: #c8463c;
+    border-radius: 49% 51% 53% 47%; filter: url(#kr-rough);
+  }
+  .tack { top: -9px; left: 50%; transform: translateX(-50%) rotate(calc(var(--i) * 40deg)); }
+  /* the thread's starting point, tucked just under the "follow the thread" cue */
+  .start-tack { top: -8px; left: clamp(0.5rem, 4vw, 2.5rem); z-index: 1; }
 
   .card-doodle { display: block; width: clamp(46px, 7vw, 62px); margin-bottom: .4rem; --sketch-ink: var(--accent); }
   .card-label { display: block; font-family: var(--font-hand); font-weight: 700; line-height: 1;
@@ -105,7 +113,8 @@ const nodes = pages
   const svg = map?.querySelector<SVGSVGElement>('.thread');
   const path = svg?.querySelector('path');
   if (map && svg && path) {
-    const tacks = Array.from(map.querySelectorAll<HTMLElement>('.tack'));
+    const startTack = map.querySelector<HTMLElement>('.start-tack');
+    const cardTacks = Array.from(map.querySelectorAll<HTMLElement>('.card .tack'));
     let len = 0;
 
     // a smooth Catmull-Rom curve through the points
@@ -124,10 +133,18 @@ const nodes = pages
     const build = () => {
       const mr = map.getBoundingClientRect();
       svg.setAttribute('viewBox', `0 0 ${mr.width} ${mr.height}`);
-      const pts = tacks.map((t) => { const r = t.getBoundingClientRect(); return { x: r.left + r.width / 2 - mr.left, y: r.top + r.height / 2 - mr.top }; });
-      pts.unshift({ x: mr.width / 2, y: 0 });
-      pts.push({ x: pts[pts.length - 1].x, y: mr.height });
-      path.setAttribute('d', smooth(pts));
+      const center = (t: HTMLElement) => { const r = t.getBoundingClientRect(); return { x: r.left + r.width / 2 - mr.left, y: r.top + r.height / 2 - mr.top }; };
+      const pts: { x: number; y: number }[] = [];
+      if (startTack) pts.push(center(startTack));
+      cardTacks.forEach((t) => pts.push(center(t)));
+      let d = smooth(pts);
+      // hand-drawn arrowhead into the final (About) tack
+      const E = pts[pts.length - 1], P = pts[pts.length - 2] || E;
+      const ang = Math.atan2(E.y - P.y, E.x - P.x), L2 = 18, sp = 0.5;
+      const a1 = { x: E.x - L2 * Math.cos(ang - sp), y: E.y - L2 * Math.sin(ang - sp) };
+      const a2 = { x: E.x - L2 * Math.cos(ang + sp), y: E.y - L2 * Math.sin(ang + sp) };
+      d += ` M ${E.x.toFixed(1)} ${E.y.toFixed(1)} L ${a1.x.toFixed(1)} ${a1.y.toFixed(1)} M ${E.x.toFixed(1)} ${E.y.toFixed(1)} L ${a2.x.toFixed(1)} ${a2.y.toFixed(1)}`;
+      path.setAttribute('d', d);
       len = (path as SVGPathElement).getTotalLength();
       path.style.strokeDasharray = String(len);
       update();
