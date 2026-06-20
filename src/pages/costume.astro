@@ -210,20 +210,13 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
 
   .photo { position: relative; display: block; }
 
-  /* a little wrinkled cellophane tape on each corner, holding the photo down */
-  .tape {
-    position: absolute; z-index: 2; width: 62px; height: 26px;
-    background-color: rgba(236, 238, 235, 0.13);
-    -webkit-backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
-    backdrop-filter: blur(0.7px) brightness(1.12) contrast(0.97);
-    background-image:
-      linear-gradient(var(--shineA, 112deg), transparent calc(var(--s1, 28%) - 13%), rgba(255,255,255,.34) var(--s1, 28%), transparent calc(var(--s1, 28%) + 13%)),
-      linear-gradient(var(--shineA, 70deg), transparent calc(var(--s2, 62%) - 9%), rgba(255,255,255,.18) var(--s2, 62%), transparent calc(var(--s2, 62%) + 9%)),
-      repeating-linear-gradient(var(--crA, 116deg), rgba(255,255,255,0) 0 5px, rgba(255,255,255,.06) 6px 7px, rgba(255,255,255,0) 8px 13px);
-    box-shadow: 0 1px 3px rgba(0,0,0,.3);
-    /* torn ends */
-    clip-path: polygon(3% 12%, 8% 0, 94% 7%, 100% 0, 97% 90%, 92% 100%, 5% 95%, 0 100%);
-  }
+  /* a little DRAWN piece of tape on each corner, holding the photo down */
+  .tape { position: absolute; z-index: 2; width: 60px; height: 26px;
+    background: rgba(240, 238, 230, 0.06); }
+  .tape::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+    border: 1.6px solid var(--sketch-ink, #ece6d8); filter: url(#kr-rough); opacity: .82; }
+  .tape::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5; filter: url(#kr-rough);
+    background: linear-gradient(58deg, transparent 44%, color-mix(in srgb, var(--sketch-ink, #ece6d8) 55%, transparent) 47%, transparent 50%); }
   .tape-tl { top: 0; left: 0;  transform: translate(-50%, -50%) rotate(calc(-45deg + var(--jit, 0deg))); }
   .tape-tr { top: 0; right: 0; transform: translate(50%, -50%) rotate(calc(45deg + var(--jit, 0deg))); }
   .tape-bl { bottom: 0; left: 0;  transform: translate(-50%, 50%) rotate(calc(45deg + var(--jit, 0deg))); }
