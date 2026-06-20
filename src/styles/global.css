@@ -18,13 +18,13 @@
    data-accent. The smooth transition below is what makes the color "travel".
    =========================================================================== */
 :root {
-  /* palette (Conté à Paris pencils on warm newsprint) */
-  --bg:        #cdc09f;   /* warm toned newsprint */
-  --surface:   #ddd0b3;   /* a fresher sheet for cards / inputs */
-  --ink:       #2e2418;   /* bistre / sepia ink */
-  --ink-soft:  #685739;   /* softer brown */
-  --accent:    #a8604a;   /* sanguine (per-section default; overridden by site.ts) */
-  --line:      #a89878;   /* warm pencil line */
+  /* palette (Conté à Paris on toned kraft paper — light marks on a mid ground) */
+  --bg:        #7d6d51;   /* toned kraft paper */
+  --surface:   #8c7c5d;   /* a slightly fresher sheet for cards / inputs */
+  --ink:       #efe5cb;   /* warm cream (white-Conté) */
+  --ink-soft:  #cdbe98;   /* softer cream */
+  --accent:    #c47352;   /* sanguine (per-section default; overridden by site.ts) */
+  --line:      #9a8b69;   /* warm pencil line */
 
   /* type */
   --font-display: 'Georgia', 'Times New Roman', serif;
@@ -32,8 +32,8 @@
   --font-mono:    ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   --font-hand:    'Kaylee Script', 'Segoe Print', 'Bradley Hand', cursive;
 
-  /* pencil-doodle ink color — Conté sepia on paper */
-  --sketch-ink:   #5d4934;
+  /* pencil-doodle ink color — cream Conté on the toned ground */
+  --sketch-ink:   #e9ddbf;
 
   /* rhythm */
   --maxw: 1200px;
@@ -63,6 +63,14 @@ body {
   transition: background-color .6s ease;
 }
 
+/* crinkled, gritty handmade-paper texture for depth (embossed fractal noise,
+   blended into the kraft ground) */
+.paper-grain {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='5' seed='8' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23ffffff' surfaceScale='1.6'%3E%3CfeDistantLight azimuth='235' elevation='56'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  mix-blend-mode: soft-light; opacity: .55;
+}
 /* a faint wash of the active section's accent at the top of the page —
    subtle atmosphere that changes as the mood changes */
 body::before {
