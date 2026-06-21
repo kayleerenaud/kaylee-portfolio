@@ -24,7 +24,7 @@ HARD = ["Photography / Videography","Procreate Illustration","Costume Design",
         "Final Draft","Premiere Pro","Lightroom","Pro Tools","Google Workspace","Claude"]
 SOFT = ["Teachable","Creative","Organized","Adaptable","Customer-oriented"]
 EDU = [("BFA, Film & Television","New York University · Tisch School of the Arts",
-        "Minor focuses: Costume Design & Dance","Expected May 2027")]
+        "Additional Concentrations · Costume Design & Dance","Expected May 2027")]
 TIMELINE = [
  ("2026", [
    ("Eurydice","Costume Designer · NYU Tisch Drama, Experimental Theater Wing",
@@ -103,12 +103,12 @@ DOC = f"""<!doctype html><html><head><meta charset='utf-8'><style>
 @font-face {{ font-family:'Spectral'; font-weight:400; src:url('{furl("scripts/cv-assets/Spectral-Regular.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:500; src:url('{furl("scripts/cv-assets/Spectral-Medium.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:600; src:url('{furl("scripts/cv-assets/Spectral-SemiBold.ttf")}'); }}
-@page {{ size: Letter; margin: 0.55in 0; background: #14110f; }}
+@page {{ size: Letter; margin: 0.55in 0; background: linear-gradient(to right, #1b1714 0, #1b1714 2.45in, #7a4f5a 2.45in, #7a4f5a 2.471in, #14110f 2.471in, #14110f 100%); }}
 * {{ box-sizing: border-box; }}
-html, body {{ margin:0; padding:0; background:#14110f; color:#f1ece4;
+html, body {{ margin:0; padding:0; background:transparent; color:#f1ece4;
   font-family:'Spectral', Georgia, serif; font-size:9.3pt; line-height:1.4; }}
-.sidebar {{ position: fixed; top:0; left:0; bottom:0; width:2.45in; background:#1b1714;
-  border-right:2px solid #7a4f5a; padding:0.12in 0.3in 0.3in; }}
+.sidebar {{ position: fixed; top:0; left:0; bottom:0; width:2.45in;
+  padding:0.12in 0.3in 0.3in; }}
 .photo {{ width:1.55in; height:1.55in; border-radius:50%; margin:0 auto 0.28in;
   background-image:url('{furl("public/kaylee-headshot.jpg")}'); background-size:cover; background-position:center;
   border:2px solid #d98a9e; }}
@@ -131,9 +131,10 @@ html, body {{ margin:0; padding:0; background:#14110f; color:#f1ece4;
 .edu-sch {{ color:#bdb4a7; margin:.1em 0 0; font-size:8.6pt; }}
 .edu-det {{ color:#a59c90; margin:.1em 0 0; font-size:8pt; font-style:italic; }}
 .edu-date {{ color:#d98a9e; margin:.2em 0 0; font-size:7.8pt; letter-spacing:.04em; }}
-.track {{ border-left:2px solid #5e4148; padding-left:.95rem; margin-left:.15rem; }}
+.track {{ border-left:2px solid #5e4148; padding-left:16px; }}
+.track .year:first-child {{ margin-top:0; }}
 .year {{ font-family:'Kaylee Script', cursive; font-size:17pt; color:#d98a9e; margin:.8rem 0 .4rem; position:relative; }}
-.year::before {{ content:''; position:absolute; left:-1.27rem; top:.28em; width:10px; height:10px;
+.year::before {{ content:''; position:absolute; left:-23px; top:0; width:13px; height:13px;
   border-radius:50%; background:#d98a9e; }}
 .entry {{ margin:0 0 .42rem; position:relative; }}
 .entry h4 {{ font-weight:600; font-size:10pt; margin:0; color:#f4efe6; }}
