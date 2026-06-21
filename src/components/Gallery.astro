@@ -29,10 +29,10 @@ const isStrip = layout === 'strip';
           data-src={it.src}
           data-alt={it.alt}
           data-caption={it.caption ?? ''}
-          aria-label={`Enlarge: ${it.caption || it.alt}`}
+          aria-label={`Enlarge: ${it.alt}`}
         >
           <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
-          {it.caption && <span class="caption">{it.caption}</span>}
+          {it.caption && <span class="caption" set:html={it.caption} />}
         </button>
         {isStrip && it.edge && <span class="frame-edge">{it.edge}</span>}
       </li>
@@ -129,7 +129,7 @@ const isStrip = layout === 'strip';
   .coming-soon > * { position: relative; z-index: 3; } /* keep text above the flecks/vignette */
   .cs-kicker { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .3em; font-size: .68rem;
     color: color-mix(in srgb, var(--accent) 72%, #fff); }
-  .cs-title { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2.1rem); color: #f3efe9; line-height: 1.05; }
+  .cs-title { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 4vw, 2.1rem); color: #f3efe9; line-height: 1.05; }
   .cs-meta { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; color: #b9b2a6; }
 
   /* the click-through "coming soon" detail card */
@@ -139,7 +139,7 @@ const isStrip = layout === 'strip';
     padding: clamp(2.5rem, 7vw, 4.5rem) clamp(2rem, 6vw, 4rem);
     background: radial-gradient(120% 100% at 50% 25%, color-mix(in srgb, var(--accent) 26%, #0c0a08), #0c0a08 75%);
     border-radius: 6px; box-shadow: 0 24px 70px rgba(0,0,0,.6); text-align: center; }
-  .coda-title { font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.4rem); color: #f3efe9; line-height: 1.02; max-width: 18ch; }
+  .coda-title { font-family: var(--font-display); font-style: italic; font-size: clamp(2rem, 6vw, 3.4rem); color: #f3efe9; line-height: 1.02; max-width: 18ch; }
   .coda-meta { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .12em; color: color-mix(in srgb, var(--accent) 60%, #cfc9c0); }
   .coda-note { color: #b9b2a6; margin: .4rem 0 0; }
   .coda-close { position: absolute; top: .6rem; right: .7rem; width: 40px; height: 40px; font-size: 1.6rem; line-height: 1;
@@ -183,7 +183,7 @@ const isStrip = layout === 'strip';
   .gallery.strip .frame-edge {
     position: absolute; left: 6px; bottom: -22px; z-index: 4; pointer-events: none;
     max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    font: 600 10px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+    font: italic 600 10px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
     color: color-mix(in srgb, var(--perf, #d8cfc1) 88%, #fff);
     background: var(--film, #0c0a08); padding: 3px 6px; border-radius: 2px;
   }
@@ -342,7 +342,7 @@ const isStrip = layout === 'strip';
     LB.classList.add('is-swap');
     const swap = () => {
       img.src = it.src; img.alt = it.alt;
-      cap.textContent = it.caption;
+      cap.innerHTML = it.caption;
       count.textContent = group.length > 1 ? `${idx + 1} / ${group.length}` : '';
       requestAnimationFrame(() => LB!.classList.remove('is-swap'));
     };
