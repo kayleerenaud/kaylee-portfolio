@@ -103,12 +103,12 @@ DOC = f"""<!doctype html><html><head><meta charset='utf-8'><style>
 @font-face {{ font-family:'Spectral'; font-weight:400; src:url('{furl("scripts/cv-assets/Spectral-Regular.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:500; src:url('{furl("scripts/cv-assets/Spectral-Medium.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:600; src:url('{furl("scripts/cv-assets/Spectral-SemiBold.ttf")}'); }}
-@page {{ size: Letter; margin: 0; }}
+@page {{ size: Letter; margin: 0.55in 0; }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin:0; padding:0; background:#14110f; color:#f1ece4;
-  font-family:'Spectral', Georgia, serif; font-size:9.4pt; line-height:1.5; }}
+  font-family:'Spectral', Georgia, serif; font-size:9.3pt; line-height:1.4; }}
 .sidebar {{ position: fixed; top:0; left:0; bottom:0; width:2.45in; background:#1b1714;
-  border-right:2px solid #7a4f5a; padding:0.42in 0.32in; }}
+  border-right:2px solid #7a4f5a; padding:0.12in 0.3in 0.3in; }}
 .photo {{ width:1.55in; height:1.55in; border-radius:50%; margin:0 auto 0.28in;
   background-image:url('{furl("public/kaylee-headshot.jpg")}'); background-size:cover; background-position:center;
   border:2px solid #d98a9e; }}
@@ -120,28 +120,28 @@ html, body {{ margin:0; padding:0; background:#14110f; color:#f1ece4;
 .chip {{ display:inline-block; font-size:7.6pt; color:#efe9df; border:1px solid #6b4750;
   background:#241a1c; border-radius:40px; padding:.12em .6em; margin:0 .25em .3em 0; }}
 .soft .chip {{ color:#bdb4a7; background:transparent; }}
-.main {{ margin-left:2.45in; padding:0.5in 0.5in 0.55in 0.5in; }}
+.main {{ margin-left:2.45in; padding:0 0.5in; }}
 .head {{ border-bottom:2px solid #7a4f5a; padding-bottom:.5rem; margin-bottom:1rem; }}
 .head h1 {{ font-family:'Kaylee Script', cursive; font-weight:400; font-size:34pt; line-height:.9;
   margin:0; color:#f1ece4; }}
 .head .title {{ font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:#d98a9e; margin:.5em 0 0; }}
-.bio {{ color:#e7e0d4; margin:0 0 1.1rem; }}
-.section {{ font-family:'Kaylee Script', cursive; font-size:22pt; color:#f1ece4; margin:.4rem 0 .7rem; }}
+.bio {{ color:#e7e0d4; margin:0 0 .8rem; }}
+.section {{ font-family:'Kaylee Script', cursive; font-size:21pt; color:#f1ece4; margin:.3rem 0 .45rem; }}
 .edu-deg {{ font-weight:600; margin:0; }}
 .edu-sch {{ color:#bdb4a7; margin:.1em 0 0; font-size:8.6pt; }}
 .edu-det {{ color:#a59c90; margin:.1em 0 0; font-size:8pt; font-style:italic; }}
 .edu-date {{ color:#d98a9e; margin:.2em 0 0; font-size:7.8pt; letter-spacing:.04em; }}
 .track {{ border-left:2px solid #5e4148; padding-left:.95rem; margin-left:.15rem; }}
-.year {{ font-family:'Kaylee Script', cursive; font-size:17pt; color:#d98a9e; margin:1.1rem 0 .55rem; position:relative; }}
+.year {{ font-family:'Kaylee Script', cursive; font-size:17pt; color:#d98a9e; margin:.8rem 0 .4rem; position:relative; }}
 .year::before {{ content:''; position:absolute; left:-1.27rem; top:.28em; width:10px; height:10px;
   border-radius:50%; background:#d98a9e; }}
-.entry {{ margin:0 0 .6rem; position:relative; }}
+.entry {{ margin:0 0 .42rem; position:relative; }}
 .entry h4 {{ font-weight:600; font-size:10pt; margin:0; color:#f4efe6; }}
 .role {{ color:#d98a9e; font-size:7.8pt; letter-spacing:.02em; margin:.12em 0 .2em; }}
 .entry ul {{ margin:.1em 0 0; padding-left:1rem; }}
 .entry li {{ color:#a59c90; margin:0 0 .12em; }}
-.refs {{ margin-top:1rem; }}
-.ref {{ margin-bottom:.5rem; }}
+.refs {{ margin-top:.7rem; }}
+.ref {{ margin-bottom:.38rem; }}
 .ref-n {{ font-weight:600; margin:0; }}
 .ref-r {{ color:#a59c90; font-size:8pt; margin:.1em 0 0; }}
 .ref-c {{ color:#d98a9e; font-size:8pt; margin:.05em 0 0; }}
