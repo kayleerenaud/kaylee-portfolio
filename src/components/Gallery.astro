@@ -62,7 +62,7 @@ const isStrip = layout === 'strip';
       <span class="cs-kicker">Coming Soon</span>
       <span class="coda-title">{coda.title}</span>
       <span class="coda-meta">{[coda.role, coda.date].filter(Boolean).join(' · ')}</span>
-      <p class="coda-note">{coda.note ?? 'In production. More to be revealed.'}</p>
+      <p class="coda-note" set:html={coda.note ?? 'In production. More to be revealed.'}></p>
     </div>
   </dialog>
 )}

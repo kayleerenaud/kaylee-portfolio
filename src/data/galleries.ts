@@ -57,7 +57,7 @@ export const upcomingFilm = {
   title: 'Schmoopy',
   role: 'Writer / Director',
   date: 'Narrative Short · In Production',
-  note: 'A hospital janitor is mistaken for a nurse in the maternity ward on his first day.',
+  note: 'A hospital janitor is mistaken for a nurse<br>in the maternity ward on his first day.',
 };
 
 // Video projects — YouTube video IDs (the part after watch?v= or youtu.be/).
