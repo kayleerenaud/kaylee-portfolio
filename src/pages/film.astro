@@ -27,7 +27,7 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
   </section>
 
   <section class="container videos">
-    <h2 class="section-label hand" data-reveal>Made by me</h2>
+    <h2 class="section-label hand" data-reveal>Recent works</h2>
     {videos.map((v, i) => (
       <article class="video" data-reveal style={`--d:${i * 80}ms`}>
         <YouTube id={v.id} title={v.title} />
