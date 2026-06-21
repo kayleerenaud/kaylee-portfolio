@@ -103,7 +103,8 @@ DOC = f"""<!doctype html><html><head><meta charset='utf-8'><style>
 @font-face {{ font-family:'Spectral'; font-weight:400; src:url('{furl("scripts/cv-assets/Spectral-Regular.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:500; src:url('{furl("scripts/cv-assets/Spectral-Medium.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:600; src:url('{furl("scripts/cv-assets/Spectral-SemiBold.ttf")}'); }}
-@page {{ size: Letter; margin: 0.55in 0; background: linear-gradient(to right, #1b1714 0, #1b1714 2.45in, #7a4f5a 2.45in, #7a4f5a 2.471in, #14110f 2.471in, #14110f 100%); }}
+@page {{ size: Letter; margin: 0.55in 0; background: linear-gradient(to right, #1b1714 0, #1b1714 2.45in, #7a4f5a 2.45in, #7a4f5a 2.471in, #14110f 2.471in, #14110f 100%);
+  @bottom-center {{ content: counter(page) "  /  " counter(pages); color:#9a8f82; font-family:'Spectral', serif; font-size:7.5pt; letter-spacing:.08em; }} }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin:0; padding:0; background:transparent; color:#f1ece4;
   font-family:'Spectral', Georgia, serif; font-size:9.3pt; line-height:1.4; }}
@@ -121,6 +122,7 @@ html, body {{ margin:0; padding:0; background:transparent; color:#f1ece4;
   background:#241a1c; border-radius:40px; padding:.12em .6em; margin:0 .25em .3em 0; }}
 .soft .chip {{ color:#bdb4a7; background:transparent; }}
 .main {{ margin-left:2.45in; padding:0 0.5in; }}
+.skills-abs {{ position:absolute; left:0.3in; top:3.0in; width:1.85in; }}
 .head {{ border-bottom:2px solid #7a4f5a; padding-bottom:.5rem; margin-bottom:1rem; }}
 .head h1 {{ font-family:'Kaylee Script', cursive; font-weight:400; font-size:34pt; line-height:.9;
   margin:0; color:#f1ece4; }}
@@ -153,9 +155,11 @@ html, body {{ margin:0; padding:0; background:transparent; color:#f1ece4;
   <div class='photo'></div>
   <div class='block contact'><p class='s-h'>Contact</p>
     <p><a href='mailto:{EMAIL}'>{e(EMAIL)}</a></p><p>{e(PHONE)}</p><p>{e(LOC)}</p></div>
+</aside>
+<div class='skills-abs'>
   <div class='block'><p class='s-h'>Skills</p><div>{chips(HARD)}</div></div>
   <div class='block soft'><p class='s-h'>Strengths</p><div>{chips(SOFT)}</div></div>
-</aside>
+</div>
 <main class='main'>
   <div class='head'><h1>{e(NAME)}</h1><p class='title'>{e(TITLE)}</p></div>
   <p class='bio'>{e(BIO)}</p>
