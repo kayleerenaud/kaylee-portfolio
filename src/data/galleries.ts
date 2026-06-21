@@ -20,14 +20,14 @@ const phL = (seed: string) => `https://picsum.photos/seed/${seed}/1280/720`;    
 //   Landscape placeholders so the enlarged view opens horizontal, like real
 //   widescreen film stills. (Upload landscape stills to match.)
 export const filmStills: GalleryItem[] = [
-  { src: '/film/collateral-calamity-1.jpg', alt: 'Four young adults peek warily around a stone corner on a New York street', edge: 'Collateral Calamity · 2024', caption: "Four accomplices, one terrible plan. The crew peeks around a corner to check the coast in Collateral Calamity, my 2024 short comedy about an eclectic group of young adults trying to hide a body in New York City. What could possibly go wrong? I wrote, directed, and scored it." },
-  { src: '/film/collateral-calamity-2.jpg', alt: 'A low-angle shot of characters wrestling something on a Manhattan stoop', edge: 'Collateral Calamity · 2024', caption: "Everything that can go sideways, does. A scramble on the stoop from Collateral Calamity (2024), a short comedy I wrote, directed, and scored myself." },
-  { src: '/film/dinners-ready-1.jpg', alt: 'Black-and-white close-up of a curly-haired boy with a wary, downcast expression', edge: "Dinner's Ready! · 2024", caption: "A son caught in his father's temper. Dinner's Ready! (2024) is a silent narrative short I wrote and directed, asking what happens when we let our own agenda consume us. This close-up holds the boy's fear in the moment before everything boils over." },
-  { src: '/film/dinners-ready-2.jpg', alt: 'Black-and-white kitchen scene with a father, a son eating, and a mother', edge: "Dinner's Ready! · 2024", caption: "After the storm, a thaw. Father, son, and mother back in the kitchen in Dinner's Ready! (2024), where an apology and an offer to cook together turns a hard night into a shared one. Written and directed by me." },
-  { src: '/film/wind-dry-grass-1.jpg', alt: 'Two men stand facing each other across a desolate field of dry grass under an overcast sky', edge: 'A Wind In Dry Grass · 2023', caption: "Two men, perhaps the last on earth. A Wind In Dry Grass (2023) is adapted from a short story of the same name that I wrote: two survivors finally hear a crackle through their old radio and set out, even in the face of death, hoping someone else is still out there. Written and directed by me." },
-  { src: '/film/wind-dry-grass-2.jpg', alt: 'A young man clutches an old portable radio in a barren, windswept landscape', edge: 'A Wind In Dry Grass · 2023', caption: "The crackle that starts it all. From A Wind In Dry Grass (2023), my adaptation of my own short story about hope at the end of the world. Written and directed by me." },
-  { src: '/film/take-him-out-1.jpg', alt: 'A lone figure on the Brooklyn waterfront at dawn, Brooklyn Bridge and Manhattan skyline behind, with a hand-drawn animated overlay', edge: 'Take Him Out!', caption: "An agent at the edge of the city. Take Him Out! is a silent short with comic-book-style overlays I animated by hand: a special agent is sent to take out a target who, little does she know, is her date for that night. Will they recognize each other once the masks come off? Shot on location in Dumbo, Brooklyn at 4am. Written and directed by me." },
-  { src: '/film/take-him-out-2.jpg', alt: 'A silhouetted figure walking under the Manhattan Bridge archway in Dumbo, Brooklyn', edge: 'Take Him Out!', caption: "Under the bridge in Dumbo. From Take Him Out!, my silent spy-meets-rom-com short with hand-drawn comic-book overlays, shot on location at 4am. Written and directed by me." },
+  { src: '/film/collateral-calamity-1.jpg', alt: 'Four young adults peek warily around a stone corner on a New York street', edge: 'Collateral Calamity · 2024', caption: "The crew checks the coast. Collateral Calamity (2024) is my short comedy about a group of young adults trying to hide a body in New York. I wrote, directed, and scored it." },
+  { src: '/film/collateral-calamity-2.jpg', alt: 'A low-angle shot of characters wrestling something on a Manhattan street', edge: 'Collateral Calamity · 2024', caption: "When the plan goes sideways. A scramble on the street from Collateral Calamity (2024), written, directed, and scored by me." },
+  { src: '/film/dinners-ready-1.jpg', alt: 'Black-and-white close-up of a curly-haired boy with a wary, downcast expression', edge: "Dinner's Ready! · 2024", caption: "A son under his father's temper. Dinner's Ready! (2024) is my silent short about what happens when our own agenda consumes us. Written and directed by me." },
+  { src: '/film/dinners-ready-2.jpg', alt: 'Black-and-white kitchen scene with a father, a son eating, and a mother', edge: "Dinner's Ready! · 2024", caption: "The reconciliation, back in the kitchen. From Dinner's Ready! (2024), written and directed by me." },
+  { src: '/film/wind-dry-grass-1.jpg', alt: 'Two men stand facing each other across a desolate field of dry grass under an overcast sky', edge: 'A Wind In Dry Grass · 2023', caption: "Two men, perhaps the last on earth. A Wind In Dry Grass (2023) is my adaptation of my own short story. Written and directed by me." },
+  { src: '/film/wind-dry-grass-2.jpg', alt: 'A young man clutches an old portable radio in a barren, windswept landscape', edge: 'A Wind In Dry Grass · 2023', caption: "The crackle that starts the journey. From A Wind In Dry Grass (2023), adapted from my short story. Written and directed by me." },
+  { src: '/film/take-him-out-1.jpg', alt: 'A lone figure on the Brooklyn waterfront at dawn, Brooklyn Bridge and Manhattan skyline behind, with a hand-drawn animated overlay', edge: 'Take Him Out!', caption: "An agent at the edge of the city. Take Him Out!, my silent short with comic-book overlays I animated by hand, follows an agent whose target turns out to be her date. Shot in Dumbo at 4am. Written and directed by me." },
+  { src: '/film/take-him-out-2.jpg', alt: 'A silhouetted figure walking under the Manhattan Bridge archway in Dumbo, Brooklyn', edge: 'Take Him Out!', caption: "Under the bridge in Dumbo. From Take Him Out!, my hand-animated silent spy short. Written and directed by me." },
 ];
 
 export const costume: GalleryItem[] = [
@@ -54,9 +54,10 @@ export const aboutPhotos: GalleryItem[] = [
 // The "Coming Soon" slide at the end of the Film stills strip (movie-trailer
 // style). Fill in your upcoming film's title, your role, and the date.
 export const upcomingFilm = {
-  title: 'Untitled Comedy',
+  title: 'Schmoopy',
   role: 'Writer / Director',
-  date: 'Narrative · In Production 2026',
+  date: 'Narrative Short · In Production',
+  note: 'A hospital janitor is mistaken for a nurse in the maternity ward on his first day.',
 };
 
 // Video projects — YouTube video IDs (the part after watch?v= or youtu.be/).

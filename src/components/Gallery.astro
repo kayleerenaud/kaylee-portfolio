@@ -14,7 +14,7 @@ export type GalleryItem = { src: string; alt: string; caption?: string; edge?: s
 // landscape stills you scroll/swipe sideways — used for Film stills).
 const { items, columns = 3, layout = 'grid', coda } = Astro.props as {
   items: GalleryItem[]; columns?: number; layout?: 'grid' | 'strip';
-  coda?: { title: string; role?: string; date?: string };
+  coda?: { title: string; role?: string; date?: string; note?: string };
 };
 const isStrip = layout === 'strip';
 ---
@@ -62,7 +62,7 @@ const isStrip = layout === 'strip';
       <span class="cs-kicker">Coming Soon</span>
       <span class="coda-title">{coda.title}</span>
       <span class="coda-meta">{[coda.role, coda.date].filter(Boolean).join(' · ')}</span>
-      <p class="coda-note">In production — more to be revealed.</p>
+      <p class="coda-note">{coda.note ?? 'In production. More to be revealed.'}</p>
     </div>
   </dialog>
 )}
