@@ -103,7 +103,7 @@ DOC = f"""<!doctype html><html><head><meta charset='utf-8'><style>
 @font-face {{ font-family:'Spectral'; font-weight:400; src:url('{furl("scripts/cv-assets/Spectral-Regular.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:500; src:url('{furl("scripts/cv-assets/Spectral-Medium.ttf")}'); }}
 @font-face {{ font-family:'Spectral'; font-weight:600; src:url('{furl("scripts/cv-assets/Spectral-SemiBold.ttf")}'); }}
-@page {{ size: Letter; margin: 0.55in 0; }}
+@page {{ size: Letter; margin: 0.55in 0; background: #14110f; }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin:0; padding:0; background:#14110f; color:#f1ece4;
   font-family:'Spectral', Georgia, serif; font-size:9.3pt; line-height:1.4; }}
