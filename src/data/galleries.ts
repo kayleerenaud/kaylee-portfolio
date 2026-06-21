@@ -20,8 +20,8 @@ const phL = (seed: string) => `https://picsum.photos/seed/${seed}/1280/720`;    
 //   Landscape placeholders so the enlarged view opens horizontal, like real
 //   widescreen film stills. (Upload landscape stills to match.)
 export const filmStills: GalleryItem[] = [
-  { src: phL('kr-film-1'), alt: 'Placeholder film still 1', edge: 'Project One · 2024', caption: 'Lorem ipsum — opening frame, golden hour on location. The full caption can run several sentences and will expand here when enlarged, telling the story behind the shot.' },
-  { src: phL('kr-film-2'), alt: 'Placeholder film still 2', edge: 'Project One · 2024', caption: 'Lorem ipsum — close on the lead during the third act. Replace with the real story of this frame.' },
+  { src: '/film/collateral-calamity-1.jpg', alt: 'Four young adults peek warily around a stone corner on a New York street', edge: 'Collateral Calamity · 2024', caption: "Four accomplices, one terrible plan. The crew peeks around a corner to check the coast in Collateral Calamity, my 2024 short comedy about an eclectic group of young adults trying to hide a body in New York City. What could possibly go wrong? Original music by me." },
+  { src: '/film/collateral-calamity-2.jpg', alt: 'A low-angle shot of characters wrestling something on a Manhattan stoop', edge: 'Collateral Calamity · 2024', caption: "Everything that can go sideways, does. A scramble on the stoop from Collateral Calamity (2024), a short comedy I wrote and scored myself." },
   { src: phL('kr-film-3'), alt: 'Placeholder film still 3', edge: 'Project Two · 2023', caption: 'Lorem ipsum — wide establishing shot, quiet morning light.' },
   { src: phL('kr-film-4'), alt: 'Placeholder film still 4', edge: 'Project Two · 2023', caption: 'Lorem ipsum — behind the scenes, blocking the dolly move.' },
   { src: phL('kr-film-5'), alt: 'Placeholder film still 5', edge: 'Project Three · 2023', caption: 'Lorem ipsum — practical lighting test, deep shadows.' },
