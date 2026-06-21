@@ -101,7 +101,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* small "you can open these" hint under a page header (like Film's "scroll sideways") */
 .open-hint { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.04em;
-  color: color-mix(in srgb, var(--accent) 72%, var(--ink-soft)); margin: -0.75rem 0 1.75rem; }
+  color: color-mix(in srgb, var(--accent) 72%, var(--ink-soft)); margin-block: -0.75rem 1.75rem; }
 
 /* placeholder note shown in scaffold mode */
 .placeholder-note {
