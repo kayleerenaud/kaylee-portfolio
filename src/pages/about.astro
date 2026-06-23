@@ -66,7 +66,12 @@ import { site, pageHref } from '../config/site';
           <div class="credit-group" data-reveal style={`--d:${gi * 70}ms`}>
             <span class="credit-sketch"><Sketch name={group.sketch} /></span>
             <p class="credit-heading">{group.heading}</p>
-            {group.lines.map((line) => <p class="credit-line" set:html={line} />)}
+            {group.entries.map((en) => (
+              <div class="credit-entry">
+                <p class="credit-title" set:html={en.title} />
+                {en.detail && <p class="credit-detail" set:html={en.detail} />}
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -126,10 +131,11 @@ import { site, pageHref } from '../config/site';
   .credits-roll { display: flex; flex-direction: column; gap: 2.75rem; align-items: center; text-align: center; }
   .credit-sketch { display: block; width: 54px; height: 54px; margin: 0 auto .6rem; }
   .credit-heading { font-family: var(--font-display); font-size: 1.25rem; color: var(--accent); margin: 0 0 .6rem; letter-spacing: .02em; }
-  .credit-line { font-family: var(--font-mono); font-size: .95rem; line-height: 1.7; color: var(--ink-soft); margin: 0; }
-  .credit-line em { font-family: var(--font-body); font-style: italic; color: var(--ink); }
-  /* a film title (em) starts a new entry — give it a little breathing room above */
-  .credit-line:has(em) { margin-top: .55rem; }
+  /* each credit entry: a lead line + an optional detail line, evenly spaced */
+  .credit-entry + .credit-entry { margin-top: .6rem; }
+  .credit-title { font-family: var(--font-mono); font-size: .92rem; line-height: 1.5; color: var(--ink); margin: 0; }
+  .credit-detail { font-family: var(--font-mono); font-size: .85rem; line-height: 1.5; color: var(--ink-soft); margin: .12rem 0 0; }
+  .credit-title em, .credit-detail em { font-family: var(--font-body); font-style: italic; color: inherit; }
 
   /* ---- 5 · invite ---- */
   .invite-section { position: relative; }

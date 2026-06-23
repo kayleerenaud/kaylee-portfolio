@@ -35,35 +35,33 @@ export const crafts = [
 
 // End credits — Awards / Experience / Education. Keep entries short and real;
 // "Title — where, year" reads cleanly in the credit roll.
-export const credits: { heading: string; sketch: string; lines: string[] }[] = [
+export const credits: { heading: string; sketch: string; entries: { title: string; detail?: string }[] }[] = [
   {
     heading: 'Awards & Selections',
     sketch: 'laurel',
-    lines: [
-      "<em>Together, I'm Pieces</em>",
-      "Honorable Mention, Fusion Film Festival · Official Selection, WinterFest",
-      "<em>Like Mother</em>",
-      "Official Selection, Manhattan & Fusion Festivals",
+    entries: [
+      { title: "<em>Together, I'm Pieces</em>", detail: 'Honorable Mention, Fusion Film Festival · Official Selection, WinterFest' },
+      { title: '<em>Like Mother</em>', detail: 'Official Selection, Manhattan & Fusion Festivals' },
     ],
   },
   {
     heading: 'Selected Experience',
     sketch: 'summit',
-    lines: [
-      "Writer & Director · <em>Schmoopy</em>, <em>Together, I'm Pieces</em>, <em>Spirit Temple No. 7</em>",
-      "Costume Designer · <em>Eurydice</em> (NYU Tisch ETW), <em>Weightless</em>",
-      "Costume Director · <em>Knights of the Old Republic</em>, Studio 70",
-      "Development Intern · Jean Doumanian Productions, NYC",
+    entries: [
+      { title: 'Writer & Director', detail: "<em>Schmoopy</em>, <em>Together, I'm Pieces</em>, <em>Spirit Temple No. 7</em>" },
+      { title: 'Costume Designer', detail: '<em>Eurydice</em> (NYU Tisch ETW), <em>Weightless</em>' },
+      { title: 'Costume Director', detail: '<em>Knights of the Old Republic</em>, Studio 70' },
+      { title: 'Development Intern', detail: 'Jean Doumanian Productions, NYC' },
     ],
   },
   {
     heading: 'Education',
     sketch: 'gradcap',
-    lines: [
-      "BFA, Film & Television · NYU Tisch School of the Arts, 2027",
-      "Additional Concentrations · Costume Design & Dance",
-      "Developing the Dramatic Script · Florence, Italy",
-      "Storytelling · Athens, Greece",
+    entries: [
+      { title: 'BFA, Film & Television', detail: 'NYU Tisch School of the Arts · 2027' },
+      { title: 'Additional Concentrations', detail: 'Costume Design & Dance' },
+      { title: 'Developing the Dramatic Script', detail: 'Florence, Italy' },
+      { title: 'Storytelling', detail: 'Athens, Greece' },
     ],
   },
 ];
