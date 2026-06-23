@@ -99,6 +99,10 @@ img { display: block; max-width: 100%; height: auto; }
 .page-intro { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 3vw, 2.5rem); }
 .page-intro p { color: var(--ink-soft); font-size: 1.1rem; max-width: 60ch; }
 
+/* a forced line break that only applies on wider screens (mobile wraps naturally) */
+.br-desk { display: none; }
+@media (min-width: 600px) { .br-desk { display: inline; } }
+
 /* small "you can open these" hint under a page header (like Film's "scroll sideways") */
 .open-hint { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.04em;
   color: color-mix(in srgb, var(--accent) 72%, var(--ink-soft)); margin-block: -0.75rem 1.75rem; }
