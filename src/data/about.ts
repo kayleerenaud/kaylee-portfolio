@@ -40,8 +40,8 @@ export const credits: { heading: string; sketch: string; entries: { title: strin
     heading: 'Awards & Selections',
     sketch: 'laurel',
     entries: [
-      { title: "<em>Together, I'm Pieces</em>", detail: 'Honorable Mention, Fusion Film Festival · Official Selection, WinterFest' },
-      { title: '<em>Like Mother</em>', detail: 'Official Selection, Manhattan & Fusion Festivals' },
+      { title: "<em>Together, I'm Pieces</em> <span class='credit-role'>Director</span>", detail: 'Honorable Mention, Fusion Film Festival · Official Selection, WinterFest' },
+      { title: "<em>Like Mother</em> <span class='credit-role'>Costume Designer</span>", detail: 'Official Selection, Manhattan & Fusion Film Festival' },
     ],
   },
   {
