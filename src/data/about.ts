@@ -9,8 +9,8 @@ export const hook = "Hi, I'm Kaylee — I make things that feel like a story.";
 // Two short paragraphs. Personality first, credentials later.
 // Wrap words in <em>…</em> to give them the handwritten emphasis font.
 export const blurb: string[] = [
-  "I've been writing since before I could properly type, filling a purple notebook with wolf princesses and children who lived in tunnels beneath the dry South Jersey lawns. That notebook eventually made room for a viewfinder and a sewing table, but the instinct never changed: I build worlds, and I try to make them places worth staying.",
-  "I work mostly for kids and families, not because it's easier but because I remember needing stories that trusted me. I grew up moving between two very different households, leaning on the heroes I found in books and films to carry me from one to the other. Children can hold grief and wonder in the same frame without needing it explained, and that is who I make things for: my younger self, my younger siblings and cousins, and the grown-ups who still remember being that kid. Whether I'm writing a script, sewing a costume, or framing a shot, it's the same work, and I'm glad you're here to see some of it.",
+  "I plotted out my first play with untrained pointer fingers, clicking away slowly on the chunky keys of my family's PC. I must have been eight, certainly no younger than seven, and I had never seen a play let alone been trained to write one, but no one corrected me (or my spelling), so I let my imagination run wild. What began as a fantastical escape became my way of processing the world.",
+  "Today, I'm a New York-based artist and writer drawn to character-driven stories and mixed media, with an enduring love of storytelling for young audiences. Across theater, marketing, live production, and wardrobe, I have contributed to two feature films, over twenty stage productions, and thirty short films. But whether I'm writing a script, sewing a costume, or framing a shot, it's the same work, and I'm glad you're here to see some of it.",
 ];
 
 // Where you're based — shown as a filmic "on location" line in the title card.
