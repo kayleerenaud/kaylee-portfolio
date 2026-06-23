@@ -48,7 +48,7 @@ export const credits: { heading: string; sketch: string; entries: { title: strin
     heading: 'Selected Experience',
     sketch: 'summit',
     entries: [
-      { title: 'Writer & Director', detail: "<em>Schmoopy</em>, <em>Together, I'm Pieces</em>, <em>Spirit Temple No. 7</em>" },
+      { title: 'Writer & Director', detail: "<em>Schmoopy</em>, <em>Elli</em>, <em>Spirit Temple No. 7</em>" },
       { title: 'Costume Designer', detail: '<em>Eurydice</em> (NYU Tisch ETW), <em>Weightless</em>' },
       { title: 'Costume Director', detail: '<em>Knights of the Old Republic</em>, Studio 70' },
       { title: 'Development Intern', detail: 'Jean Doumanian Productions, NYC' },
