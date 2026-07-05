@@ -104,12 +104,14 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
         <header class="panel-head">
           <p class="ph-kicker stamp">{p.kind === 'paper' ? 'Paper Project' : 'Production'}</p>
           <h2 class="ph-show hand">{p.show}</h2>
-          <p class="ph-meta">
-            <span class="stamp">Co.</span> <span class="hand">{p.company}</span>
-            <span class="dot">·</span> <span class="hand">{p.director}</span>
-            <span class="dot">·</span> <span class="stamp">Role</span> <span class="hand">{p.role}</span>
-            <span class="dot">·</span> <span class="stamp">{p.year}</span>
-          </p>
+          {(p.company || p.director || p.role || p.year) && (
+            <p class="ph-meta">
+              {p.company && (<><span class="stamp">Co.</span> <span class="hand">{p.company}</span></>)}
+              {p.director && (<>{p.company && <span class="dot">·</span>} <span class="hand">{dirName(p.director)}</span></>)}
+              {p.role && (<>{(p.company || p.director) && <span class="dot">·</span>} <span class="stamp">Role</span> <span class="hand">{p.role}</span></>)}
+              {p.year && (<>{(p.company || p.director || p.role) && <span class="dot">·</span>} <span class="stamp">{p.year}</span></>)}
+            </p>
+          )}
           {p.blurb && <p class="ph-blurb">{p.blurb}</p>}
         </header>
 
@@ -118,23 +120,25 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
             const imgs = pieceImages(piece);
             const main = imgs[0];
             const sides = imgs.slice(1);
+            const cap = piece.caption ?? '';
+            const alt = cap || `${p.show} — ${main.label.toLowerCase()}`;
             return (
-              <article class="plate" data-gallery>
-                <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={piece.caption} data-caption={piece.caption}>
-                  <img src={main.src} alt={piece.caption} loading="lazy" decoding="async" />
+              <article class:list={['plate', sides.length === 0 && 'solo']} data-gallery>
+                <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={alt} data-caption={cap}>
+                  <img src={main.src} alt={alt} loading="lazy" decoding="async" />
                   <span class="plate-label stamp">{main.label}</span>
                 </button>
                 {sides.length > 0 && (
                   <div class="plate-side">
-                    {sides.map((im, k) => (
-                      <button class="plate-thumb" data-lightbox data-index={k + 1} data-src={im.src} data-alt={piece.caption} data-caption={piece.caption} style={`--r:${(k % 2 ? 1 : -1) * (1.5 + k)}deg`}>
-                        <img src={im.src} alt={`${im.label} — ${piece.caption}`} loading="lazy" decoding="async" />
-                        <span class="thumb-label stamp">{im.label}</span>
+                    {sides.map((img, k) => (
+                      <button class="plate-thumb" data-lightbox data-index={k + 1} data-src={img.src} data-alt={alt} data-caption={cap} style={`--r:${(k % 2 ? 1 : -1) * (1.5 + k)}deg`}>
+                        <img src={img.src} alt={`${img.label} — ${alt}`} loading="lazy" decoding="async" />
+                        <span class="thumb-label stamp">{img.label}</span>
                       </button>
                     ))}
                   </div>
                 )}
-                <p class="plate-caption">{piece.caption}</p>
+                {cap && <p class="plate-caption">{cap}</p>}
               </article>
             );
           })}
@@ -152,12 +156,7 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
       <header class="panel-head">
         <p class="ph-kicker stamp">Upcoming</p>
         <h2 class="ph-show hand">{upcoming.show}</h2>
-        <p class="ph-meta">
-          <span class="stamp">Co.</span> <span class="hand">{upcoming.company}</span>
-          <span class="dot">·</span> <span class="hand">{upcoming.director}</span>
-          <span class="dot">·</span> <span class="stamp">Role</span> <span class="hand">{upcoming.role}</span>
-          <span class="dot">·</span> <span class="stamp">{upcoming.date}</span>
-        </p>
+        {upcoming.date && <p class="ph-meta"><span class="stamp">{upcoming.date}</span></p>}
       </header>
       <div class="cs-frame">
         <span class="cs-stamp">Coming Soon</span>
@@ -289,6 +288,10 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
     grid-template-areas: 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem);
     align-items: center; /* side mini-gallery centers vertically to the final */ }
   @media (max-width: 680px) { .plate { grid-template-columns: 1fr; grid-template-areas: 'main' 'side' 'cap'; } }
+  /* single-image pieces (no side gallery): center the plate, don't leave a gap */
+  .plate.solo { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'main' 'cap'; justify-items: center; }
+  .plate.solo .plate-main { max-width: min(100%, 640px); }
+  .plate.solo .plate-caption { max-width: 640px; }
 
   .plate-main { grid-area: main; position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
     background: none; line-height: 0; }

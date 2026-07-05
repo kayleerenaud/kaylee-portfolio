@@ -16,14 +16,13 @@ export const blurb: string[] = [
 // Where you're based — shown as a filmic "on location" line in the title card.
 export const basedIn = "New York, NY";
 
-// Headshot frames — flips through these on load and lands on the LAST one
-// (your professional shot). Replace with 4 real photos. Square-ish works best.
-const me = (seed: string) => `https://picsum.photos/seed/${seed}/640/720`;
+// Headshot frames — flips through these on load and lands on the LAST one.
+// Kaylee's real photos; the file she marked "land_on_this" (pic4 → me-4) is last.
 export const headshotFrames: string[] = [
-  me('kr-me-laugh'),   // laughing
-  me('kr-me-smile'),   // soft smile
-  me('kr-me-tongue'),  // tongue out / playful
-  me('kr-me-pro'),     // professional — lands here
+  '/about/me-1.jpg',
+  '/about/me-2.jpg',
+  '/about/me-3.jpg',
+  '/about/me-4.jpg',   // "land_on_this" — the frame it settles on
 ];
 
 // The three crafts, each with a doodle motif + a link into that section.

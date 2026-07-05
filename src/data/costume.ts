@@ -1,21 +1,27 @@
 // ============================================================================
 //  COSTUME CONTENT — projects shown as "oak tags" on a rail. Clicking a tag
-//  opens an in-page plate overlay (✕ to close) with each piece's final +
-//  rendering + progress, all flexible per piece.
+//  opens an in-page plate overlay (✕ to close) with each piece's imagery + note.
 //
 //  Each Project = one production (or paper project). Each Piece is a costume
 //  "look" with whatever images exist:
 //     final?     finished costume photo  (omit for paper / unrealized projects)
 //     rendering? the design illustration
 //     progress?  1–3 in-progress / construction photos
-//     swatches?  flat photos of fabric swatches (optional; only if you have them)
-//     caption    the written note that travels with the piece (preview → full)
+//     swatches?  flats / technicals / fabric swatches (optional)
+//     caption?   the written note that travels with the piece (preview → full)
 //
-//  kind: 'realized' = has production photos; 'paper' = design-only (thesis, etc.)
+//  kind: 'realized' = has production photos; 'paper' = design-only (renderings).
+//
+//  ▸ IMAGES are Kaylee's real photos (from the Drive drop). The card cover is the
+//    file she marked *_COVER (or the first look when there was none).
+//  ▸ TEXT is still to come: company / director / role / year / blurb / per-piece
+//    captions are left blank on purpose. Empty fields simply don't render, so the
+//    page looks clean until Kaylee sends the copy. (See the message thread for the
+//    fill-in template.)
 // ============================================================================
 
 export type Piece = {
-  caption: string;
+  caption?: string;
   final?: string;
   rendering?: string;
   progress?: string[];
@@ -34,65 +40,118 @@ export type Project = {
   pieces: Piece[];
 };
 
-const ph = (seed: string, w: number, h: number) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
-const fin = (s: string) => ph(s, 840, 1140);   // finished costume (portrait)
-const ren = (s: string) => ph(s, 780, 1060);   // rendering / illustration
-const pro = (s: string) => ph(s, 780, 1000);   // progress / construction
+// image path helper — files live in /public/costume/<id>/<file>.jpg
+const im = (id: string, file: string) => `/costume/${id}/${file}.jpg`;
 
 export const projects: Project[] = [
+  // ---- Peter and the Starcatcher — thesis / paper (renderings) --------------
   {
-    id: 'tempest',
-    show: 'The Tempest', company: 'Placeholder Theatre Co.', director: 'Dir. Placeholder', role: 'Costume Designer', year: '2024', kind: 'realized',
-    blurb: 'Lorem ipsum — a storm-tossed island world. Placeholder note about the design concept and palette.',
+    id: 'peter-starcatcher',
+    show: 'Peter and the Starcatcher', company: '', director: '', role: '', year: '', kind: 'paper',
     pieces: [
-      { caption: 'Prospero — Act I. Lorem ipsum about the build: hand-dyed silk, layered for movement. The full note expands here.', final: fin('cos-temp-1f'), rendering: ren('cos-temp-1r'), progress: [pro('cos-temp-1p1'), pro('cos-temp-1p2')] },
-      { caption: 'Ariel — the spirit look. Lorem ipsum on the airy construction and harness.', final: fin('cos-temp-2f'), rendering: ren('cos-temp-2r'), progress: [pro('cos-temp-2p1')] },
-      { caption: 'Caliban. Lorem ipsum — texture study and distressing.', final: fin('cos-temp-3f'), rendering: ren('cos-temp-3r') },
+      { rendering: im('peter-starcatcher', 'teacher') },        // *_COVER → card cover
+      { rendering: im('peter-starcatcher', 'peter-act1') },
+      { rendering: im('peter-starcatcher', 'peter-act2') },
+      { rendering: im('peter-starcatcher', 'mermaid-molly-rendering'),
+        progress: [im('peter-starcatcher', 'mermaid-molly-build')],
+        swatches: [im('peter-starcatcher', 'mermaid-molly-technicals')] },
+      { rendering: im('peter-starcatcher', 'molly-nightgown') },
+      { rendering: im('peter-starcatcher', 'black-stache') },
+      { rendering: im('peter-starcatcher', 'alf') },
+      { rendering: im('peter-starcatcher', 'grempkin') },
+      { rendering: im('peter-starcatcher', 'fighting-prawn') },
     ],
   },
+
+  // ---- Knights of the Old Republic — Studio 70 (realized) ------------------
   {
-    id: 'little-shop',
-    show: 'Little Shop of Horrors', company: 'Placeholder Playhouse', director: 'Dir. Placeholder', role: 'Costume Designer', year: '2023', kind: 'realized',
+    id: 'kotor',
+    show: 'Knights of the Old Republic', company: 'Studio 70', director: '', role: 'Costume Director', year: '', kind: 'realized',
     pieces: [
-      { caption: 'Audrey — the iconic dress. Lorem ipsum about silhouette and fittings.', final: fin('cos-ls-1f'), rendering: ren('cos-ls-1r'), progress: [pro('cos-ls-1p1'), pro('cos-ls-1p2')] },
-      { caption: 'Seymour. Lorem ipsum — thrifted-and-altered approach.', final: fin('cos-ls-2f'), progress: [pro('cos-ls-2p1')] },
+      { final: im('kotor', 'cover') },                          // *_COVER → card cover
+      { final: im('kotor', 'look-1') },
+      { final: im('kotor', 'look-2') },
+      { final: im('kotor', 'look-3') },
+      { final: im('kotor', 'look-4') },
+      { final: im('kotor', 'look-5') },
+      { final: im('kotor', 'look-6') },
+      { final: im('kotor', 'look-7') },
     ],
   },
+
+  // ---- Weightless (realized) -----------------------------------------------
   {
-    id: 'hadestown',
-    show: 'Hadestown', company: 'Placeholder Regional', director: 'Dir. Placeholder', role: 'Costume Designer', year: '2022', kind: 'realized',
+    id: 'weightless',
+    show: 'Weightless', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
     pieces: [
-      { caption: 'Persephone. Lorem ipsum — seasonal color story.', final: fin('cos-had-1f'), rendering: ren('cos-had-1r'), progress: [pro('cos-had-1p1')] },
-      { caption: 'The Fates. Lorem ipsum — placeholder.', final: fin('cos-had-2f'), rendering: ren('cos-had-2r') },
+      { final: im('weightless', 'cover') },                     // *_COVER → card cover
+      { final: im('weightless', 'look-1') },
+      { final: im('weightless', 'look-2') },
+      { final: im('weightless', 'look-3') },
     ],
   },
+
+  // ---- As You Like It (realized) -------------------------------------------
   {
-    id: 'thesis',
-    show: 'Thesis Project', company: 'Placeholder University', director: 'Dir. Placeholder (concept)', role: 'Designer', year: '2024', kind: 'paper',
-    blurb: 'A paper project — designed in full, never produced. Lorem ipsum about the world and research.',
+    id: 'as-you-like-it',
+    show: 'As You Like It', company: '', director: '', role: '', year: '', kind: 'realized',
     pieces: [
-      { caption: 'Lead — rendering & research. Lorem ipsum on the concept and references.', rendering: ren('cos-th-1r'), progress: [pro('cos-th-1p1'), pro('cos-th-1p2')] },
-      { caption: 'Ensemble study. Lorem ipsum — silhouette exploration.', rendering: ren('cos-th-2r') },
-      { caption: 'Antagonist. Lorem ipsum — palette and texture notes.', rendering: ren('cos-th-3r'), progress: [pro('cos-th-3p1')] },
+      { final: im('as-you-like-it', 'cover') },                 // *_COVER → card cover
+      { final: im('as-you-like-it', 'look-1') },
+      { final: im('as-you-like-it', 'look-2') },
+      { final: im('as-you-like-it', 'look-3') },
+      { final: im('as-you-like-it', 'look-4') },
+      { final: im('as-you-like-it', 'look-5') },
+      { final: im('as-you-like-it', 'look-6') },
+      { final: im('as-you-like-it', 'look-7') },
     ],
   },
+
+  // ---- Like Mother — film (realized) ---------------------------------------
+  {
+    id: 'like-mother',
+    show: 'Like Mother', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
+    pieces: [
+      { final: im('like-mother', 'look-1') },                   // no COVER file → first look
+      { final: im('like-mother', 'look-2') },
+      { final: im('like-mother', 'look-3') },
+    ],
+  },
+
+  // ---- Billiards (realized) ------------------------------------------------
+  {
+    id: 'billiards',
+    show: 'Billiards', company: '', director: '', role: '', year: '', kind: 'realized',
+    pieces: [
+      { final: im('billiards', 'look-1') },                     // no COVER file → first look
+      { final: im('billiards', 'look-2') },
+      { final: im('billiards', 'look-3') },
+      { final: im('billiards', 'look-4') },
+    ],
+  },
+
+  // ---- Rendering Study — paper (illustration) ------------------------------
   {
     id: 'rendering-study',
-    show: 'Rendering & Swatch Study', company: 'Independent', director: '—', role: 'Illustrator / Designer', year: '2023', kind: 'paper',
-    blurb: 'A pure design exercise in rendering and fabric study. Lorem ipsum.',
+    show: 'Rendering Study', company: 'Independent', director: '', role: 'Illustrator / Designer', year: '', kind: 'paper',
     pieces: [
-      { caption: 'Watercolor figure study. Lorem ipsum on technique.', rendering: ren('cos-rs-1r') },
-      { caption: 'Textile rendering. Lorem ipsum — rendering fabric drape and sheen.', rendering: ren('cos-rs-2r') },
-      { caption: 'Gouache plate. Lorem ipsum — placeholder.', rendering: ren('cos-rs-3r') },
+      { rendering: im('rendering-study', 'queen-elizabeth') },  // no COVER file → strongest plate
+      { rendering: im('rendering-study', 'cirkus-ringmaster') },
+      { rendering: im('rendering-study', 'cirkus-clown') },
+      { rendering: im('rendering-study', 'cirkus-balancing-act') },
+      { rendering: im('rendering-study', 'matching-set-sketch'),
+        swatches: [im('rendering-study', 'matching-set-technical')] },
+      { rendering: im('rendering-study', 'temasek-kit') },
+      { rendering: im('rendering-study', 'temasek-frenchie') },
     ],
   },
 ];
 
-// the 7th tag — shows you're actively working
+// the trailing tag — shows you're actively working
 export const upcoming = {
-  show: 'Upcoming Production',
-  company: 'Placeholder Company',
-  director: 'Dir. Placeholder',
-  role: 'Costume Designer',
-  date: 'Spring 2026',
+  show: 'More soon',
+  company: '',
+  director: '',
+  role: '',
+  date: 'In development',
 };
