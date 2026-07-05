@@ -61,6 +61,8 @@ export const projects: Project[] = [
       { final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4')] },
       // Lena technical drawing
       { technicals: [im('kotor', 'look-6')] },
+      // Griff Vao technical drawing
+      { technicals: [im('kotor', 'griff-vao')] },
     ],
   },
 
