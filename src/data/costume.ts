@@ -147,11 +147,11 @@ export const projects: Project[] = [
   },
 ];
 
-// the trailing tag — shows you're actively working
+// the trailing tag — an upcoming production (still a "coming soon" teaser)
 export const upcoming = {
-  show: 'More soon',
-  company: '',
-  director: '',
-  role: '',
-  date: 'In development',
+  show: 'Eurydice',
+  company: 'NYU Tisch ETW',
+  director: 'Dir. Elia Monte-Brown',
+  role: 'Costume Designer',
+  date: 'Fall 2026',
 };

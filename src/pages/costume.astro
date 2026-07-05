@@ -156,7 +156,12 @@ function pieceImages(piece: { final?: string; rendering?: string; progress?: str
       <header class="panel-head">
         <p class="ph-kicker stamp">Upcoming</p>
         <h2 class="ph-show hand">{upcoming.show}</h2>
-        {upcoming.date && <p class="ph-meta"><span class="stamp">{upcoming.date}</span></p>}
+        <p class="ph-meta">
+          {upcoming.company && (<><span class="stamp">Co.</span> <span class="hand">{upcoming.company}</span></>)}
+          {upcoming.director && (<>{upcoming.company && <span class="dot">·</span>} <span class="hand">{dirName(upcoming.director)}</span></>)}
+          {upcoming.role && (<>{(upcoming.company || upcoming.director) && <span class="dot">·</span>} <span class="stamp">Role</span> <span class="hand">{upcoming.role}</span></>)}
+          {upcoming.date && (<>{(upcoming.company || upcoming.director || upcoming.role) && <span class="dot">·</span>} <span class="stamp">{upcoming.date}</span></>)}
+        </p>
       </header>
       <div class="cs-frame">
         <span class="cs-stamp">Coming Soon</span>
