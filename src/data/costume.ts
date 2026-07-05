@@ -57,7 +57,7 @@ export const projects: Project[] = [
       { name: 'Tusken Raiders', caption: 'Boots and accessories designed and crafted by Kaylee Renaud.',
         final: im('kotor', 'look-2'), closeups: [im('kotor', 'cover')] },
       // The Engineer: lightsaber-standing final + its technical drawing
-      { name: 'The Engineer', caption: 'Designed by Kaylee Renaud.',
+      { name: 'The Engineer',
         final: im('kotor', 'look-1'), technicals: [im('kotor', 'look-3')] },
       // Eli: bug-helmet final + its technical drawing
       { name: 'Eli', caption: 'Designed by Kaylee Renaud. Silicon pieces crafted by Walter Welsh.',
@@ -66,7 +66,7 @@ export const projects: Project[] = [
       { name: 'Lena', caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
         technicals: [im('kotor', 'look-6')] },
       // Griff Vao technical drawing
-      { name: 'Griff Vao', caption: 'Design by Kaylee Renaud.',
+      { name: 'Griff Vao',
         technicals: [im('kotor', 'griff-vao')] },
     ],
   },
