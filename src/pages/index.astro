@@ -95,7 +95,7 @@ const reelSlides = [
     position: absolute; inset: 0; opacity: 0;
     background-image: var(--img); background-size: cover; background-position: center 40%;
     /* a muted dark wash so it dissolves into the black, never fights the name */
-    filter: grayscale(.3) contrast(.96) brightness(.6);
+    filter: grayscale(.3) contrast(.96) brightness(.65);
     /* feather starts EARLY and fully clears BEFORE the edges, so there's no hard
        line where the photo ends — it just melts into the black on every side */
     -webkit-mask-image: radial-gradient(ellipse 56% 52% at 50% 44%, #000 3%, rgba(0,0,0,.5) 46%, transparent 86%);
@@ -106,7 +106,7 @@ const reelSlides = [
     will-change: opacity, transform;
   }
   /* sleek cross-dissolve + a slow, jump-free drift */
-  .reel-slide.in { opacity: .5; transform: scale(1.055); }
+  .reel-slide.in { opacity: .55; transform: scale(1.055); }
   /* no tint, no scrim box — the fingered blot just dissolves into the black bg.
      Title legibility is handled by the text-shadow on .brand-name / .lede. */
   .reel-tag {
@@ -115,7 +115,7 @@ const reelSlides = [
     color: color-mix(in srgb, var(--accent) 60%, #fff); opacity: 0; transition: opacity 1.4s ease;
   }
   .reel-slide.in .reel-tag { opacity: .85; }
-  @media (max-width: 720px) { .reel-slide { filter: grayscale(.45) contrast(.9) brightness(.5) sepia(.1); } .reel-slide.in { opacity: .42; } }
+  @media (max-width: 720px) { .reel-slide { filter: grayscale(.45) contrast(.9) brightness(.55) sepia(.1); } .reel-slide.in { opacity: .46; } }
   @media (prefers-reduced-motion: reduce) { .reel-slide { transition: opacity 2.8s ease; transform: none; } .reel-slide.in { transform: none; } }
   .kicker { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; }
   .brand-name { font-size: clamp(2.8rem, 10vw, 6.5rem); line-height: 0.95; margin: 0; text-shadow: 0 2px 26px color-mix(in srgb, var(--bg) 70%, transparent); }
