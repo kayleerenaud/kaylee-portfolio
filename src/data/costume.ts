@@ -44,25 +44,6 @@ export type Project = {
 const im = (id: string, file: string) => `/costume/${id}/${file}.jpg`;
 
 export const projects: Project[] = [
-  // ---- Peter and the Starcatcher — thesis / paper (renderings) --------------
-  {
-    id: 'peter-starcatcher',
-    show: 'Peter and the Starcatcher', company: '', director: '', role: '', year: '', kind: 'paper',
-    pieces: [
-      { rendering: im('peter-starcatcher', 'teacher') },        // *_COVER → card cover
-      { rendering: im('peter-starcatcher', 'peter-act1') },
-      { rendering: im('peter-starcatcher', 'peter-act2') },
-      { rendering: im('peter-starcatcher', 'mermaid-molly-rendering'),
-        progress: [im('peter-starcatcher', 'mermaid-molly-build')],
-        swatches: [im('peter-starcatcher', 'mermaid-molly-technicals')] },
-      { rendering: im('peter-starcatcher', 'molly-nightgown') },
-      { rendering: im('peter-starcatcher', 'black-stache') },
-      { rendering: im('peter-starcatcher', 'alf') },
-      { rendering: im('peter-starcatcher', 'grempkin') },
-      { rendering: im('peter-starcatcher', 'fighting-prawn') },
-    ],
-  },
-
   // ---- Knights of the Old Republic — Studio 70 (realized) ------------------
   {
     id: 'kotor',
@@ -76,18 +57,6 @@ export const projects: Project[] = [
       { final: im('kotor', 'look-5') },
       { final: im('kotor', 'look-6') },
       { final: im('kotor', 'look-7') },
-    ],
-  },
-
-  // ---- Weightless (realized) -----------------------------------------------
-  {
-    id: 'weightless',
-    show: 'Weightless', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
-    pieces: [
-      { final: im('weightless', 'cover') },                     // *_COVER → card cover
-      { final: im('weightless', 'look-1') },
-      { final: im('weightless', 'look-2') },
-      { final: im('weightless', 'look-3') },
     ],
   },
 
@@ -107,14 +76,22 @@ export const projects: Project[] = [
     ],
   },
 
-  // ---- Like Mother — film (realized) ---------------------------------------
+  // ---- Peter and the Starcatcher — thesis / paper (renderings) --------------
   {
-    id: 'like-mother',
-    show: 'Like Mother', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
+    id: 'peter-starcatcher',
+    show: 'Peter and the Starcatcher', company: '', director: '', role: '', year: '', kind: 'paper',
     pieces: [
-      { final: im('like-mother', 'look-1') },                   // no COVER file → first look
-      { final: im('like-mother', 'look-2') },
-      { final: im('like-mother', 'look-3') },
+      { rendering: im('peter-starcatcher', 'teacher') },        // *_COVER → card cover
+      { rendering: im('peter-starcatcher', 'peter-act1') },
+      { rendering: im('peter-starcatcher', 'peter-act2') },
+      { rendering: im('peter-starcatcher', 'mermaid-molly-rendering'),
+        progress: [im('peter-starcatcher', 'mermaid-molly-build')],
+        swatches: [im('peter-starcatcher', 'mermaid-molly-technicals')] },
+      { rendering: im('peter-starcatcher', 'molly-nightgown') },
+      { rendering: im('peter-starcatcher', 'black-stache') },
+      { rendering: im('peter-starcatcher', 'alf') },
+      { rendering: im('peter-starcatcher', 'grempkin') },
+      { rendering: im('peter-starcatcher', 'fighting-prawn') },
     ],
   },
 
@@ -130,10 +107,33 @@ export const projects: Project[] = [
     ],
   },
 
-  // ---- Rendering Study — paper (illustration) ------------------------------
+  // ---- Weightless (realized) -----------------------------------------------
+  {
+    id: 'weightless',
+    show: 'Weightless', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
+    pieces: [
+      { final: im('weightless', 'cover') },                     // *_COVER → card cover
+      { final: im('weightless', 'look-1') },
+      { final: im('weightless', 'look-2') },
+      { final: im('weightless', 'look-3') },
+    ],
+  },
+
+  // ---- Like Mother — film (realized) ---------------------------------------
+  {
+    id: 'like-mother',
+    show: 'Like Mother', company: '', director: '', role: 'Costume Designer', year: '', kind: 'realized',
+    pieces: [
+      { final: im('like-mother', 'look-1') },                   // no COVER file → first look
+      { final: im('like-mother', 'look-2') },
+      { final: im('like-mother', 'look-3') },
+    ],
+  },
+
+  // ---- Renderings — paper (illustration) -----------------------------------
   {
     id: 'rendering-study',
-    show: 'Rendering Study', company: 'Independent', director: '', role: 'Illustrator / Designer', year: '', kind: 'paper',
+    show: 'Renderings', company: 'Independent', director: '', role: 'Illustrator / Designer', year: '', kind: 'paper',
     pieces: [
       { rendering: im('rendering-study', 'queen-elizabeth') },  // no COVER file → strongest plate
       { rendering: im('rendering-study', 'cirkus-ringmaster') },
