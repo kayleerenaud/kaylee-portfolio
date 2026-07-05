@@ -23,12 +23,13 @@ const liStyle = (i: number) => {
 // drawn ruler tick marks along the top of the frame
 const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
 type Img = { src: string; label: string };
-function pieceImages(piece: { final?: string; rendering?: string; technicals?: string[]; progress?: string[]; swatches?: string[]; photos?: string[]; closeups?: string[] }): Img[] {
+function pieceImages(piece: { final?: string; rendering?: string; renderings?: string[]; technicals?: string[]; progress?: string[]; swatches?: string[]; photos?: string[]; closeups?: string[] }): Img[] {
   const out: Img[] = [];
   if (piece.final) out.push({ src: piece.final, label: 'Final' });
   (piece.closeups ?? []).forEach((s) => out.push({ src: s, label: 'Close Up' }));
   (piece.photos ?? []).forEach((s) => out.push({ src: s, label: 'Photo' }));
   if (piece.rendering) out.push({ src: piece.rendering, label: 'Rendering' });
+  (piece.renderings ?? []).forEach((s) => out.push({ src: s, label: 'Rendering' }));
   (piece.technicals ?? []).forEach((s) => out.push({ src: s, label: 'Technical Drawing' }));
   (piece.progress ?? []).forEach((s) => out.push({ src: s, label: 'Process' }));
   (piece.swatches ?? []).forEach((s) => out.push({ src: s, label: 'Swatch' }));
@@ -123,18 +124,21 @@ function pieceImages(piece: { final?: string; rendering?: string; technicals?: s
             const imgs = pieceImages(piece);
             const main = imgs[0];
             const sides = imgs.slice(1);
+            const nm = piece.name ?? '';
             const cap = piece.caption ?? '';
-            const alt = cap || `${p.show} — ${main.label.toLowerCase()}`;
+            const lbCap = [nm, cap].filter(Boolean).join(' — ');
+            const alt = lbCap || `${p.show} — ${main.label.toLowerCase()}`;
             return (
               <article class:list={['plate', sides.length === 0 && 'solo']} data-gallery>
-                <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={alt} data-caption={cap}>
+                {nm && <p class="plate-name hand">{nm}</p>}
+                <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={alt} data-caption={lbCap}>
                   <img src={main.src} alt={alt} loading="lazy" decoding="async" />
                   <span class="plate-label stamp">{main.label}</span>
                 </button>
                 {sides.length > 0 && (
                   <div class="plate-side">
                     {sides.map((img, k) => (
-                      <button class="plate-thumb" data-lightbox data-index={k + 1} data-src={img.src} data-alt={alt} data-caption={cap} style={`--r:${(k % 2 ? 1 : -1) * (1.5 + k)}deg`}>
+                      <button class="plate-thumb" data-lightbox data-index={k + 1} data-src={img.src} data-alt={alt} data-caption={lbCap} style={`--r:${(k % 2 ? 1 : -1) * (1.5 + k)}deg`}>
                         <img src={img.src} alt={`${img.label} — ${alt}`} loading="lazy" decoding="async" />
                         <span class="thumb-label stamp">{img.label}</span>
                       </button>
@@ -169,7 +173,7 @@ function pieceImages(piece: { final?: string; rendering?: string; technicals?: s
       <div class="cs-frame">
         <span class="cs-stamp">Coming Soon</span>
         <p class="cs-note">In development — looks &amp; imagery to be revealed.</p>
-        <p class="cs-sub stamp">Check back soon</p>
+        {upcoming.note && <p class="cs-sub stamp">{upcoming.note}</p>}
       </div>
     </div>
   </div>
@@ -293,13 +297,19 @@ function pieceImages(piece: { final?: string; rendering?: string; technicals?: s
 
   .plates { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4.5rem); }
   .plate { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-    grid-template-areas: 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem);
+    grid-template-areas: 'name name' 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem);
     align-items: center; /* side mini-gallery centers vertically to the final */ }
-  @media (max-width: 680px) { .plate { grid-template-columns: 1fr; grid-template-areas: 'main' 'side' 'cap'; } }
+  @media (max-width: 680px) { .plate { grid-template-columns: 1fr; grid-template-areas: 'name' 'main' 'side' 'cap'; } }
   /* single-image pieces (no side gallery): center the plate, don't leave a gap */
-  .plate.solo { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'main' 'cap'; justify-items: center; }
+  .plate.solo { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'name' 'main' 'cap'; justify-items: center; }
   .plate.solo .plate-main { max-width: min(100%, 640px); }
-  .plate.solo .plate-caption { max-width: 640px; }
+  .plate.solo .plate-caption, .plate.solo .plate-name { max-width: 640px; text-align: center; }
+
+  /* look / character heading over each plate */
+  .plate-name { grid-area: name; align-self: end; justify-self: start; margin: 0;
+    font-family: var(--font-hand); font-weight: 700; line-height: 1;
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem); color: var(--ink); }
+  .plate.solo .plate-name { justify-self: center; }
 
   .plate-main { grid-area: main; position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
     background: none; line-height: 0; }
