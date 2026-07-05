@@ -43,22 +43,7 @@ import { site, pageHref } from '../config/site';
     </div>
   </section>
 
-  <!-- 3 · FEATURING (the three crafts) ------------------------------------- -->
-  <section class="container featuring">
-    <ul class="craft-grid">
-      {crafts.map((c, i) => (
-        <li class="craft" data-reveal style={`--d:${i * 90}ms`}>
-          <a class="craft-link" href={c.href}>
-            <span class="craft-sketch"><Sketch name={c.sketch} /></span>
-            <span class="craft-label">{c.label}</span>
-            <span class="craft-blurb">{c.blurb}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <!-- 4 · CREDITS (no label — the styling carries the vibe) ----------------- -->
+  <!-- 3 · CREDITS (no label — the styling carries the vibe) ----------------- -->
   <section class="credits-section">
     <div class="container">
       <div class="credits-roll">
@@ -76,6 +61,21 @@ import { site, pageHref } from '../config/site';
         ))}
       </div>
     </div>
+  </section>
+
+  <!-- 4 · FEATURING (the three crafts — links into each section) ------------- -->
+  <section class="container featuring">
+    <ul class="craft-grid">
+      {crafts.map((c, i) => (
+        <li class="craft" data-reveal style={`--d:${i * 90}ms`}>
+          <a class="craft-link" href={c.href}>
+            <span class="craft-sketch"><Sketch name={c.sketch} /></span>
+            <span class="craft-label">{c.label}</span>
+            <span class="craft-blurb">{c.blurb}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <!-- 5 · CONTACT INVITE --------------------------------------------------- -->
