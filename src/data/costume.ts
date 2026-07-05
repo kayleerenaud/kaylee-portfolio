@@ -28,6 +28,7 @@ export type Piece = {
   progress?: string[];
   swatches?: string[];
   photos?: string[];       // extra finished photos (shown beside the final)
+  closeups?: string[];     // detail / close-up shots of the final
 };
 
 export type Project = {
@@ -51,12 +52,13 @@ export const projects: Project[] = [
     id: 'kotor',
     show: 'Knights of the Old Republic', company: 'Studio 70', director: '', role: 'Costume Director', year: '', kind: 'realized',
     pieces: [
-      // the two Tusken Raider photos, together → also the card cover
-      { final: im('kotor', 'cover'), photos: [im('kotor', 'look-2')] },
+      // the two Tusken Raider photos: wide full-body shot as the main (also the
+      // card cover), the tight shot as a "Close Up" thumbnail
+      { final: im('kotor', 'look-2'), closeups: [im('kotor', 'cover')] },
       // Kastor: the lightsaber-standing final paired with the "Kastor" technical
       { final: im('kotor', 'look-1'), technicals: [im('kotor', 'look-3')] },
-      // Eli: the bug-helmet final paired with the "Eli" technicals
-      { final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4'), im('kotor', 'look-5')] },
+      // Eli: the bug-helmet final paired with the "Eli" technical
+      { final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4')] },
       // Lena technical drawing
       { technicals: [im('kotor', 'look-6')] },
     ],
