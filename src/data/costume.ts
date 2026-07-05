@@ -113,6 +113,7 @@ export const projects: Project[] = [
   {
     id: 'billiards',
     show: 'Billiards', company: 'NYU Intermediate Narrative', director: 'Josh Li', role: 'Designer & Wardrobe', year: '2026', kind: 'realized',
+    blurb: 'A recent graduate reconnects with his father, who has recently come to the U.S. from China, over a game of pool.',
     pieces: [
       { final: im('billiards', 'look-1') },                     // no COVER file → first look
       { final: im('billiards', 'look-2') },
