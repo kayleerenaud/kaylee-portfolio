@@ -57,8 +57,8 @@ export const projects: Project[] = [
       { final: im('kotor', 'look-1'), technicals: [im('kotor', 'look-3')] },
       // Eli: the bug-helmet final paired with the "Eli" technicals
       { final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4'), im('kotor', 'look-5')] },
-      // Lena design
-      { rendering: im('kotor', 'look-6') },
+      // Lena technical drawing
+      { technicals: [im('kotor', 'look-6')] },
     ],
   },
 
@@ -87,8 +87,8 @@ export const projects: Project[] = [
       { rendering: im('peter-starcatcher', 'peter-act1') },
       { rendering: im('peter-starcatcher', 'peter-act2') },
       { rendering: im('peter-starcatcher', 'mermaid-molly-rendering'),
-        progress: [im('peter-starcatcher', 'mermaid-molly-build')],
-        swatches: [im('peter-starcatcher', 'mermaid-molly-technicals')] },
+        technicals: [im('peter-starcatcher', 'mermaid-molly-technicals')],
+        progress: [im('peter-starcatcher', 'mermaid-molly-build')] },
       { rendering: im('peter-starcatcher', 'molly-nightgown') },
       { rendering: im('peter-starcatcher', 'black-stache') },
       { rendering: im('peter-starcatcher', 'alf') },
@@ -142,7 +142,7 @@ export const projects: Project[] = [
       { rendering: im('rendering-study', 'cirkus-clown') },
       { rendering: im('rendering-study', 'cirkus-balancing-act') },
       { rendering: im('rendering-study', 'matching-set-sketch'),
-        swatches: [im('rendering-study', 'matching-set-technical')] },
+        technicals: [im('rendering-study', 'matching-set-technical')] },
       { rendering: im('rendering-study', 'temasek-kit') },
       { rendering: im('rendering-study', 'temasek-frenchie') },
     ],

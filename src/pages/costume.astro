@@ -28,7 +28,7 @@ function pieceImages(piece: { final?: string; rendering?: string; technicals?: s
   if (piece.final) out.push({ src: piece.final, label: 'Final' });
   (piece.photos ?? []).forEach((s) => out.push({ src: s, label: 'Photo' }));
   if (piece.rendering) out.push({ src: piece.rendering, label: 'Rendering' });
-  (piece.technicals ?? []).forEach((s) => out.push({ src: s, label: 'Technical' }));
+  (piece.technicals ?? []).forEach((s) => out.push({ src: s, label: 'Technical Drawing' }));
   (piece.progress ?? []).forEach((s) => out.push({ src: s, label: 'Process' }));
   (piece.swatches ?? []).forEach((s) => out.push({ src: s, label: 'Swatch' }));
   return out;
