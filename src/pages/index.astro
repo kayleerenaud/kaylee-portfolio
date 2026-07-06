@@ -18,11 +18,11 @@ const nodes = pages
 // shuffled so it doesn't read in folder order.
 const reelSlides = [
   { img: '/home/portrait-4632.jpg', tag: 'Costume · Wardrobe' },
-  { img: '/home/peter-teacher.jpg', tag: 'Costume · Rendering' },
+  { img: '/home/peter-teacher.jpg', tag: 'Costume · Rendering', pos: '55% 3%' },
   { img: '/film/take-him-out-1.jpg', tag: 'Film · Still' },
   { img: '/home/kotor.jpg', tag: 'Costume · Knights of the Old Republic' },
   { img: '/costume/like-mother/look-1.jpg', tag: 'Costume · Like Mother' },
-  { img: '/home/cirkus-clown.jpg', tag: 'Costume · Rendering' },
+  { img: '/home/cirkus-clown.jpg', tag: 'Costume · Rendering', pos: 'center 6%' },
   { img: '/home/billiards.jpg', tag: 'Costume · Billiards' },
   { img: '/film/collateral-calamity-1.jpg', tag: 'Film · Still' },
 ];
@@ -49,7 +49,7 @@ const reelSlides = [
   <section class="hero container">
     <div class="reel" data-reel aria-hidden="true">
       {reelSlides.map((s) => (
-        <div class="reel-slide" style={`--img:url('${s.img}')`}>
+        <div class="reel-slide" style={`--img:url('${s.img}'); --pos:${s.pos ?? 'center 40%'}`}>
           <span class="reel-tag">{s.tag}</span>
         </div>
       ))}
@@ -93,7 +93,7 @@ const reelSlides = [
   .reel { position: absolute; top: clamp(-1.5rem, -4vw, -3rem); bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: 0; overflow: visible; pointer-events: none; }
   .reel-slide {
     position: absolute; inset: 0; opacity: 0;
-    background-image: var(--img); background-size: cover; background-position: center 40%;
+    background-image: var(--img); background-size: cover; background-position: var(--pos, center 40%);
     /* a muted dark wash so it dissolves into the black, never fights the name */
     filter: grayscale(.3) contrast(.96) brightness(.65);
     /* feather starts EARLY and fully clears BEFORE the edges, so there's no hard
