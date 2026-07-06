@@ -128,8 +128,8 @@ export const projects: Project[] = [
     show: 'Weightless', company: 'NYU Intermediate Narrative', director: 'Kevin Sherman', role: 'Costume Designer', year: '2026', kind: 'realized',
     blurb: 'Weightless takes place in the mind of a boy the moments after his passing, as he watches his parents respond to his death.',
     pieces: [
-      { final: im('weightless', 'cover') },                     // *_COVER → card cover
-      { final: im('weightless', 'look-1') },
+      { final: im('weightless', 'look-1') },                    // now first + card cover
+      { final: im('weightless', 'cover') },
       { final: im('weightless', 'look-2') },
       { final: im('weightless', 'look-3') },
     ],
