@@ -34,7 +34,7 @@ import { pieces } from '../data/writing';
         <div class="leaf-body">
           <h2 class="leaf-title">{p.title}</h2>
           <p class="leaf-logline">{p.logline}</p>
-          <p class="leaf-teaser">{p.teaser}</p>
+          <p class="leaf-audience">{p.audience}</p>
           <span class="leaf-more">Read synopsis →</span>
         </div>
         <span class="leaf-doodle"><Sketch name={p.sketch} /></span>
@@ -55,6 +55,7 @@ import { pieces } from '../data/writing';
             <p class="w-tag">{p.tag}</p>
             <h2 class="w-title">{p.title}</h2>
             <p class="w-logline">{p.logline}</p>
+            <p class="w-audience">{p.audience}</p>
             {p.synopsis.split('\n\n').map((para) => <p class="w-para">{para}</p>)}
           </div>
         </div>
@@ -112,7 +113,7 @@ import { pieces } from '../data/writing';
   .leaf-title { font-family: var(--font-hand); font-weight: 700; line-height: 1; color: var(--ink);
     font-size: clamp(2rem, 5.5vw, 3.1rem); margin: 0 0 .35rem; }
   .leaf-logline { font-style: italic; font-size: clamp(1.02rem, 2.2vw, 1.18rem); color: var(--ink-soft); margin: 0 0 1rem; max-width: 50ch; }
-  .leaf-teaser { font-size: 1.02rem; line-height: 1.7; color: var(--ink-soft); max-width: 56ch; margin: 0 0 1rem; }
+  .leaf-audience { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 1rem; }
   .leaf-more { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 
   .leaf-doodle {
@@ -149,7 +150,8 @@ import { pieces } from '../data/writing';
   .cover-sketch { display: block; width: min(80%, 280px); --sketch-ink: var(--accent); }
   .w-tag { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .2em; font-size: .75rem; color: var(--accent); margin: 0 0 .4rem; }
   .w-title { font-family: var(--font-hand); font-weight: 700; font-size: clamp(2.4rem, 7vw, 4rem); line-height: .95; margin: 0 0 .6rem; color: var(--ink); }
-  .w-logline { font-style: italic; font-size: 1.2rem; color: var(--ink-soft); margin: 0 0 1.5rem; }
+  .w-logline { font-style: italic; font-size: 1.2rem; color: var(--ink-soft); margin: 0 0 .6rem; }
+  .w-audience { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.5rem; }
   .w-para { font-size: 1.05rem; line-height: 1.75; color: var(--ink-soft); margin: 0 0 1.1rem; max-width: 62ch; }
 
   /* cover doodle: detach from scroll, draw once each time the overlay opens */
