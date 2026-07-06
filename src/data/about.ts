@@ -17,12 +17,14 @@ export const blurb: string[] = [
 export const basedIn = "New York, NY";
 
 // Headshot frames — flips through these on load and lands on the LAST one.
-// Kaylee's real photos; the file she marked "land_on_this" (pic4 → me-4) is last.
+// Five candid lead-ins (in Kaylee's order), settling on the pro headshot.
 export const headshotFrames: string[] = [
-  '/about/me-1.jpg',
-  '/about/me-2.jpg',
-  '/about/me-3.jpg',
-  '/about/me-4.jpg',   // "land_on_this" — the frame it settles on
+  '/about/lead-1.jpg',
+  '/about/lead-2.jpg',
+  '/about/lead-3.jpg',
+  '/about/lead-4.jpg',
+  '/about/lead-5.jpg',
+  '/about/me-4.jpg',   // pro headshot — the frame it settles on
 ];
 
 // The three crafts, each with a doodle motif + a link into that section.
