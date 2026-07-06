@@ -4,6 +4,7 @@ import Gallery from '../components/Gallery.astro';
 import YouTube from '../components/YouTube.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { filmStills, videos, upcomingFilm } from '../data/galleries';
+import { site } from '../config/site';
 ---
 <BaseLayout current="film" title="Film" description="Film and moving-image work by Kaylee Renaud.">
   <!-- kr-pencil: grainy hand-drawn filter for the header doodle -->
@@ -37,6 +38,10 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
       </article>
     ))}
   </section>
+
+  {site.social.youtube && (
+    <p class="container more-link" data-reveal>More films on <a href={site.social.youtube} target="_blank" rel="noopener">YouTube ↗</a></p>
+  )}
 </BaseLayout>
 
 <style>
@@ -48,4 +53,5 @@ import { filmStills, videos, upcomingFilm } from '../data/galleries';
   .video h3 { margin: 1rem 0 0.25rem; font-size: 1.4rem; font-family: var(--font-display); font-style: italic; }
   .video-meta { margin: 0 0 .5rem !important; font-family: var(--font-mono); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: color-mix(in srgb, var(--accent) 78%, var(--ink-soft)) !important; }
   .video p { margin: 0; color: var(--ink-soft); }
+  .more-link { margin-top: clamp(2.5rem, 5vw, 4rem); text-align: center; color: var(--ink-soft); }
 </style>
