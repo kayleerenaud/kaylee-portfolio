@@ -59,7 +59,9 @@ const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
 <style>
   .contact { max-width: 640px; display: grid; gap: 1.1rem; }
   .contact > *, .row > * { min-width: 0; }   /* let grid items shrink (no horizontal overflow) */
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  /* align-items:end so the input boxes line up even when one label wraps to
+     two lines (e.g. "Phone (optional)") and the other is a single line */
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: end; }
   @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
   label { display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--ink-soft); min-width: 0; }
   .opt { color: var(--ink-soft); font-weight: 400; }
