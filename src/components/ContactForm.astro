@@ -69,8 +69,10 @@ const notConfigured = site.formspreeId === 'YOUR_FORM_ID';
     background: var(--surface); width: 100%; min-width: 0; max-width: 100%;
     box-sizing: border-box;
   }
-  /* strip the native <select> chrome so its box height matches the inputs,
-     then draw our own caret */
+  /* pin single-line inputs AND the select to one exact height, so browsers
+     (Safari especially) can't give <select> its own taller min-height */
+  input, select { height: 2.85rem; }
+  /* strip the native <select> chrome + draw our own caret */
   select {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     padding-right: 2.1rem;
