@@ -16,7 +16,7 @@ const dy  = [5, -4, 6, -3, -5, 4];
       <img
         src={src}
         alt={i === last ? alt : ''}
-        class:list={['hs-frame', i === last && 'on']}
+        class:list={['hs-frame', i === 0 && 'on']}
         data-i={i}
         style={`--rot:${rot[i % rot.length]}deg; --tx:${dx[i % dx.length]}px; --ty:${dy[i % dy.length]}px;`}
         loading="eager"
@@ -25,7 +25,7 @@ const dy  = [5, -4, 6, -3, -5, 4];
       />
     ))}
   </div>
-  <figcaption class="hs-tag" aria-hidden="true">{`${frames.length} / ${frames.length}`}</figcaption>
+  <figcaption class="hs-tag" aria-hidden="true">{`1 / ${frames.length}`}</figcaption>
 </figure>
 
 <style>
@@ -76,7 +76,8 @@ const dy  = [5, -4, 6, -3, -5, 4];
         show(i);
       }, 230);
     };
-    if (!reduce) setTimeout(play, 450);
+    if (reduce) show(last);            // reduced-motion: rest on the pro shot
+    else setTimeout(play, 450);        // otherwise flip from the first candid up to it
     box.addEventListener('mouseenter', play);
     box.addEventListener('focus', play);
   });
