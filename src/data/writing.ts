@@ -33,6 +33,6 @@ export const pieces: Piece[] = [
     audience: 'Animated fantasy-adventure for kids 7+ (TV-Y7-FV)',
     synopsis:
       "High in the golden halls of Asgard, Princess Erika is the kind of goddess who sneaks a magical cow into the royal library just to see if she can. Her older brother Jorunn is the responsible one, the future king everyone is watching, which leaves Erika free to cause as much delightful trouble as she likes. But on the night the two of them are welcomed into the Council of Gods, a traveling stable master parades a cage of captured myths through the feast, along with something no one in Asgard has ever seen: a human boy.\n\nErika means well. Sneaking down to the stables to send the frightened boy home, she opens a portal to the mortal world, and then, before she can stop it, a whole menagerie of mythical beasts pours through after him. Now the creatures of legend are loose on earth, it is entirely her fault, and nobody will take her seriously enough to help. So Erika does the only thing she can think of and steps through the rift herself to set things right. Riftgard is an animated fantasy-adventure about a girl caught between two worlds, the family she is trying to live up to, and the mortals who just might become her truest friends.",
-    sketch: 'rift',
+    sketch: 'dragon',
   },
 ];

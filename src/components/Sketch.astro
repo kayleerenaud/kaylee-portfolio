@@ -14,15 +14,22 @@ const LIB: Record<string, { vb: string; d: string[] }> = {
   arrow:  { vb: '0 0 100 100', d: ['M12 46 C38 22 62 72 86 44', 'M86 44 L74 43', 'M86 44 L80 55'] },
   pin:    { vb: '0 0 100 100', d: ['M50 86 C30 60 32 38 50 30 C68 38 70 60 50 86 Z', 'M50 50 m-7 0 a7 7 0 1 0 14 0 a7 7 0 1 0 -14 0'] },
   clapper:{ vb: '0 0 100 100', d: ['M16 54 H82 V82 H16 Z', 'M16 54 L19 42 L86 50 L83 62 Z', 'M30 44 L26 56', 'M46 46 L42 58', 'M62 48 L58 60'] },
-  // rift / portal — for Riftgard (a vertical portal of light with a spark inside)
-  rift: { vb: '0 0 100 100', d: [
-    'M50 14 C36 32 36 68 50 86',   // portal, left edge
-    'M50 14 C64 32 64 68 50 86',   // portal, right edge
-    'M50 28 C43 39 43 61 50 72',   // inner glow, left
-    'M50 28 C57 39 57 61 50 72',   // inner glow, right
-    'M50 43 L50 57', 'M44 50 L56 50',           // spark, center
-    'M28 32 l4 4', 'M32 32 l-4 4',              // little spark, upper-left
-    'M70 63 l4 4', 'M74 63 l-4 4',              // little spark, lower-right
+  // dragon — for Riftgard (cute flying dragon: snout, horns, bat wing, spade tail)
+  dragon: { vb: '0 0 100 100', d: [
+    'M12 44 C12 37 21 33 29 36 C33 37 36 39 37 42 C34 47 29 48 23 47 C18 46 13 48 12 44 Z', // head + snout
+    'M23 41 m-1.5 0 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0',  // eye
+    'M14 43 l2.5 0',                     // nostril
+    'M28 35 C30 30 33 29 36 29',         // horn 1 (swept back)
+    'M31 36 C33 32 36 32 39 33',         // horn 2
+    'M37 42 C50 34 63 39 68 52 C71 60 69 68 65 74',   // back
+    'M31 47 C38 54 48 55 55 62 C60 66 62 70 65 74',   // belly
+    'M65 74 C71 82 81 80 86 72',         // tail
+    'M86 72 L93 69 L89 78 Z',            // spade tip
+    'M50 42 C54 27 66 23 80 28',         // wing leading edge
+    'M80 28 C74 32 76 37 70 38 C66 39 62 41 58 44',   // wing scallops
+    'M63 27 L64 38', 'M72 26 L71 37',    // wing struts
+    'M42 51 L41 57', 'M41 57 l-2 1.5', 'M41 57 l2 1.5',   // front leg + claws
+    'M54 57 L54 63', 'M54 63 l-2 1.5', 'M54 63 l2 1.5',   // back leg + claws
   ] },
   // goldfish — for India (body, fan tail, fins, eye, gill, rising bubbles)
   goldfish: { vb: '0 0 100 100', d: [
