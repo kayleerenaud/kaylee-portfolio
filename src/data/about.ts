@@ -17,10 +17,8 @@ export const blurb: string[] = [
 export const basedIn = "New York, NY";
 
 // Headshot frames — flips through these on load and lands on the LAST one.
-// Five candid lead-ins (in Kaylee's order), settling on the pro headshot.
+// Candid lead-ins (in Kaylee's order), settling on the pro headshot.
 export const headshotFrames: string[] = [
-  '/about/lead-1.jpg',
-  '/about/lead-2.jpg',
   '/about/lead-3.jpg',
   '/about/lead-4.jpg',
   '/about/lead-5.jpg',
