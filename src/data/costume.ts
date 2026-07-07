@@ -153,16 +153,14 @@ export const projects: Project[] = [
     id: 'rendering-study',
     show: 'Renderings', company: 'Independent', director: '', role: 'Illustrator / Designer', year: '', kind: 'paper',
     pieces: [
-      { name: 'Queen Elizabeth I', rendering: im('rendering-study', 'queen-elizabeth') },
+      { rendering: im('rendering-study', 'queen-elizabeth') },
       // Cirkus Kouzel — three renderings on one plate
-      { name: 'Cirkus Kouzel',
-        rendering: im('rendering-study', 'cirkus-clown'),
+      { rendering: im('rendering-study', 'cirkus-clown'),
         renderings: [im('rendering-study', 'cirkus-ringmaster'), im('rendering-study', 'cirkus-balancing-act')] },
-      { name: 'Matching Set',
-        rendering: im('rendering-study', 'matching-set-sketch'),
+      { rendering: im('rendering-study', 'matching-set-sketch'),
         technicals: [im('rendering-study', 'matching-set-technical')] },
-      { name: 'Temasek – Kit', rendering: im('rendering-study', 'temasek-kit') },
-      { name: 'Temasek – Frenchie', rendering: im('rendering-study', 'temasek-frenchie') },
+      { rendering: im('rendering-study', 'temasek-kit') },
+      { rendering: im('rendering-study', 'temasek-frenchie') },
     ],
   },
 ];
