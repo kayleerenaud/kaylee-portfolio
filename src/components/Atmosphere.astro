@@ -26,6 +26,11 @@ const { tone = 196 } = Astro.props as { tone?: number };
 </button>
 
 <style>
+  /* TEMP: ambient audio hidden until it's reworked. It's also off-by-default and
+     only ever starts on a click, so hiding the toggle fully disables it.
+     To bring it back, delete this one rule. */
+  .sound-toggle { display: none !important; }
+
   .sound-toggle {
     position: fixed; right: 1rem; bottom: 1rem; z-index: 90;
     width: 46px; height: 46px; border-radius: 50%;
