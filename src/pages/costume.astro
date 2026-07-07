@@ -73,7 +73,7 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
           <li class="proj-li" data-reveal style={liStyle(i)}>
             <button class="proj-card" data-open={`proj-${p.id}`} aria-haspopup="dialog" aria-label={`Open ${p.show}`}>
               <span class="photo">
-                <span class="proj-img"><img src={cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" style={p.coverPos ? `object-position:${p.coverPos}` : undefined} /></span>
+                <span class="proj-img"><img src={p.coverImage ?? cover(p)} alt={`${p.show} — costume`} loading="lazy" decoding="async" style={p.coverPos ? `object-position:${p.coverPos}` : undefined} /></span>
                 <span class="tape tape-tl" aria-hidden="true"></span>
                 <span class="tape tape-tr" aria-hidden="true"></span>
               </span>
