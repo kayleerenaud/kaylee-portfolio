@@ -231,9 +231,13 @@ const reelSlides = [
       ticking = false;
       const mr = map.getBoundingClientRect();
       const vh = window.innerHeight;
-      // fully drawn (held) by the time the last (Contact) tack reaches mid-screen,
-      // even when the map is short relative to the viewport (mobile)
-      const denom = Math.max(1, mr.height - vh * 0.6);
+      // Draw front tracks scroll: the inked tip sits at ~72% down the viewport,
+      // so the line grows with the reader instead of racing ahead. Progress = how
+      // far the map has passed that line, over the map's own height (NOT height
+      // minus a viewport chunk — on mobile the map is ~1 viewport tall, which made
+      // that denominator collapse and snap the whole thread in at once). The footer
+      // below gives the scroll room for it to reach 100%.
+      const denom = Math.max(1, mr.height);
       const progress = Math.min(1, Math.max(0, (vh * 0.72 - mr.top) / denom));
       path.style.strokeDashoffset = String(len * (1 - progress));
     };
