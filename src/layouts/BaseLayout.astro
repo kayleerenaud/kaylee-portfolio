@@ -13,6 +13,9 @@ const { title, description, current = '' } = Astro.props as {
 const page = getPage(current);
 const fullTitle = title ? `${title} · ${site.brand}` : `${site.brand} — ${site.tagline}`;
 const desc = description ?? site.tagline;
+// absolute URLs for canonical + social share cards (Astro.site = kayleerenaud.com)
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og-image.jpg', Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -27,9 +30,20 @@ const desc = description ?? site.tagline;
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&display=swap" />
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.brand} — ${site.tagline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <!-- this page's signature accent; the Atmosphere layer shifts it as you scroll -->
   <body style={`--accent:${page.accent}`}>
