@@ -40,6 +40,7 @@ export type Project = {
   year: string;
   kind: 'realized' | 'paper';
   blurb?: string;
+  coverPos?: string;   // object-position for the rack card thumbnail (preview crop only)
   pieces: Piece[];
 };
 
@@ -140,6 +141,7 @@ export const projects: Project[] = [
     id: 'like-mother',
     show: 'Like Mother', company: 'NYU Sight & Sound: Filmmaking', director: 'Ziyan Zheng', role: 'Costume Designer', year: '2024', kind: 'realized',
     blurb: 'A collaborative narrative dance piece featuring Daijia Monae and Tianna Trenae from The Ailey School.',
+    coverPos: '38% center',   // center the two dancers in the card crop
     pieces: [
       { final: im('like-mother', 'look-3') },                   // cover (Kaylee's pick)
       { final: im('like-mother', 'look-1') },
