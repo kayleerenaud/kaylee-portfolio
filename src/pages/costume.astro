@@ -254,7 +254,8 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
 
   /* ---------- PLATE OVERLAY ---------- */
   .panel { position: fixed; inset: 0; z-index: 95; display: none; overflow-y: auto;
-    background: color-mix(in srgb, var(--bg) 94%, #000);
+    /* solid color (not color-mix) so the overlay is opaque on older Safari too */
+    background-color: #13100e;
     background-image: repeating-linear-gradient(90deg, transparent 0 3px, rgba(255,255,255,.012) 3px 4px),
                       repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.04) 3px 4px); }
   .panel.open { display: block; animation: panel-in .32s ease; }
@@ -263,14 +264,15 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
   .panel-inner { max-width: 1080px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 4rem) var(--gap) 5rem; }
   .panel-close {
     position: fixed; top: 1rem; right: 1.1rem; z-index: 2; width: 46px; height: 46px;
-    font-size: 1.8rem; line-height: 1; color: var(--ink); background: color-mix(in srgb, var(--accent) 22%, #1c1916);
+    font-size: 1.8rem; line-height: 1; color: var(--ink);
+    background: #1c1916; background: color-mix(in srgb, var(--accent) 22%, #1c1916);
     border: 1px solid var(--line); border-radius: 50%; cursor: pointer; transition: background .15s, transform .15s;
   }
   @media (hover: hover) { .panel-close:hover { background: var(--accent); color: var(--on-accent); transform: scale(1.06); } }
   /* navigate between projects without leaving the overlay */
   .panel-prev, .panel-next { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2;
     width: 48px; height: 48px; font-size: 2rem; line-height: 1; color: var(--ink);
-    background: color-mix(in srgb, var(--accent) 18%, #1c1916); border: 1px solid var(--line);
+    background: #1c1916; background: color-mix(in srgb, var(--accent) 18%, #1c1916); border: 1px solid var(--line);
     border-radius: 50%; cursor: pointer; transition: background .15s, transform .15s; }
   .panel-prev { left: 1rem; } .panel-next { right: 1rem; }
   @media (hover: hover) { .panel-prev:hover, .panel-next:hover { background: var(--accent); color: var(--on-accent); transform: translateY(-50%) scale(1.06); } }

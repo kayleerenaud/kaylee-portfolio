@@ -125,13 +125,16 @@ import { pieces } from '../data/writing';
 
   /* ---------- SYNOPSIS OVERLAY ---------- */
   .panel { position: fixed; inset: 0; z-index: 95; display: none; overflow-y: auto;
-    background: color-mix(in srgb, var(--bg) 92%, #000); }
+    /* solid, not color-mix() — older Safari doesn't support color-mix and would
+       render this transparent, letting the page bleed through the overlay */
+    background: #12100e; }
   .panel.open { display: block; animation: panel-in .32s ease; }
   .panel.open.instant { animation: none; }
   @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .panel-inner { max-width: 1040px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 4rem) var(--gap) 5rem; }
   .panel-close, .panel-prev, .panel-next {
-    position: fixed; z-index: 2; color: var(--ink); background: color-mix(in srgb, var(--accent) 20%, #1c1916);
+    position: fixed; z-index: 2; color: var(--ink);
+    background: #1c1916; background: color-mix(in srgb, var(--accent) 20%, #1c1916);
     border: 1px solid var(--line); border-radius: 50%; cursor: pointer; line-height: 1; transition: background .15s, transform .15s; }
   @media (hover: hover) {
     .panel-close:hover, .panel-prev:hover, .panel-next:hover { background: var(--accent); color: var(--on-accent); }
