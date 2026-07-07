@@ -141,9 +141,9 @@ export const projects: Project[] = [
     show: 'Like Mother', company: 'NYU Sight & Sound: Filmmaking', director: 'Ziyan Zheng', role: 'Costume Designer', year: '2024', kind: 'realized',
     blurb: 'A collaborative narrative dance piece featuring Daijia Monae and Tianna Trenae from The Ailey School.',
     pieces: [
-      { final: im('like-mother', 'look-1') },                   // no COVER file → first look
+      { final: im('like-mother', 'look-3') },                   // cover (Kaylee's pick)
+      { final: im('like-mother', 'look-1') },
       { final: im('like-mother', 'look-2') },
-      { final: im('like-mother', 'look-3') },
     ],
   },
 
