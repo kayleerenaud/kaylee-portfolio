@@ -14,7 +14,7 @@ export const blurb: string[] = [
 ];
 
 // Where you're based — shown as a filmic "on location" line in the title card.
-export const basedIn = "New York, NY";
+export const basedIn = "Brooklyn, NY";
 
 // Headshot frames — flips through these on load and lands on the LAST one.
 // Candid lead-ins (in Kaylee's order), settling on the pro headshot.

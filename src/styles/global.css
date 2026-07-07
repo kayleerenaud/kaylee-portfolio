@@ -22,7 +22,7 @@
   --bg:        #14110f;   /* warm charcoal */
   --surface:   #1d1916;
   --ink:       #f1ece4;
-  --ink-soft:  #a59c90;
+  --ink-soft:  #b0a89b;   /* a hair brighter than #a59c90 for the small mono text */
   --accent:    #d98a4a;   /* cinematic default; overridden per page */
   --line:      #2c2722;
   --on-accent: #14110f;   /* dark text that sits on a bright accent fill */
