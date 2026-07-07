@@ -16,6 +16,16 @@ const desc = description ?? site.tagline;
 // absolute URLs for canonical + social share cards (Astro.site = kayleerenaud.com)
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL('/og-image.jpg', Astro.site).href;
+// structured data: tell Google this is a real person + link to her socials
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.brand,
+  url: Astro.site?.href ?? canonical,
+  image: ogImage,
+  jobTitle: 'Filmmaker, Costume Designer & Writer',
+  sameAs: Object.values(site.social).filter(Boolean),
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -44,6 +54,7 @@ const ogImage = new URL('/og-image.jpg', Astro.site).href;
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
   </head>
   <!-- this page's signature accent; the Atmosphere layer shifts it as you scroll -->
   <body style={`--accent:${page.accent}`}>
