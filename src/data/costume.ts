@@ -56,20 +56,18 @@ export const projects: Project[] = [
     blurb: 'Knights of the Old Republic is a fan-made feature film trilogy.',
     pieces: [
       // two Tusken Raider photos: wide full-body main + "Close Up" thumbnail
-      { name: 'Tusken Raiders', caption: 'Boots and accessories designed and crafted by Kaylee Renaud.',
+      { caption: 'Boots and accessories designed and crafted by Kaylee Renaud.',
         final: im('kotor', 'look-2'), closeups: [im('kotor', 'cover')] },
       // The Engineer: lightsaber-standing final + its technical drawing
-      { name: 'The Engineer',
-        final: im('kotor', 'look-1'), technicals: [im('kotor', 'look-3')] },
+      { final: im('kotor', 'look-1'), technicals: [im('kotor', 'look-3')] },
       // Eli: bug-helmet final + its technical drawing
-      { name: 'Eli', caption: 'Designed by Kaylee Renaud. Silicon pieces crafted by Walter Welsh.',
+      { caption: 'Designed by Kaylee Renaud. Silicon pieces crafted by Walter Welsh.',
         final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4')] },
       // Lena technical drawing
-      { name: 'Lena', caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
+      { caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
         technicals: [im('kotor', 'look-6')] },
       // Griff Vao technical drawing
-      { name: 'Griff Vao',
-        technicals: [im('kotor', 'griff-vao')] },
+      { technicals: [im('kotor', 'griff-vao')] },
     ],
   },
 
