@@ -321,7 +321,8 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
   .plate-thumb { position: relative; display: block; padding: 0; border: 0; cursor: zoom-in; background: none; line-height: 0;
     transform: rotate(var(--r, -2deg)); transition: transform .2s; }
   @media (hover: hover) { .plate-thumb:hover { transform: rotate(0) scale(1.02); } }
-  .plate-thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  /* natural aspect so vertical renderings/technicals aren't cropped to landscape */
+  .plate-thumb img { width: 100%; height: auto; display: block;
     border-radius: 2px; border: 5px solid #efe9dc; box-shadow: 0 8px 20px rgba(0,0,0,.45); }
   @media (max-width: 680px) {
     .plate-side { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }

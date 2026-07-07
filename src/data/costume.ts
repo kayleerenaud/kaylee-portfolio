@@ -94,18 +94,18 @@ export const projects: Project[] = [
     show: 'Peter and the Starcatcher', company: 'Costume Design III', director: '', role: 'Costume Designer', year: '2025', kind: 'paper',
     blurb: "A final project for Costume Design III, under the instruction of Orla Long. I've been in love with the play Peter and the Starcatcher by Rick Elice for years now, and this was my chance to bring it to life on paper!",
     pieces: [
-      { name: 'Teacher', rendering: im('peter-starcatcher', 'teacher') },   // *_COVER → card cover
-      { name: 'Boy, Act I', rendering: im('peter-starcatcher', 'peter-act1') },
-      { name: 'Boy, Act II', rendering: im('peter-starcatcher', 'peter-act2') },
-      { name: 'Mermaid Molly', caption: 'Designed by Kaylee Renaud. Crafted by Michelle Roy.',
+      { rendering: im('peter-starcatcher', 'teacher') },   // *_COVER → card cover
+      { rendering: im('peter-starcatcher', 'peter-act1') },
+      { rendering: im('peter-starcatcher', 'peter-act2') },
+      { caption: 'Designed by Kaylee Renaud. Crafted by Michelle Roy.',
         rendering: im('peter-starcatcher', 'mermaid-molly-rendering'),
         technicals: [im('peter-starcatcher', 'mermaid-molly-technicals')],
         progress: [im('peter-starcatcher', 'mermaid-molly-build')] },
-      { name: "Molly's Nightgown", rendering: im('peter-starcatcher', 'molly-nightgown') },
-      { name: 'Black Stache', rendering: im('peter-starcatcher', 'black-stache') },
-      { name: 'Alf', rendering: im('peter-starcatcher', 'alf') },
-      { name: 'Grempkin', rendering: im('peter-starcatcher', 'grempkin') },
-      { name: 'Fighting Prawn', rendering: im('peter-starcatcher', 'fighting-prawn') },
+      { rendering: im('peter-starcatcher', 'molly-nightgown') },
+      { rendering: im('peter-starcatcher', 'black-stache') },
+      { rendering: im('peter-starcatcher', 'alf') },
+      { rendering: im('peter-starcatcher', 'grempkin') },
+      { rendering: im('peter-starcatcher', 'fighting-prawn') },
     ],
   },
 
