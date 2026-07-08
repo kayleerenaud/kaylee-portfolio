@@ -9,8 +9,8 @@ export const hook = "Hi, I'm Kaylee — I make things that feel like a story.";
 // Two short paragraphs. Personality first, credentials later.
 // Wrap words in <em>…</em> to give them the handwritten emphasis font.
 export const blurb: string[] = [
-  "I plotted out my first play with untrained pointer fingers, clicking away slowly on the chunky keys of my family's PC. I must have been eight, certainly no younger than seven, and I had never seen a play let alone been trained to write one, but no one corrected me (or my spelling), so I let my imagination run wild. What began as a fantastical escape became my way of processing the world.",
   "Today, I'm a Brooklyn-based storyteller drawn to character-driven narratives, with an enduring love of creating for young audiences. Across film, theater, marketing, live production, and wardrobe, I have contributed to two feature films, over twenty stage productions, and thirty short films. But whether I'm writing a script, sewing a costume, or framing a shot, it's the same work, and I'm glad you're here to see some of it.",
+  "I plotted out my first play with untrained pointer fingers, clicking away slowly on the chunky keys of my family's PC. I must have been eight, certainly no younger than seven, and I had never seen a play let alone been trained to write one, but no one corrected me (or my spelling), so I let my imagination run wild. What began as a fantastical escape became my way of processing the world.",
 ];
 
 // Where you're based — shown as a filmic "on location" line in the title card.
