@@ -117,11 +117,6 @@ import { site, pageHref } from '../config/site';
   .blurb-section { position: relative; }
   .blurb-inner { padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 3.5rem); max-width: 64ch; }
   .blurb-p { font-size: 1.2rem; line-height: 1.75; color: var(--ink); margin: 0 0 1.5rem; }
-  /* mobile: justify the bio paragraphs; hyphens keep the spacing tight and
-     text-wrap:pretty avoids a lone dangling word (the "it") on the last line */
-  @media (max-width: 640px) {
-    .blurb-p { text-align: justify; hyphens: auto; text-wrap: pretty; }
-  }
   .signature { display: block; width: clamp(170px, 34%, 270px); height: auto; margin: 1.25rem 0 0 auto; opacity: .92; }
   @media (max-width: 640px) { .signature { width: clamp(110px, 33%, 155px); margin: -1rem 1.5rem 0 auto; } }
   .blurb-p em {
