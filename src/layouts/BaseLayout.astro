@@ -27,6 +27,7 @@ const personLd = {
   name: site.brand,
   url: Astro.site?.href ?? canonical,
   image: headshot,                                   // her actual face, not the share card
+  description: site.bio,
   jobTitle: 'Filmmaker, Costume Designer & Writer',
   homeLocation: { '@type': 'Place', name: 'Brooklyn, New York' },
   alumniOf: { '@type': 'CollegeOrUniversity', name: 'New York University Tisch School of the Arts' },

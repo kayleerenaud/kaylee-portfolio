@@ -12,6 +12,9 @@ export const site = {
   // A short tagline shown on the home page + in search results.
   tagline: 'Film · Costume · Writing',
 
+  // Canonical short bio — the single reusable version (press, profiles, SEO).
+  bio: "Kaylee Renaud is a Brooklyn-based filmmaker, costume designer, and writer drawn to character-driven stories and creating for young audiences. Trained at NYU's Tisch School of the Arts, she has experience across film and theater, having contributed to over twenty stage productions, two feature films, and thirty short films. See more at kayleerenaud.com.",
+
   // Where the contact form delivers (Formspree form ID).
   formspreeId: 'xojzgpdg',
 
