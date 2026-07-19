@@ -18,14 +18,18 @@ const desc = description ?? site.tagline;
 // absolute URLs for canonical + social share cards (Astro.site = kayleerenaud.com)
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL('/og-image.jpg', Astro.site).href;
-// structured data: tell Google this is a real person + link to her socials
+const headshot = new URL('/about/me-4.jpg', Astro.site).href;
+// structured data: tell Google this is a real person, what she looks like, and
+// which Kaylee Renaud she is (disambiguation) + link to her socials
 const personLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: site.brand,
   url: Astro.site?.href ?? canonical,
-  image: ogImage,
+  image: headshot,                                   // her actual face, not the share card
   jobTitle: 'Filmmaker, Costume Designer & Writer',
+  homeLocation: { '@type': 'Place', name: 'Brooklyn, New York' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'New York University Tisch School of the Arts' },
   sameAs: Object.values(site.social).filter(Boolean),
 };
 ---
