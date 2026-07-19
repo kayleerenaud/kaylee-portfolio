@@ -23,6 +23,10 @@ export const site = {
   social: {
     instagram: 'https://www.instagram.com/the.miss.kaylee/',
     youtube: 'https://www.youtube.com/@the.miss.kaylee',
+    // extra profiles below aren't shown as links; they only feed the structured
+    // data sameAs (identity graph) to help Google disambiguate + attribute images
+    letterboxd: 'https://letterboxd.com/captkrena/',
+    pinterest: 'https://www.pinterest.com/themisskayleerenaud/',
   },
 } as const;
 
