@@ -1,0 +1,179 @@
+<!doctype html>
+<!--
+  Kaylee Renaud — email signature source.
+  Rendered to a PNG at 3x by render.sh, output -> public/email-signature.png
+  Palette + type pulled straight from src/styles/global.css and src/config/site.ts
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'Kaylee Script';
+    src: url('KayleeScript-Regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Spectral';
+    src: url('Spectral-Regular.ttf') format('truetype');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Spectral';
+    src: url('Spectral-Medium.ttf') format('truetype');
+    font-weight: 500;
+  }
+
+  :root {
+    --bg:       #14110f;
+    --surface:  #1d1916;
+    --ink:      #f1ece4;
+    --ink-soft: #b0a89b;
+    --accent:   #d98a9e;   /* home-page rose */
+    --line:     #2c2722;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The card itself — 560 x 168 at 1x. Rendered at 3x device pixel ratio. */
+  .sig {
+    width: 500px;
+    height: 168px;
+    background:
+      radial-gradient(120% 150% at 8% 0%,
+        rgba(217,138,158,0.13), rgba(217,138,158,0.03) 45%, transparent 72%),
+      var(--bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 26px;
+    font-family: 'Spectral', Georgia, serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* thin accent hairline down the left edge — echoes the site's section rules */
+  .sig::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg,
+      var(--accent), color-mix(in srgb, var(--accent) 25%, transparent));
+  }
+
+  .portrait {
+    width: 104px; height: 104px;
+    flex: 0 0 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 22%;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    box-shadow: 0 0 0 5px rgba(217,138,158,0.08);
+  }
+
+  .body { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+
+  .name {
+    font-family: 'Kaylee Script', cursive;
+    font-size: 44px;
+    line-height: 0.98;
+    color: var(--accent);
+    letter-spacing: 0.005em;
+    margin-bottom: 6px;
+  }
+
+  .role {
+    font-family: 'Spectral', Georgia, serif;
+    font-weight: 500;
+    font-size: 11.5px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--line);
+    margin: 11px 0 10px;
+    width: 100%;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .site {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 14px;
+    color: var(--ink);
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+  }
+  .site .dot { color: var(--accent); }
+
+  .divider {
+    width: 1px; height: 15px;
+    background: var(--line);
+    flex: 0 0 1px;
+  }
+
+  .icons { display: flex; align-items: center; gap: 10px; }
+  .icons svg { display: block; }
+  .icons a {
+    display: inline-flex;
+    width: 26px; height: 26px;
+    align-items: center; justify-content: center;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+</style>
+</head>
+<body>
+  <div class="sig" data-ref="signature-card">
+    <img class="portrait" src="kaylee-headshot.jpg" alt="Kaylee Renaud" data-ref="portrait">
+
+    <div class="body">
+      <div class="name" data-ref="name">Kaylee Renaud</div>
+      <div class="role" data-ref="role">Film &nbsp;·&nbsp; Costume &nbsp;·&nbsp; Writing</div>
+
+      <div class="rule"></div>
+
+      <div class="meta">
+        <span class="site" data-ref="portfolio-link">kayleerenaud<span class="dot">.</span>com</span>
+        <span class="divider"></span>
+        <span class="icons">
+          <a href="https://www.instagram.com/the.miss.kaylee/" data-ref="instagram-icon">
+            <!-- Instagram glyph -->
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                 stroke="#d98a9e" stroke-width="1.9"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/>
+              <circle cx="12" cy="12" r="4.1"/>
+              <circle cx="17.4" cy="6.6" r="1.15" fill="#d98a9e" stroke="none"/>
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/@the.miss.kaylee" data-ref="youtube-icon">
+            <!-- YouTube glyph -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="#d98a9e" stroke-width="1.9"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1.8" y="5.2" width="20.4" height="13.6" rx="4.2"/>
+              <path d="M10.2 9.1 L15.2 12 L10.2 14.9 Z" fill="#d98a9e" stroke="none"/>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
