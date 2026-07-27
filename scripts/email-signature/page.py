@@ -23,40 +23,43 @@ YT = 'https://www.youtube.com/@the.miss.kaylee'
 W, H = 500, 168     # card display size
 ICON = 22           # icon display size
 
-IMG_STYLE = ('display:block;border:0;outline:none;text-decoration:none;'
-             '-ms-interpolation-mode:bicubic;')
+# NO TABLES.
+#
+# Gmail's signature box is a contenteditable that sanitises pasted markup, and
+# it will happily throw a table away. When it did that here, the icons — which
+# were `display:block` inside table cells — each fell onto their own line.
+#
+# So the icons are plain INLINE-BLOCK images on a single line, separated by real
+# spaces. With no layout container to lose, there's nothing left to strip: they
+# sit side by side the same way two words do.
+
+CARD_STYLE = ('display:block;border:0;outline:none;text-decoration:none;'
+              '-ms-interpolation-mode:bicubic;')
+
+# inline-block + baseline alignment: behaves like a character, so it can't stack
+ICON_STYLE = ('display:inline-block;vertical-align:middle;border:0;outline:none;'
+              'text-decoration:none;-ms-interpolation-mode:bicubic;')
 
 
-def icon(src, href, alt):
-    return (f'<td style="padding:0;font-size:0;line-height:0;">'
-            f'<a href="{href}" style="text-decoration:none;border:0;">'
+def icon(src, href, alt, margin_right=0):
+    mr = f'margin-right:{margin_right}px;' if margin_right else ''
+    return (f'<a href="{href}" style="text-decoration:none;border:0;">'
             f'<img src="{SITE}/sig/{src}" width="{ICON}" height="{ICON}" '
-            f'alt="{alt}" style="{IMG_STYLE}" /></a></td>')
+            f'alt="{alt}" style="{ICON_STYLE}{mr}" /></a>')
 
 
-gap = '<td style="font-size:0;line-height:0;width:12px;">&nbsp;</td>'
+# a visible-width spacer that survives even if the margin above is stripped
+gap = '<span style="font-size:15px;line-height:1;">&nbsp;&nbsp;</span>'
 
-signature = f'''<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-  <tr>
-    <td style="padding:0;font-size:0;line-height:0;">
-      <a href="{SITE}" style="text-decoration:none;border:0;"><img
-        src="{SITE}/email-signature.png" width="{W}" height="{H}"
-        alt="Kaylee Renaud &mdash; Film, Costume, Writing &mdash; kayleerenaud.com"
-        style="{IMG_STYLE}" /></a>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:11px 0 0 26px;font-size:0;line-height:0;">
-      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-        <tr>
-          {icon('icon-instagram.png', IG, 'Instagram')}
-          {gap}
-          {icon('icon-youtube.png', YT, 'YouTube')}
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>'''
+signature = f'''<div style="font-size:0;line-height:0;">
+  <a href="{SITE}" style="text-decoration:none;border:0;"><img
+    src="{SITE}/email-signature.png" width="{W}" height="{H}"
+    alt="Kaylee Renaud &mdash; Film, Costume, Writing &mdash; kayleerenaud.com"
+    style="{CARD_STYLE}" /></a>
+</div>
+<div style="margin:11px 0 0 26px;line-height:1;white-space:nowrap;">{
+  icon('icon-instagram.png', IG, 'Instagram', margin_right=10)}{gap}{
+  icon('icon-youtube.png', YT, 'YouTube')}</div>'''
 
 page = f'''<!doctype html>
 <html lang="en">
@@ -104,6 +107,12 @@ page = f'''<!doctype html>
   <p class="note">One habit: after pasting, don&rsquo;t <i>drag</i> the image to move it.
      Gmail treats a drag as a cut-and-repaste and it can shuffle things. Click beside it
      and use Enter / Backspace instead.</p>
+
+  <h2>If the two icons end up stacked</h2>
+  <p>Gmail sometimes drops a line break in on paste. It&rsquo;s a two-second fix: click
+     <b>immediately to the left of the lower icon</b> so the cursor is right in front of
+     it, then press <b>Backspace once</b>. It hops up next to the first one. (Press it
+     twice and they&rsquo;ll jam together &mdash; just hit the spacebar to nudge them apart.)</p>
 
   <hr>
 
