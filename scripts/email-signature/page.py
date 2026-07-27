@@ -58,6 +58,7 @@ signature = f'''<div style="font-size:0;line-height:0;">
     style="{CARD_STYLE}" /></a>
 </div>
 <div style="margin:11px 0 0 26px;line-height:1;white-space:nowrap;">{
+  icon('icon-site.png', SITE, 'kayleerenaud.com', margin_right=10)}{gap}{
   icon('icon-instagram.png', IG, 'Instagram', margin_right=10)}{gap}{
   icon('icon-youtube.png', YT, 'YouTube')}</div>'''
 
@@ -87,8 +88,8 @@ page = f'''<!doctype html>
 <body>
 <div class="wrap">
   <h1>Your email signature</h1>
-  <p>The card is one solid image &mdash; it can&rsquo;t come apart. The two icons sit
-     underneath as their own links, so Instagram and YouTube are both clickable.</p>
+  <p>The card is one solid image &mdash; it can&rsquo;t come apart. The three icons sit
+     underneath as their own links: your site, Instagram, YouTube.</p>
 
   <div class="stage">
 {signature}
@@ -108,20 +109,23 @@ page = f'''<!doctype html>
      Gmail treats a drag as a cut-and-repaste and it can shuffle things. Click beside it
      and use Enter / Backspace instead.</p>
 
-  <h2>If the two icons end up stacked</h2>
+  <h2>If the icons end up stacked</h2>
   <p>Gmail sometimes drops a line break in on paste. It&rsquo;s a two-second fix: click
-     <b>immediately to the left of the lower icon</b> so the cursor is right in front of
-     it, then press <b>Backspace once</b>. It hops up next to the first one. (Press it
-     twice and they&rsquo;ll jam together &mdash; just hit the spacebar to nudge them apart.)</p>
+     <b>immediately to the left of the icon that dropped down</b> so the cursor is right
+     in front of it, then press <b>Backspace once</b>. It hops up next to the one above.
+     (Press it twice and they&rsquo;ll jam together &mdash; just hit the spacebar to nudge
+     them apart.)</p>
 
   <hr>
 
   <h2>Files</h2>
   <p><a href="/email-signature.png">email-signature.png</a> &mdash; the card, 1000&times;336
      (retina, displays at 500&times;168).<br>
+     <a href="/sig/icon-site.png">icon-site.png</a> &middot;
      <a href="/sig/icon-instagram.png">icon-instagram.png</a> &middot;
      <a href="/sig/icon-youtube.png">icon-youtube.png</a> &mdash; 44&times;44 each,
-     transparent background.</p>
+     transparent background. The site icon is your handwritten &ldquo;K&rdquo; &mdash;
+     the same mark as your browser-tab icon.</p>
   <p>Everything points at <code>kayleerenaud.com</code>, so the icons keep working from
      any computer &mdash; nothing is stored locally.</p>
 </div>

@@ -64,3 +64,25 @@ d.rounded_rectangle([u(0.9), top, D - u(0.9), bot],
                     radius=u(4.6), outline=ROSE, width=STROKE)
 d.polygon([(u(9.0), u(7.6)), (u(14.6), u(11.0)), (u(9.0), u(14.4))], fill=ROSE)
 finish(im, 'icon-youtube.png')
+
+# --- Site: her handwritten "K" in a badge, matching the favicon mark ---------
+# Drawn from the real KayleeScript glyph (same source as public/favicon.svg) so
+# the tab icon and the signature icon are the same mark.
+from PIL import ImageFont
+
+FONT = os.path.abspath(os.path.join(HERE, '..', '..', 'public', 'fonts',
+                                    'KayleeScript-Regular.ttf'))
+
+im, d = canvas()
+d.rounded_rectangle([inset, inset, D - inset, D - inset],
+                    radius=u(6.0), outline=ROSE, width=STROKE)
+
+# size the K to sit comfortably inside the badge, then optically centre it
+# KayleeScript is a fine monoline, so a bare "K" reads far lighter than the
+# 2.1px badge outline beside it. stroke_width thickens the glyph to match.
+f = ImageFont.truetype(FONT, int(u(15.2)))
+sw = round(u(0.45))
+x0, y0, x1, y1 = d.textbbox((0, 0), 'K', font=f, stroke_width=sw)
+d.text(((D - (x1 - x0)) / 2 - x0, (D - (y1 - y0)) / 2 - y0), 'K', font=f,
+       fill=ROSE, stroke_width=sw, stroke_fill=ROSE)
+finish(im, 'icon-site.png')
