@@ -80,12 +80,17 @@
 
   .body { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 
+  /* KayleeScript ships as one fine monoline weight, so on the charcoal it goes
+     muddy at email sizes. -webkit-text-stroke fakes a bold (Chromium renders
+     this card, so it's safe), and the rose is lifted a few steps off --accent
+     for more separation from the background. */
   .name {
     font-family: 'Kaylee Script', cursive;
     font-size: 44px;
     line-height: 0.98;
-    color: var(--accent);
-    letter-spacing: 0.005em;
+    color: #eeaabb;
+    -webkit-text-stroke: 0.7px #eeaabb;
+    letter-spacing: 0.012em;
     margin-bottom: 6px;
   }
 
