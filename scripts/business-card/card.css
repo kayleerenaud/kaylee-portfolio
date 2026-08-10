@@ -1,0 +1,173 @@
+/* Kaylee Renaud — business card.
+   Palette + type pulled straight from the email signature / site global.css.
+   Card is 3.75 x 2.25in WITH bleed (trim 3.5 x 2). Designed at 150 CSS px/in,
+   rendered at DPR 2 -> 1126 x 676 px ≈ 300 DPI print. */
+
+@font-face {
+  font-family: 'Kaylee Script';
+  src: url('KayleeScript-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Spectral';
+  src: url('Spectral-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Spectral';
+  src: url('Spectral-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+:root {
+  --bg:       #14110f;
+  --surface:  #1d1916;
+  --ink:      #f1ece4;
+  --ink-soft: #b0a89b;
+  --accent:   #d98a9e;   /* home-page rose */
+  --rose-lift:#eeaabb;
+  --line:     #2c2722;
+  --cream:    #f1ece4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: #3a3530;               /* grey desk so the card edge is visible on screen */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 3.75 x 2.25in @150 = 562.5 x 337.5 -> round to 563 x 338 (full bleed) */
+.card {
+  width: 563px;
+  height: 338px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Spectral', Georgia, serif;
+  color: var(--ink);
+  background:
+    radial-gradient(130% 150% at 8% 0%,
+      rgba(217,138,158,0.16), rgba(217,138,158,0.035) 46%, transparent 74%),
+    var(--bg);
+}
+
+/* faint trim guide, only shown when body has .guides (stripped for final export) */
+.guides .card::after {
+  content: '';
+  position: absolute;
+  left: 19px; top: 19px; right: 19px; bottom: 19px;   /* trim line */
+  border: 1px dashed rgba(238,170,187,0.35);
+  pointer-events: none;
+}
+
+/* ---------- FRONT ---------------------------------------------------------- */
+.front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+.front .portrait {
+  width: 92px; height: 92px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 0 5px rgba(217,138,158,0.08);
+  margin-bottom: 16px;
+}
+.front .name {
+  font-family: 'Kaylee Script', cursive;
+  font-size: 50px;
+  line-height: 0.98;
+  color: var(--rose-lift);
+  -webkit-text-stroke: 0.7px var(--rose-lift);
+  letter-spacing: 0.012em;
+}
+.front .role {
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 12px;
+}
+.front .rule {
+  width: 46px; height: 1.5px;
+  margin: 14px 0 13px;
+  background: linear-gradient(90deg, transparent,
+    var(--accent) 20%, var(--accent) 80%, transparent);
+}
+.front .site {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.front .site .dot { color: var(--accent); }
+
+/* ---------- BACK ----------------------------------------------------------- */
+.back {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 30px;
+  padding: 40px 40px 40px 42px;
+}
+.back .who {
+  font-family: 'Kaylee Script', cursive;
+  font-size: 30px;
+  color: var(--rose-lift);
+  -webkit-text-stroke: 0.5px var(--rose-lift);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.back .who-role {
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 17px;
+}
+.rows { display: flex; flex-direction: column; gap: 11px; }
+.row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 13.5px;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.row .ic {
+  width: 26px; height: 26px;
+  flex: 0 0 26px;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.row .ic svg { display: block; }
+.row .at { color: var(--accent); }
+
+/* QR panel */
+.qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.qr-panel {
+  width: 150px; height: 150px;
+  background: var(--cream);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 0 1px rgba(238,170,187,0.25), 0 6px 18px rgba(0,0,0,0.35);
+}
+.qr-panel img { width: 100%; height: 100%; display: block; }
+.qr-cap {
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.qr-cap .arw { color: var(--accent); }
