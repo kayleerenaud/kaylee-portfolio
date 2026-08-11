@@ -1,29 +1,33 @@
-# Instagram carousel template — Kaylee Renaud
+# Instagram carousel — Kaylee Renaud
 
-Three reusable 4:5 (1080×1350) slide layouts in the brand system
-(charcoal + rose, Spectral ExtraBold headlines, KayleeScript accents).
+**Post 1: "You don't need conflict to tell your story"** — 5 slides, 1080×1350 (4:5),
+brand system (charcoal + rose, Spectral ExtraBold headlines, KayleeScript accents).
 
-| File | Layout | Use for |
-|------|--------|---------|
-| `slide-a.html` | **A · Cover** | Slide 1 — big title + hook + swipe cue |
-| `slide-b.html` | **B · Numbered concept** | Middle slides — one per structure (duplicate & edit) |
-| `slide-c.html` | **C · Quote / closer** | Last slide — pull-quote + follow CTA |
+| File | Slide | Layout |
+|------|-------|--------|
+| `slide-01-cover.html` | Cover / hook | A · Cover |
+| `slide-02-daisychain.html` | Daisy Chain | B · Structure + examples |
+| `slide-03-sliceoflife.html` | Slice of Life | B · Structure + examples |
+| `slide-04-mastery.html` | Mastery Narrative | B · Structure + examples |
+| `slide-05-takeaway.html` | Takeaway / CTA | C · Quote / closer |
 
-## Edit
-Open the `.html` files — each has a comment marking what to change.
-- Cover: `.kicker`, `.headline`, `.flourish` (the handwritten line), `.sub`
-- Concept: `.num`, `.name`, `.translit`, `.lead`, the four `.beat` rows
-- Quote: `.q` (wrap a word in `<span class="em">` for the rose handwritten accent), `.attrib`
+Held for **Post 2 (non-western structures)**: Kishōtenketsu, Rashomon, Jo-ha-kyū.
+Held as spare conflict-less options: Bridge Narrative, LIST, Ergodic, Epistolary/Found.
 
-To make more concept slides, copy `slide-b.html` to `slide-b2.html`, edit, and add a
-`shoot` line in `render.sh`.
+## Editing the reusable layouts
+Each `.html` has a comment marking what to change.
+- **Structure slide** (copy `slide-02` as a base): `.num`, `.name`, `.tag` (handwritten
+  line), `.def`, and the three `.exrow` examples (`extag` = FILM / BOOK / POETRY; add
+  class `alt` for the outlined book/poetry tag). Wrap a word in `<span class="hot">` for rose.
+- **Cover**: `.headline` (wrap a word in `<span class="em">` for rose), `.flourish`, `.sub`.
+- **Quote**: `.q` (wrap a word in `<span class="em">` for the handwritten rose accent),
+  `.note`, `.teaser`.
 
 ## Render
 ```
-bash render.sh
+bash render.sh          # -> ../../public/carousel/slide-0X-*.png
 ```
-Outputs 1080×1350 PNGs to `../../public/carousel/`. Post them straight to Instagram,
-or upload as backgrounds in Canva if you want to tweak there.
+Post the PNGs straight to Instagram, or upload as backgrounds in Canva to tweak.
 
 Brand: bg `#14110f` · rose `#d98a9e` / `#eeaabb` · ink `#f1ece4` · soft `#b0a89b`.
 Fonts: Spectral (Regular/Medium/Bold/ExtraBold) + KayleeScript.
