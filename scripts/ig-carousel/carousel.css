@@ -33,6 +33,7 @@ html,body{background:#2a2622;-webkit-font-smoothing:antialiased;}
   box-shadow:inset 0 -120px 120px -60px rgba(0,0,0,0.55);}
 
 /* shared bits ------------------------------------------------------------- */
+.main{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0;}
 .kicker{font-weight:700;font-size:13px;letter-spacing:0.34em;text-transform:uppercase;
   color:var(--accent);display:flex;align-items:center;gap:12px;}
 .kicker::before{content:'';width:26px;height:2px;background:var(--accent);display:inline-block;}
@@ -80,9 +81,10 @@ html,body{background:#2a2622;-webkit-font-smoothing:antialiased;}
 /* ===== LAYOUT B2 — STRUCTURE + EXAMPLES ================================= */
 .hot{color:var(--rose);font-weight:600;}
 .structure .num{font-family:'Spectral';font-weight:800;font-size:94px;line-height:0.78;
-  color:transparent;-webkit-text-stroke:2px var(--accent);letter-spacing:-0.02em;opacity:0.9;}
+  color:transparent;-webkit-text-stroke:2px var(--accent);letter-spacing:-0.02em;opacity:0.9;
+  margin-top:18px;}
 .structure .name{font-family:'Spectral';font-weight:800;font-size:41px;line-height:1.0;
-  letter-spacing:-0.01em;color:var(--ink);margin-top:8px;}
+  letter-spacing:-0.01em;color:var(--ink);margin-top:12px;}
 .structure .tag{font-family:'Kaylee Script',cursive;color:var(--rose);
   -webkit-text-stroke:0.5px var(--rose);font-size:27px;line-height:1;margin-top:8px;}
 .structure .def{font-size:16.5px;line-height:1.42;color:var(--ink-soft);margin-top:16px;max-width:442px;}
