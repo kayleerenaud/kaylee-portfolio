@@ -19,5 +19,5 @@ shoot p2-01-cover.html         p2-01-cover.png
 shoot p2-02-kishotenketsu.html p2-02-kishotenketsu.png
 shoot p2-03-rashomon.html      p2-03-rashomon.png
 shoot p2-04-johakyu.html       p2-04-johakyu.png
-shoot p2-05-takeaway.html      p2-05-takeaway.png
+shoot p2-05-follow.html         p2-05-follow.png
 echo done.

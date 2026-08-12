@@ -60,6 +60,24 @@ html,body{background:#2a2622;-webkit-font-smoothing:antialiased;}
   letter-spacing:0.01em;margin:14px 0 0 -2px;display:block;}
 .cover .sub{font-size:19px;line-height:1.5;color:var(--ink-soft);
   max-width:430px;margin-top:26px;}
+/* longer cover title (Post 2) — scoped so Post 1 is untouched */
+.cover .headline.long{font-size:42px;line-height:1.08;letter-spacing:-0.01em;}
+.cover .flourish.small{font-size:36px;line-height:1;margin-top:16px;}
+
+/* ===== CTA / FOLLOW closer ============================================== */
+.cta .main{align-items:center;text-align:center;justify-content:center;}
+.cta .pf{width:112px;height:112px;border-radius:50%;object-fit:cover;object-position:50% 22%;
+  border:1.5px solid color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 0 0 5px rgba(217,138,158,0.08);margin-bottom:24px;}
+.cta .big{font-family:'Spectral';font-weight:800;font-size:44px;line-height:1.04;
+  letter-spacing:-0.01em;color:var(--ink);}
+.cta .script-lg{font-family:'Kaylee Script',cursive;color:var(--rose);
+  -webkit-text-stroke:0.8px var(--rose);font-size:82px;line-height:0.86;margin-top:6px;}
+.cta .rule{width:52px;height:1.5px;margin:26px 0 18px;
+  background:linear-gradient(90deg,transparent,var(--accent) 20%,var(--accent) 80%,transparent);}
+.cta .contact{font-size:18px;letter-spacing:0.02em;color:var(--ink-soft);}
+.cta .contact b{color:var(--ink);font-weight:600;}
+.cta .contact .dot{color:var(--accent);}
 .cover .sub b{color:var(--rose);font-weight:600;}
 
 /* ===== LAYOUT B — NUMBERED CONCEPT ====================================== */
