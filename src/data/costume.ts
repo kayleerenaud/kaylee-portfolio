@@ -63,9 +63,9 @@ export const projects: Project[] = [
       // Eli: bug-helmet final + its technical drawing
       { caption: 'Designed by Kaylee Renaud. Silicon pieces crafted by Walter Welsh.',
         final: im('kotor', 'look-7'), technicals: [im('kotor', 'look-4')] },
-      // Lena technical drawing
+      // Lena: final costume photo (large) + its technical drawing beside it
       { caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
-        technicals: [im('kotor', 'look-6')] },
+        final: im('kotor', 'lena-final'), technicals: [im('kotor', 'look-6')] },
       // Griff Vao technical drawing
       { technicals: [im('kotor', 'griff-vao')] },
     ],
