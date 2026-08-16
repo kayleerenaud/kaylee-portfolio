@@ -66,8 +66,6 @@ export const projects: Project[] = [
       // Lena: final costume photo (large) + its technical drawing beside it
       { caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
         final: im('kotor', 'lena-final'), technicals: [im('kotor', 'look-6')] },
-      // Griff Vao technical drawing
-      { technicals: [im('kotor', 'griff-vao')] },
     ],
   },
 
