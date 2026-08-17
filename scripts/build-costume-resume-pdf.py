@@ -173,8 +173,8 @@ li::marker {{ color:#8a7f76; }}
 
 /* skills + references */
 .skill {{ display:flex; gap:.1in; margin:0 0 .1em; }}
-.skill .k {{ flex:0 0 .74in; font-weight:700; font-size:8.4pt;
-  letter-spacing:.07em; text-transform:uppercase; }}
+.skill .k {{ flex:0 0 .74in; font-weight:600; font-style:italic; font-size:9.2pt;
+  letter-spacing:.01em; }}
 .skill .v {{ flex:1; }}
 .refs {{ display:flex; gap:.28in; break-inside:avoid; }}
 .refs .ref {{ width:33.33%; }}
