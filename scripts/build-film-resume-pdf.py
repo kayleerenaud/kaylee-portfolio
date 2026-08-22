@@ -80,8 +80,6 @@ ADDITIONAL = [
  ("Renew College Church", "Volunteer", "", "2025",
   ["Media team: recorded B-roll and interviewed players at a city-wide youth tournament",
    "Designed event posters for NYU and Columbia students"]),
- ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
-  ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),
 ]
 
 SKILLS = [

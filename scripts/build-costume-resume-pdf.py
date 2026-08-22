@@ -89,8 +89,6 @@ ADDITIONAL = [
  ("Camp-of-the-Woods", "Video Director &amp; Marketing Assistant", "", "Speculator, NY · 2024",
   ["Directed video coverage for live productions and seminars",
    "Produced marketing photography and assisted with media production"]),
- ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
-  ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),
 ]
 
 SKILLS = [
@@ -109,5 +107,4 @@ build(
      ("Costume Training", TRAINING),
      ("Additional Experience", ADDITIONAL)],
     SKILLS,
-    fs=9.0, lh=1.08, page_margin="0.38in 0.62in 0.26in",
 )
