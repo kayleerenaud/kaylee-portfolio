@@ -92,7 +92,7 @@ li::marker { color:#8a7f76; }
 """
 
 
-def build(out_name, title, edu_left, edu_right, sections, skills, website=None,
+def build(out_name, title, edu_left, edu_right, sections, skills, website=None, refs=None,
           fs=9.2, lh=1.1, entry_gap=".14em", h2_margin=".44em 0 .16em",
           page_margin="0.42in 0.66in 0.3in", skill_key=".74in"):
     """sections: list of (label, [entries]); skills: list of (label, value)."""
@@ -106,7 +106,7 @@ def build(out_name, title, edu_left, edu_right, sections, skills, website=None,
         for k, v in skills)
     refs_html = "".join(
         f"<div class='ref'><p class='rn'>{n}</p><p class='rr'>{r}</p><p class='rc'>{c}</p></div>"
-        for n, r, c in REFS)
+        for n, r, c in (refs if refs is not None else REFS))
     site = f"<p><a href='https://{website}'>{website}</a></p>" if website else ""
     edu_l = "".join(f"<p>{x}</p>" for x in edu_left)
     edu_r = "".join(f"<p>{x}</p>" for x in edu_right)

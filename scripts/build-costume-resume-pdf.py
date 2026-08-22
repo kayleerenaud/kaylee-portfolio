@@ -18,7 +18,7 @@ Re-run after editing CONTENT below:
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from resume_layout import build
+from resume_layout import build, REFS
 
 # ── CONTENT ───────────────────────────────────────────────────────────────────
 TITLE = "Costume Designer, Filmmaker, Writer"
@@ -107,4 +107,5 @@ build(
      ("Costume Training", TRAINING),
      ("Additional Experience", ADDITIONAL)],
     SKILLS,
+    refs=[r for r in REFS if 'Chick-fil-A' not in r[1]],
 )
