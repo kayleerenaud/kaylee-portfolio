@@ -37,8 +37,6 @@ INDUSTRY = [
  ("Camp-of-the-Woods", "Video Director &amp; Marketing Assistant", "", "Speculator, NY · 2024",
   ["Directed video coverage for live productions and seminars",
    "Produced marketing photography and assisted with media production"]),
- ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
-  ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),
 ]
 
 FILM = [
@@ -77,6 +75,11 @@ COSTUME = [
    "Official Selection — Manhattan Film Festival &amp; Fusion Film Festival"]),
 ]
 
+OTHER_WORK = [
+ ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
+  ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),
+]
+
 SKILLS = [
  ("Creative &amp; Production", "Directing · Screenwriting · Costume Design · "
                                "Costume Construction · Technical Illustration"),
@@ -92,7 +95,8 @@ build(
     EDU_LEFT, EDU_RIGHT,
     [("Industry Experience", INDUSTRY),
      ("Film &amp; Writing", FILM),
-     ("Costume Design", COSTUME)],
+     ("Costume Design", COSTUME),
+     ("Additional Work Experience", OTHER_WORK)],
     SKILLS,
     website="kayleerenaud.com",
     skill_key="1.22in",
