@@ -28,6 +28,10 @@ EDU_RIGHT = ["<b>Additional Study:</b>",
 
 # (title, role, org, year, [bullets])
 INDUSTRY = [
+ ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
+  ["Garment construction, crafting, and distressing",
+   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "appointments to find items for NYU productions"]),
  ("Jean Doumanian Productions", "Development Intern", "", "New York, NY · 2026",
   ["Wrote script coverage and conducted research for current and prospective film projects",
    "Analyzed scripts for narrative structure, character development, and production potential"]),
@@ -101,7 +105,8 @@ build(
      ("Costume Design", COSTUME),
      ("Additional Work Experience", OTHER_WORK)],
     SKILLS,
+    fs=8.95, lh=1.06, page_margin="0.36in 0.6in 0.24in",
     website="kayleerenaud.com",
     skill_key="1.22in",
-    entry_gap=".15em", h2_margin=".44em 0 .16em",
+    entry_gap=".11em", h2_margin=".38em 0 .14em",
 )

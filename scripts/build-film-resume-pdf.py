@@ -69,6 +69,10 @@ STUDY = [
 ]
 
 ADDITIONAL = [
+ ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
+  ["Garment construction, crafting, and distressing",
+   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "appointments to find items for NYU productions"]),
  ("Camp-of-the-Woods", "Video Director &amp; Marketing Assistant", "", "Speculator, NY · 2024",
   ["Video director for live productions",
    "Camera operator for live-streamed and recorded seminars",

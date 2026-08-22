@@ -32,6 +32,10 @@ EDU_RIGHT = ["<b>Additional Study:</b>",
 
 # Every section uses the same shape: (title, role, org, year, [bullets])
 COSTUME = [
+ ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
+  ["Garment construction, crafting, and distressing",
+   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "appointments to find items for NYU productions"]),
  ("Eurydice", "Costume Designer",
   "NYU Tisch Drama, Experimental Theater Wing · Dir. Elia Monte-Brown", "2026",
   ["Led a costume team from research through construction to production on stage",
@@ -105,4 +109,5 @@ build(
      ("Costume Training", TRAINING),
      ("Additional Experience", ADDITIONAL)],
     SKILLS,
+    fs=9.0, lh=1.08, page_margin="0.38in 0.62in 0.26in",
 )
