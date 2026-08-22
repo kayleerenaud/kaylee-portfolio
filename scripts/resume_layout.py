@@ -5,7 +5,7 @@ Used by build-costume-resume-pdf.py and build-film-resume-pdf.py so the two
 tailored resumes stay visually identical and only their content differs.
 
 Entry shape used everywhere: (title, role, org, year, [bullets])
-  **Title** — Role                                                        YEAR
+  **Title** · Role                                                        YEAR
   Org · Director / festival note   (italic; omitted when empty)
   • bullets
 """
@@ -27,7 +27,7 @@ REFS = [
 
 
 def entry(title, role, org, year, lines):
-    r = f"<span class='role'> — {role}</span>" if role else ""
+    r = f"<span class='role'> · {role}</span>" if role else ""
     o = f"<p class='org'>{org}</p>" if org else ""
     li = "".join(f"<li>{l}</li>" for l in lines)
     return (f"<article class='entry'>"

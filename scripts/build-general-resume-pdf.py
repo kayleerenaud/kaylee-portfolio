@@ -23,14 +23,14 @@ EDU_LEFT = ["<b>New York University, Tisch School of the Arts</b>",
             "BFA, Film &amp; Television, Expected May 2027",
             "Additional Focuses: Costume Design and Dance"]
 EDU_RIGHT = ["<b>Additional Study:</b>",
-             "Developing the Dramatic Script — Florence, Italy",
-             "Storytelling — Athens, Greece"]
+             "Developing the Dramatic Script · Florence, Italy",
+             "Storytelling · Athens, Greece"]
 
 # (title, role, org, year, [bullets])
 INDUSTRY = [
  ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
   ["Garment construction, crafting, and distressing",
-   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "Costume Loan: organizing and keeping itemized notes for the stock, and leading "
    "appointments to find items for NYU productions"]),
  ("Jean Doumanian Productions", "Development Intern", "", "New York, NY · 2026",
   ["Wrote script coverage and conducted research for current and prospective film projects",
@@ -76,7 +76,7 @@ COSTUME = [
   ["Costume design and sourcing for the short sci-fi film"]),
  ("Like Mother", "Costume Designer &amp; Fabricator", "NYU · Dir. Ziyan Zheng", "2024",
   ["Costume design and construction for the short film",
-   "Official Selection — Manhattan Film Festival &amp; Fusion Film Festival"]),
+   "Official Selection: Manhattan Film Festival &amp; Fusion Film Festival"]),
 ]
 
 OTHER_WORK = [
@@ -110,3 +110,8 @@ build(
     skill_key="1.22in",
     entry_gap=".11em", h2_margin=".38em 0 .14em",
 )
+
+import shutil
+shutil.copyfile(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "kaylee-renaud-general-resume.pdf"),
+                os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "kaylee-renaud-resume.pdf"))
+print("also wrote public/kaylee-renaud-resume.pdf (site download)")

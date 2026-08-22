@@ -49,7 +49,7 @@ CREDITS = [
    "childhood home before it’s sold"]),
  ("Like Mother", "Costume Designer &amp; Fabricator", "NYU · Dir. Ziyan Zheng", "2024",
   ["Costume design and construction for the short film",
-   "Official Selection — Manhattan Film Festival &amp; Fusion Film Festival"]),
+   "Official Selection: Manhattan Film Festival &amp; Fusion Film Festival"]),
  ("Production Assistant", "", "", "New York, NY · 2024",
   ["PA on numerous intermediate and advanced NYU student films"]),
 ]
@@ -71,14 +71,14 @@ STUDY = [
 ADDITIONAL = [
  ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
   ["Garment construction, crafting, and distressing",
-   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "Costume Loan: organizing and keeping itemized notes for the stock, and leading "
    "appointments to find items for NYU productions"]),
  ("Camp-of-the-Woods", "Video Director &amp; Marketing Assistant", "", "Speculator, NY · 2024",
   ["Video director for live productions",
    "Camera operator for live-streamed and recorded seminars",
    "Marketing assistant and photographer"]),
  ("Renew College Church", "Volunteer", "", "2025",
-  ["Media team — recorded B-roll and interviewed players at a city-wide youth tournament",
+  ["Media team: recorded B-roll and interviewed players at a city-wide youth tournament",
    "Designed event posters for NYU and Columbia students"]),
  ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
   ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),

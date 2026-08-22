@@ -27,6 +27,8 @@ EDU = [("BFA, Film & Television","New York University · Tisch School of the Art
         "Additional Concentrations · Costume Design & Dance","Expected May 2027")]
 TIMELINE = [
  ("2026", [
+   ("NYU Costume Shop","Costume Shop Assistant · New York, NY",
+    ["Garment construction, crafting, and distressing","Costume Loan: organizing and keeping itemized notes for the stock","Leading appointments in Costume Loan to find items for NYU productions"]),
    ("Eurydice","Costume Designer · NYU Tisch Drama, Experimental Theater Wing",
     ["Led a costume team from research through construction to production on stage","Budget and receipt tracking"]),
    ("Jean Doumanian Productions","Development Intern · New York, NY",

@@ -8,7 +8,7 @@ Chick-fil-A). Wording is reused verbatim from kaylee-renaud-resume.pdf and
 scripts/build-cv-pdf.py -- nothing here is rewritten.
 
 Layout: one page, EB Garamond, a single entry format throughout --
-  **Title** — Role                                                        YEAR
+  **Title** · Role                                                        YEAR
   Company · Director / festival note   (italic)
   • responsibility bullets
 
@@ -27,14 +27,14 @@ EDU_LEFT = ["<b>New York University, Tisch School of the Arts</b>",
             "BFA, Film &amp; Television, Expected May 2027",
             "Minor Focus: Costume Design and Dance"]
 EDU_RIGHT = ["<b>Additional Study:</b>",
-             "Developing the Dramatic Script — Florence, Italy",
-             "Storytelling — Athens, Greece"]
+             "Developing the Dramatic Script · Florence, Italy",
+             "Storytelling · Athens, Greece"]
 
 # Every section uses the same shape: (title, role, org, year, [bullets])
 COSTUME = [
  ("NYU Costume Shop", "Costume Shop Assistant", "", "New York, NY · 2026–Present",
   ["Garment construction, crafting, and distressing",
-   "Costume Loan — organizing and keeping itemized notes for the stock, and leading "
+   "Costume Loan: organizing and keeping itemized notes for the stock, and leading "
    "appointments to find items for NYU productions"]),
  ("Eurydice", "Costume Designer",
   "NYU Tisch Drama, Experimental Theater Wing · Dir. Elia Monte-Brown", "2026",
@@ -58,13 +58,13 @@ COSTUME = [
   ["Costume re-design for the villain, Davik Kang",
    "Art assistant across costume and props"]),
  ("Costume Consultant", "", "", "2025",
-  ["“Anya” — costume &amp; color consultant; five-time award-winning short by Adele Xu",
-   "“Sing Me to Sleep” — costume consultant; festival nominee by Pamela Fuller",
-   "“Yoko” — costume consultant; a short film by Josh Li"]),
+  ["“Anya”: costume &amp; color consultant; five-time award-winning short by Adele Xu",
+   "“Sing Me to Sleep”: costume consultant; festival nominee by Pamela Fuller",
+   "“Yoko”: costume consultant; a short film by Josh Li"]),
  ("Like Mother", "Costume Designer &amp; Fabricator",
   "NYU · Manhattan Film Festival Nominee · Dir. Ziyan Zheng", "2024",
   ["Costume design and construction for the short film",
-   "Official Selection — Manhattan Film Festival &amp; Fusion Film Festival"]),
+   "Official Selection: Manhattan Film Festival &amp; Fusion Film Festival"]),
 ]
 
 WARDROBE = [
