@@ -78,6 +78,9 @@ COSTUME = [
 OTHER_WORK = [
  ("Chick-fil-A", "Front of House", "", "Albany &amp; New York, NY · 2025",
   ["Fast-paced, customer-forward environment with a focus on going the extra mile"]),
+ ("Camp-of-the-Woods", "Waitress", "", "Speculator, NY · 2023",
+  ["Served guests in a fast-paced family dining hall",
+   "Cleaning and upkeep of the dining hall · OSHA trained"]),
 ]
 
 SKILLS = [
@@ -100,5 +103,5 @@ build(
     SKILLS,
     website="kayleerenaud.com",
     skill_key="1.22in",
-    entry_gap=".2em", h2_margin=".55em 0 .18em",
+    entry_gap=".15em", h2_margin=".44em 0 .16em",
 )
