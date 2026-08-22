@@ -21,7 +21,7 @@ TITLE = "Filmmaker, Writer, Costume Designer"
 
 EDU_LEFT = ["<b>New York University, Tisch School of the Arts</b>",
             "BFA, Film &amp; Television, Expected May 2027",
-            "Minor Focus: Costume Design and Dance"]
+            "Additional Focuses: Costume Design and Dance"]
 EDU_RIGHT = ["<b>Additional Study:</b>",
              "Developing the Dramatic Script — Florence, Italy",
              "Storytelling — Athens, Greece"]
