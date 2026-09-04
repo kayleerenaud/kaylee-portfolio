@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Render both card faces to 300 DPI PNGs and a print-ready two-page PDF.
-#   -> public/business-card-front.png
-#   -> public/business-card-back.png
-#   -> public/business-card-print.pdf   (3.75 x 2.25in each page, with bleed)
+# Render both card faces at 300 DPI and assemble print-ready two-page PDFs.
+#   -> public/business-card-front.png            (3.5 x 2in trim, 300 DPI)
+#   -> public/business-card-back.png             (3.5 x 2in trim, 300 DPI)
+#   -> public/business-card-print.pdf            (3.5 x 2in trim -- standard US card)
+#   -> public/business-card-print-with-bleed.pdf (3.75 x 2.25in, 1/8in bleed all round)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -23,15 +24,5 @@ shoot () {  # <html> <dest.png>
 shoot front.html business-card-front.png
 shoot back.html  business-card-back.png
 
-# --- assemble the print PDF (front page 1, back page 2) ----------------------
-$PY - <<'PY'
-from PIL import Image
-front = Image.open('../../public/business-card-front.png').convert('RGB')
-back  = Image.open('../../public/business-card-back.png').convert('RGB')
-# 3.75 x 2.25in card; DPI = pixel_width / 3.75
-dpi = round(front.size[0] / 3.75)
-front.save('../../public/business-card-print.pdf', 'PDF', resolution=dpi,
-           save_all=True, append_images=[back])
-print(f'  business-card-print.pdf  ({dpi} DPI, 2 pages)')
-PY
+$PY assemble.py
 echo "done."
