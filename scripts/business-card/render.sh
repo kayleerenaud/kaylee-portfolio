@@ -18,15 +18,15 @@ SRV=$!
 trap 'kill $SRV 2>/dev/null || true; rm -f .raw.png' EXIT
 sleep 1.2
 
-shoot () {  # <html> <dest.png>
-  screenshot "http://127.0.0.1:$PORT/$1" .raw.png "$W" "$H" 1800 >/dev/null
+shoot () {  # <html> <dest.png> [width] [height]
+  screenshot "http://127.0.0.1:$PORT/$1" .raw.png "${3:-$W}" "${4:-$H}" 1800 >/dev/null
   cp .raw.png "../../public/$2"
   echo "  $2  $($PY -c "from PIL import Image;print('x'.join(map(str,Image.open('.raw.png').size)))")px"
 }
 
 shoot front.html  business-card-front.png
 shoot back.html   business-card-back.png
-shoot single.html business-card-single.png
+shoot single.html business-card-single.png 675 1125   # 2x -> 600 DPI
 
 $PY assemble.py
 echo "done."

@@ -22,9 +22,12 @@ for im, f in zip(trim, ('front', 'back')):
 
 # one-sided card: single page, blank back (an NFC tag goes there)
 single_full = Image.open(OUT + 'business-card-single.png').convert('RGB')
-single = single_full.crop((bleed, bleed, single_full.size[0] - bleed, single_full.size[1] - bleed))
-single.save(OUT + 'business-card-single-print.pdf', 'PDF', resolution=dpi)
-single_full.save(OUT + 'business-card-single-print-with-bleed.pdf', 'PDF', resolution=dpi)
+sdpi = round(single_full.size[1] / 3.75)          # rendered at 2x -> 600 DPI
+sbleed = round(0.125 * sdpi)
+single = single_full.crop((sbleed, sbleed,
+                           single_full.size[0] - sbleed, single_full.size[1] - sbleed))
+single.save(OUT + 'business-card-single-print.pdf', 'PDF', resolution=sdpi)
+single_full.save(OUT + 'business-card-single-print-with-bleed.pdf', 'PDF', resolution=sdpi)
 single.save(OUT + 'business-card-single.png')
 
 w, h = trim[0].size
@@ -32,4 +35,4 @@ fw, fh = full[0].size
 print(f'  business-card-print.pdf             {w}x{h}px = {w/dpi:.2f} x {h/dpi:.2f}in @ {dpi} DPI')
 print(f'  business-card-print-with-bleed.pdf  {fw}x{fh}px = {fw/dpi:.2f} x {fh/dpi:.2f}in @ {dpi} DPI')
 sw, sh = single.size
-print(f'  business-card-single-print.pdf      {sw}x{sh}px = {sw/dpi:.2f} x {sh/dpi:.2f}in @ {dpi} DPI, 1 page')
+print(f'  business-card-single-print.pdf      {sw}x{sh}px = {sw/sdpi:.2f} x {sh/sdpi:.2f}in @ {sdpi} DPI, 1 page')
