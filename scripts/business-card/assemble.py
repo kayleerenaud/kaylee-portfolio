@@ -5,15 +5,15 @@ from PIL import Image
 OUT = '../../public/'
 full = [Image.open(OUT + f'business-card-{f}.png').convert('RGB') for f in ('front', 'back')]
 
-# The art is drawn 3.75 x 2.25in: trim 3.5 x 2in plus 1/8in bleed on every side.
-dpi = round(full[0].size[0] / 3.75)
+# The art is drawn 2.25 x 3.75in: trim 2 x 3.5in plus 1/8in bleed on every side.
+dpi = round(full[0].size[1] / 3.75)   # tall side is 3.75in with bleed
 bleed = round(0.125 * dpi)
 trim = [im.crop((bleed, bleed, im.size[0] - bleed, im.size[1] - bleed)) for im in full]
 
 # with-bleed version, for printers that ask for it
 full[0].save(OUT + 'business-card-print-with-bleed.pdf', 'PDF', resolution=dpi,
              save_all=True, append_images=[full[1]])
-# exact 3.5 x 2in trim -- the standard US business card size
+# exact 2 x 3.5in trim -- standard US business card, vertical
 trim[0].save(OUT + 'business-card-print.pdf', 'PDF', resolution=dpi,
              save_all=True, append_images=[trim[1]])
 # the PNGs show the card as it will actually be cut
