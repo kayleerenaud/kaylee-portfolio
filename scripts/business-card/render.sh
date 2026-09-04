@@ -4,6 +4,9 @@
 #   -> public/business-card-back.png             (2 x 3.5in trim (vertical), 300 DPI)
 #   -> public/business-card-print.pdf            (2 x 3.5in trim (vertical) -- standard US card)
 #   -> public/business-card-print-with-bleed.pdf (2.25 x 3.75in, 1/8in bleed all round)
+#   -> public/business-card-single.png           (one-sided face, 2 x 3.5in trim)
+#   -> public/business-card-single-print.pdf     (one page, 2 x 3.5in -- blank back for NFC)
+#   -> public/business-card-single-print-with-bleed.pdf (2.25 x 3.75in)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -21,8 +24,9 @@ shoot () {  # <html> <dest.png>
   echo "  $2  $($PY -c "from PIL import Image;print('x'.join(map(str,Image.open('.raw.png').size)))")px"
 }
 
-shoot front.html business-card-front.png
-shoot back.html  business-card-back.png
+shoot front.html  business-card-front.png
+shoot back.html   business-card-back.png
+shoot single.html business-card-single.png
 
 $PY assemble.py
 echo "done."

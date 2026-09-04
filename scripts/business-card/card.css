@@ -180,3 +180,52 @@ html, body {
   color: var(--ink-soft);
 }
 .qr-cap .arw { color: var(--accent); }
+
+/* ---------- SINGLE-SIDED FACE ---------------------------------------------
+   Everything on one 2 x 3.5in face; the back is left blank for an NFC tag. */
+.single {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* padding includes the 19px bleed, so ~25px of real margin inside the trim */
+  padding: 44px 32px 44px;
+}
+.single .portrait {
+  width: 112px; height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 0 6px rgba(217,138,158,0.08);
+  margin-bottom: 24px;
+}
+.single .name {
+  font-family: 'Kaylee Script', cursive;
+  font-size: 37px;
+  line-height: 0.92;
+  color: var(--rose-lift);
+  -webkit-text-stroke: 0.7px var(--rose-lift);
+  letter-spacing: 0.012em;
+}
+.single .role {
+  font-weight: 500;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 13px;
+}
+.single .rule {
+  width: 46px; height: 1.5px;
+  margin: 18px 0 0;
+  background: linear-gradient(90deg, transparent,
+    var(--accent) 20%, var(--accent) 80%, transparent);
+}
+.single .rows {
+  margin: auto 0;          /* centred in the space below the rule */
+  gap: 17px;
+}
+.single .row .ic { width: 23px; height: 23px; flex: 0 0 23px; }
+.single .row.social { gap: 8px; }
+.single .row.social .txt { margin-left: 2px; }
