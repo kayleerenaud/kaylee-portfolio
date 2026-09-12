@@ -6,6 +6,21 @@ sheet) comes out looking like a sibling rather than a stranger.
 
 Reference artefact: `public/planning/career-planning-worksheet.pdf` (8 pp.)
 Build script: `scripts/build-planning-worksheet.py`
+Shared layout kit: **`scripts/worksheet_kit.py`** — every sheet after the first imports its
+primitives and its stylesheet, so the family cannot drift. New sheets should `from worksheet_kit
+import *` rather than copying CSS.
+
+### The family
+
+| Sheet | PDF | Script | pp. |
+|---|---|---|---|
+| Career &amp; goal planning | `career-planning-worksheet.pdf` | `build-planning-worksheet.py` | 8 |
+| The Costume Eye — one film per sheet | `costume-eye-worksheet.pdf` | `build-costume-eye.py` | 1 |
+| The Writer's Eye — Film | `writers-eye-film-worksheet.pdf` | `build-writers-eye-film.py` | 2 |
+| The Writer's Eye — Episode | `writers-eye-episode-worksheet.pdf` | `build-writers-eye-episode.py` | 2 |
+| Story Planning | `story-planning-worksheet.pdf` | `build-story-planning.py` | 4 |
+| Last Semester (expires May 2027) | `last-semester-worksheet.pdf` | `build-last-semester.py` | 2 |
+| The Sealed Page | `sealed-page-worksheet.pdf` | `build-sealed-page.py` | 2 |
 
 ---
 
@@ -138,6 +153,34 @@ the right side carries a table. Never nest a `split` inside a `split`.
 **`h2(n, title, sub)`** — numbered section head with optional italic subtitle. Numbers run in
 **document order**; renumber programmatically, never by hand (see §8).
 
+### 6b. Extensions (added 2026-09)
+
+Four more primitives, added for the watching-log and story sheets. Same rules apply: hairlines
+only, and anything meant to be written in stays ≥ `0.245in`.
+
+**`pick(items, other=, label=)`** — wrapped inline checkbox chips, a compact "tick all that apply".
+Cheaper than `checks()` when there are fifteen short options and the reader ticks two. `.chip` is
+`white-space:nowrap` — without it, options break mid-phrase ("three-/act"). **Always pass `other`**,
+so the list stays descriptive rather than prescriptive; the sheet must never imply its menu is
+exhaustive.
+
+**`swatches(n, caption, h)`** — n outlined squares to fill with pencil, each over a ruled caption
+line. For palettes. Outline only — a filled swatch would break rule 1.
+
+**`sketch(h, label)`** — a bordered empty box for drawing. Used for "sketch the garment" and
+"draw the shape of the story."
+
+**`strip(n, label, ticks, h)`** — a segmented horizontal bar for marking events across a runtime.
+`ticks` labels the cells underneath at 6.4pt.
+
+Two table modifiers: **`cls='tall'`** (`.29in` rows) / **`cls='taller'`** (`.36in`, keepsake sheets
+only), and **`cls='vgrid'`** — vertical `#d8d8d8` hairlines between columns. `vgrid` is required on
+any side-by-side comparison table (the Sealed Page's NOW / THEN); without it the two answer columns
+read as one continuous ruled line and there is nothing telling the pen where to stop.
+
+`table(...)` also takes **`rowlbls=[...]`** to emit fixed first-column prompt rows with the
+`#f4f2f0` tint, instead of `rows=n` blank ones.
+
 ---
 
 ## 7. Pagination rules
@@ -158,6 +201,10 @@ The distinction that matters:
 
 - **Long, uniform log tables** (pipeline, materials audit, people, monthly check-in) **may split**
   across pages. A repeated header makes the continuation legible.
+- **`break-after:avoid` on `h2` does not protect a head followed by `<p class='note'>`** — the head
+  stays with the note and both strand at the foot. Story Planning §13 hit exactly this. Fix by
+  wrapping head + note + table in `keep()` and sizing the table to fit a page (20 rows at `.245in`
+  is about the ceiling).
 - **Matrix tables read as a unit** (three-lane comparison, week grid, reverse-plan, faith rhythms)
   **must not split** — half a matrix is unreadable. Wrap any other must-stay-whole block in
   `<div class="keep">`.
@@ -229,4 +276,22 @@ catch these:
 
 ---
 
-*Reference build: `scripts/build-planning-worksheet.py` · US Letter · EB Garamond · WeasyPrint 69*
+---
+
+## 12. When a sheet is a keepsake
+
+The brief in §1 says *working document, not a keepsake*. One sheet in the family — **The Sealed
+Page** — is genuinely a keepsake, and the right move is to bend two rules **on purpose and in
+writing** rather than drift:
+
+- rows go to `.36in` (`table.taller`), because it will be re-read rather than worked over;
+- the letter blocks get generous ruled space instead of maximum density.
+
+Everything else holds: greyscale, hairlines, EB Garamond, Letter, no fills beyond the row tint.
+Print that one on heavier stock. If a future sheet wants the same latitude, name the bend here
+first — an undocumented exception is just inconsistency.
+
+---
+
+*Reference build: `scripts/build-planning-worksheet.py` · shared kit: `scripts/worksheet_kit.py`
+· US Letter · EB Garamond · WeasyPrint 69*
