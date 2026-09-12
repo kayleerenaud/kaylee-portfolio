@@ -21,6 +21,7 @@ import *` rather than copying CSS.
 | Story Planning | `story-planning-worksheet.pdf` | `build-story-planning.py` | 4 |
 | Last Semester (expires May 2027) | `last-semester-worksheet.pdf` | `build-last-semester.py` | 2 |
 | The Sealed Page | `sealed-page-worksheet.pdf` | `build-sealed-page.py` | 2 |
+| Devotions — one passage per sitting | `devotions-worksheet.pdf` | `build-devotions.py` | 2 |
 
 ---
 
@@ -170,6 +171,11 @@ line. For palettes. Outline only — a filled swatch would break rule 1.
 **`sketch(h, label)`** — a bordered empty box for drawing. Used for "sketch the garment" and
 "draw the shape of the story."
 
+**`linedbox(n, label, note_)`** — a bordered block of ruled lines, for text meant to be *copied
+out by hand*. Distinct from `sketch()` (blank box, for drawing) and bare `rules()` (open lines):
+the border marks the block as something to keep, the lines keep the handwriting straight. The last
+`.rl` drops its rule because the box's own bottom border serves as that line.
+
 **`strip(n, label, ticks, h)`** — a segmented horizontal bar for marking events across a runtime.
 `ticks` labels the cells underneath at 6.4pt.
 
@@ -273,6 +279,13 @@ catch these:
   "Considerations".
 - Tables end with a decision column — *keep · cut · shrink · grow*, *grow / hold / pause* — so the
   sheet forces a call rather than an inventory.
+- **Give every repeating sheet somewhere to record a failure.** The Costume Eye has *avoid*;
+  Devotions §8 has "if nothing landed today, say it plainly." A sheet you fill in weekly that has
+  no room for a bad week will quietly teach you to invent a good one.
+- **Where the subject has genres or forms, tick-list them and always provide an override.** The
+  Writer's Eye lists ~17 story shapes, Devotions lists twelve genres of biblical writing — each
+  with a cross-out instruction and an "in my own words" blank. The list exists to widen the
+  question, never to close it.
 
 ---
 

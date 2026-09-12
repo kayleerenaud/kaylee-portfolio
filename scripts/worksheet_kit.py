@@ -132,6 +132,18 @@ def sketch(h='1.35in', label=''):
     return f"<div class='sketchwrap'>{lbl}<div class='sketch' style='height:{h}'></div></div>"
 
 
+def linedbox(n=3, label='', note_=''):
+    """A bordered block of ruled lines — for text meant to be copied out by hand.
+
+    Distinct from sketch() (blank box, for drawing) and rules() (open lines): the
+    border marks the block as something to keep, the lines keep handwriting straight.
+    """
+    lbl = f"<span class='fl'>{label}</span>" if label else ""
+    nt = f"<p class='note'>{note_}</p>" if note_ else ""
+    lines = "".join("<div class='rl'></div>" for _ in range(n))
+    return f"<div class='lbwrap'>{lbl}{nt}<div class='linedbox'>{lines}</div></div>"
+
+
 def strip(n=10, label='', ticks=None, h='.42in'):
     """A segmented horizontal bar — mark where something happened over a runtime.
 
@@ -233,6 +245,11 @@ table.week td:first-child {{ font-size:7.2pt; color:#444; background:#f4f2f0; }}
 .sw {{ flex:1; }}
 .swbox {{ border:.6pt solid #b9b9b9; }}
 .swcap {{ height:.245in; border-bottom:.5pt solid #b9b9b9; }}
+
+/* lined box — hand-copied text */
+.lbwrap {{ margin:.15em 0 .35em; }}
+.linedbox {{ border:.6pt solid #b9b9b9; padding:.06in .14in .02in; margin-top:.12em; }}
+.linedbox .rl:last-child {{ border-bottom:none; }}
 
 /* sketch box */
 .sketchwrap {{ margin:.15em 0 .35em; }}
