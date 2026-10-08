@@ -239,7 +239,7 @@ const reelSlides = [
     window.addEventListener('resize', build, { passive: true });
     build();
     setTimeout(build, 300);
-    // re-measure once the webfonts (Spectral + handwriting) have loaded, since
+    // re-measure once the webfonts (Figtree + handwriting) have loaded, since
     // they reflow the text-heavy cards and shift their tacks
     if ((document as any).fonts?.ready) (document as any).fonts.ready.then(build);
   }

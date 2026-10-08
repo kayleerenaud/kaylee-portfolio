@@ -1,3 +1,19 @@
+/* Figtree — the screen-reading face for body + headings (self-hosted, variable) */
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/figtree-latin.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/fonts/figtree-latin-italic.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* Kaylee's own handwriting — used wherever --font-hand appears */
 @font-face {
   font-family: 'Kaylee Script';
@@ -28,8 +44,8 @@
   --on-accent: #14110f;   /* dark text that sits on a bright accent fill */
 
   /* type */
-  --font-display: 'Georgia', 'Times New Roman', serif;
-  --font-body:    'Spectral', Georgia, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body:    'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono:    ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   --font-hand:    'Kaylee Script', 'Segoe Print', 'Bradley Hand', cursive;
 
@@ -57,8 +73,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 17.5px;
+  line-height: 1.58;
   -webkit-font-smoothing: antialiased;
   /* the mood color eases between sections instead of snapping */
   transition: background-color .6s ease;
@@ -78,7 +94,7 @@ body::before {
   transition: background .6s ease;
 }
 
-h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; letter-spacing: -0.015em; }
 /* page titles use Kaylee's handwriting, faux-bolded (the font is single-weight) */
 h1 { font-family: var(--font-hand); font-weight: 400; font-size: clamp(2.3rem, 5.6vw, 3.9rem);
   line-height: 1.04; letter-spacing: normal; margin: 0 0 0.4em;
