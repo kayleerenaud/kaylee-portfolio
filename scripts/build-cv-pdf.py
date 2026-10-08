@@ -29,6 +29,12 @@ TIMELINE = [
  ("2026", [
    ("NYU Costume Shop","Costume Shop Assistant · New York, NY",
     ["Garment construction, crafting, and distressing","Costume Loan: organizing and keeping itemized notes for the stock","Leading appointments in Costume Loan to find items for NYU productions"]),
+   ("Be All End All","Costume Designer · Playwrights Horizons",
+    ["Designing and dressing an original play by Jenn Martin, directed by Delia Dumont"]),
+   ("Sunday in the Park with George","Costume Consultant · Tisch New Theater",
+    ["Concert staging of the Sondheim musical, directed by Clark Worden","Designing and pulling from the actors’ own wardrobes"]),
+   ("The Melody Goes","Costume Designer · dir. Claire Zhang",
+    ["A short film set in a dystopia where cellos are banned, in which a woman hides her instrument while soldiers raid her home","Designed the dystopian officer uniforms and the protagonist’s civilian costume"]),
    ("Eurydice","Costume Designer · NYU Tisch Drama, Experimental Theater Wing",
     ["Led a costume team from research through construction to production on stage","Budget and receipt tracking"]),
    ("Jean Doumanian Productions","Development Intern · New York, NY",

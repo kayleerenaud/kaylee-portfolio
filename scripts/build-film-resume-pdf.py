@@ -47,6 +47,10 @@ CREDITS = [
   "NYU Sight &amp; Sound: Documentary · Dir. Ziyan Zheng", "2025",
   ["A documentary following the director home to Guangzhou to say goodbye to her "
    "childhood home before it’s sold"]),
+ ("The Melody Goes", "Costume Designer", "Written &amp; dir. Claire Zhang", "2026",
+  ["In a dystopian world where cellos are banned, a woman hides her instrument "
+   "while soldiers raid her home",
+   "Designed the officer uniforms and the protagonist’s civilian costume"]),
  ("Like Mother", "Costume Designer &amp; Fabricator", "NYU · Dir. Ziyan Zheng", "2024",
   ["Costume design and construction for the short film",
    "Official Selection: Manhattan Film Festival &amp; Fusion Film Festival"]),
@@ -104,5 +108,6 @@ build(
     refs=[r for r in REFS if 'Chick-fil-A' not in r[1]],
     website="kayleerenaud.com",
     skill_key="1.22in",
-    entry_gap=".2em", h2_margin=".55em 0 .18em",
+    fs=9.0, lh=1.07, entry_gap=".12em", h2_margin=".42em 0 .15em",
+    page_margin="0.38in 0.62in 0.28in",
 )
