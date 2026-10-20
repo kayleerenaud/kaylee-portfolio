@@ -25,6 +25,11 @@ EDU_RIGHT = []
 
 # (title, role, org, year, [bullets])
 PRODUCED = [
+ ("The Virus and Us", "Writer · Voice",
+  "Children’s eBook &amp; animated short · Published in the US &amp; China · ArtsEverywhere", "2020",
+  ["Devised to teach kids COVID-19 safety, and to show kids in the US and China that "
+   "everyone around the world is responding together",
+   "Illustrated &amp; animated by Max Cohen · Written for an Emory Global Health Institute contest"]),
  ("Schmoopy", "Writer · Director · Art Design", "Short film · NYU", "2025",
   ["A short comedy about a hospital janitor mistaken for a nurse on his first day, "
    "who must help deliver a baby moments before his own is born"]),
@@ -59,9 +64,9 @@ COLLAB = [
   ["Led a costume team from research through construction to production on stage"]),
  ("Sunday in the Park with George", "Costume Consultant",
   "Tisch New Theater · Dir. Clark Worden", "2026",
-  ["Concert staging of the Sondheim musical"]),
+  []),
  ("As You Like It", "Costume Assistant", "NYU Classical Studio · Dir. Daniel Spector", "2026",
-  ["Assisted under Madison Barnett, mentored by Erin Black"]),
+  []),
  ("Costume Design for Film", "", "", "2024–2026",
   ["<i>The Melody Goes</i> (written &amp; dir. Claire Zhang) · <i>Weightless</i> (dir. Kevin Sherman) · "
    "<i>Like Mother</i> (dir. Ziyan Zheng; Manhattan Film Festival &amp; Fusion Film Festival)",
@@ -90,13 +95,15 @@ h1 { font-weight:600; letter-spacing:-.01em; white-space:nowrap; }
 .org, .rr, .rc, .contact, .contact a, .subtitle { color:#3d3631; }
 .yr { color:#544b45; font-size:8.6pt; }
 .skill .k { font-style:normal; font-weight:650; }
+.refs .ref { width:auto; flex:0 0 auto; margin-right:.3in; }
+ul:empty { display:none; }
 """
 
 build(
     "kaylee-renaud-mfa-writing-resume.pdf",
     TITLE,
     EDU_LEFT, EDU_RIGHT,
-    [("Produced Work", PRODUCED),
+    [("Published &amp; Produced Work", PRODUCED),
      ("Writing-Relevant Experience", EXPERIENCE),
      ("Theatre &amp; Film Collaboration", COLLAB),
      ("Writing Study", STUDY)],
@@ -105,6 +112,6 @@ build(
     website="kayleerenaud.com",
     skill_key=".85in",
     font="figtree", extra_css=EXTRA,
-    fs=9.1, lh=1.18, entry_gap=".22em", h2_margin=".55em 0 .2em",
-    page_margin="0.4in 0.62in 0.3in",
+    fs=9.0, lh=1.15, entry_gap=".2em", h2_margin=".5em 0 .18em",
+    page_margin="0.36in 0.6in 0.26in",
 )
