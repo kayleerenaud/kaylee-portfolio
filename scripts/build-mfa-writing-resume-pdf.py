@@ -36,7 +36,7 @@ PRODUCED = [
   ["A documentary following two brothers and their magical friend Chris as they build "
    "a spirit temple along the Brooklyn coast"]),
  ("Elli", "Director · Editor", "Documentary", "2024",
-  ["A documentary about Dianna Goodwin’s mother, based on Dianna’s memoir, Army Brat"]),
+  ["A documentary about Dianna Goodwin’s mother, based on Dianna’s memoir, <i>Army Brat</i>"]),
 ]
 
 EXPERIENCE = [
