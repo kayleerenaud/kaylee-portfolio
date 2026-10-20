@@ -43,15 +43,29 @@ EXPERIENCE = [
  ("Jean Doumanian Productions", "Development Intern", "", "New York, NY · 2026",
   ["Wrote script coverage and conducted research for current and prospective film projects",
    "Analyzed scripts for narrative structure, character development, and production potential"]),
- ("Be All End All", "Costume Designer",
-  "Playwrights Horizons · By Jenn Martin · Dir. Delia Dumont", "2026",
-  ["Designing and dressing an original play"]),
  ("Good Company", "Assistant Director", "NYU Intermediate Narrative · Dir. Sofia Cohen", "2025",
   ["A short comedy-thriller about two young women the morning after a party, "
    "both with murder on their minds"]),
- ("Camp-of-the-Woods", "Video Director &amp; Marketing Assistant", "", "Speculator, NY · 2024",
-  ["Video director for live productions",
-   "Camera operator for live-streamed and recorded seminars"]),
+]
+
+# Costume work framed as collaboration on produced plays and films --
+# relevant to a dramatic-writing application as time spent inside new work.
+COLLAB = [
+ ("Be All End All", "Costume Designer",
+  "Playwrights Horizons · By Jenn Martin · Dir. Delia Dumont", "2026",
+  ["Designing and dressing an original play"]),
+ ("Eurydice", "Costume Designer",
+  "NYU Tisch Drama, Experimental Theater Wing · Dir. Elia Monte-Brown", "2026",
+  ["Led a costume team from research through construction to production on stage"]),
+ ("Sunday in the Park with George", "Costume Consultant",
+  "Tisch New Theater · Dir. Clark Worden", "2026",
+  ["Concert staging of the Sondheim musical"]),
+ ("As You Like It", "Costume Assistant", "NYU Classical Studio · Dir. Daniel Spector", "2026",
+  ["Assisted under Madison Barnett, mentored by Erin Black"]),
+ ("Costume Design for Film", "", "", "2024–2026",
+  ["<i>The Melody Goes</i> (written &amp; dir. Claire Zhang) · <i>Weightless</i> (dir. Kevin Sherman) · "
+   "<i>Like Mother</i> (dir. Ziyan Zheng; Manhattan Film Festival &amp; Fusion Film Festival)",
+   "<i>Knights of the Old Republic</i>, Ep. 1 &amp; 2 (The King’s Academy Studio 70 · Dir. Austin Parenti)"]),
 ]
 
 STUDY = [
@@ -84,12 +98,13 @@ build(
     EDU_LEFT, EDU_RIGHT,
     [("Produced Work", PRODUCED),
      ("Writing-Relevant Experience", EXPERIENCE),
+     ("Theatre &amp; Film Collaboration", COLLAB),
      ("Writing Study", STUDY)],
     SKILLS,
     refs=[r for r in REFS if 'Chick-fil-A' not in r[1]],
     website="kayleerenaud.com",
     skill_key=".85in",
     font="figtree", extra_css=EXTRA,
-    fs=9.6, lh=1.28, entry_gap=".36em", h2_margin=".8em 0 .28em",
-    page_margin="0.45in 0.66in 0.35in",
+    fs=9.1, lh=1.18, entry_gap=".22em", h2_margin=".55em 0 .2em",
+    page_margin="0.4in 0.62in 0.3in",
 )
