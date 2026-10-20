@@ -40,12 +40,12 @@ def section(label, items):
 
 
 CSS = """
-@font-face { font-family:'EBG'; src:url('%(reg)s'); font-weight:400 800; font-style:normal; }
-@font-face { font-family:'EBG'; src:url('%(ital)s'); font-weight:400 800; font-style:italic; }
+@font-face { font-family:'Body'; src:url('%(reg)s'); font-weight:%(wr)s; font-style:normal; }
+@font-face { font-family:'Body'; src:url('%(ital)s'); font-weight:%(wr)s; font-style:italic; }
 @page { size: Letter; margin: %(page_margin)s; }
 * { box-sizing:border-box; }
 html, body { margin:0; padding:0; color:#14110f;
-  font-family:'EBG', Garamond, Georgia, serif; font-size:%(fs)spt; line-height:%(lh)s; }
+  font-family:'Body', %(fallback)s; font-size:%(fs)spt; line-height:%(lh)s; }
 
 /* header */
 .head { display:flex; justify-content:space-between; align-items:flex-end;
@@ -92,14 +92,26 @@ li::marker { color:#8a7f76; }
 """
 
 
+# font key -> (regular, italic, weight range, CSS fallback stack)
+FONTS = {
+ "garamond": ("scripts/resume-assets/EBGaramond-VF.ttf",
+              "scripts/resume-assets/EBGaramond-Italic-VF.ttf",
+              "400 800", "Garamond, Georgia, serif"),
+ # screen-legible sans, same face as kayleerenaud.com
+ "figtree": ("scripts/resume-assets/figtree-latin.ttf",
+             "scripts/resume-assets/figtree-latin-italic.ttf",
+             "300 900", "Helvetica, Arial, sans-serif"),
+}
+
+
 def build(out_name, title, edu_left, edu_right, sections, skills, website=None, refs=None,
           fs=9.2, lh=1.1, entry_gap=".14em", h2_margin=".44em 0 .16em",
-          page_margin="0.42in 0.66in 0.3in", skill_key=".74in"):
+          page_margin="0.42in 0.66in 0.3in", skill_key=".74in", font="garamond", extra_css=""):
     """sections: list of (label, [entries]); skills: list of (label, value)."""
-    css = CSS % dict(reg=furl("scripts/resume-assets/EBGaramond-VF.ttf"),
-                     ital=furl("scripts/resume-assets/EBGaramond-Italic-VF.ttf"),
+    reg, ital, wr, fallback = FONTS[font]
+    css = CSS % dict(reg=furl(reg), ital=furl(ital), wr=wr, fallback=fallback,
                      fs=fs, lh=lh, entry_gap=entry_gap, h2_margin=h2_margin,
-                     page_margin=page_margin, skill_key=skill_key)
+                     page_margin=page_margin, skill_key=skill_key) + extra_css
     body = "".join(section(lbl, items) for lbl, items in sections)
     skills_html = "".join(
         f"<p class='skill'><span class='k'>{k}</span><span class='v'>{v}</span></p>"
