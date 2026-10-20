@@ -65,7 +65,7 @@ COLLAB = [
  ("Costume Design for Film", "", "", "2024–2026",
   ["<i>The Melody Goes</i> (written &amp; dir. Claire Zhang) · <i>Weightless</i> (dir. Kevin Sherman) · "
    "<i>Like Mother</i> (dir. Ziyan Zheng; Manhattan Film Festival &amp; Fusion Film Festival)",
-   "<i>Knights of the Old Republic</i>, Ep. 1 &amp; 2 (The King’s Academy Studio 70 · Dir. Austin Parenti)"]),
+   "<i>Knights of the Old Republic</i>, Ep. 1, 2 &amp; 3 (The King’s Academy Studio 70 · Dir. Austin Parenti)"]),
 ]
 
 STUDY = [
