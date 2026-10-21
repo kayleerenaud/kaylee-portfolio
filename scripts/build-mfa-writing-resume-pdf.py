@@ -48,9 +48,6 @@ EXPERIENCE = [
  ("Jean Doumanian Productions", "Development Intern", "", "New York, NY · 2026",
   ["Wrote script coverage and conducted research for current and prospective film projects",
    "Analyzed scripts for narrative structure, character development, and production potential"]),
- ("Good Company", "Assistant Director", "NYU Intermediate Narrative · Dir. Sofia Cohen", "2025",
-  ["A short comedy-thriller about two young women the morning after a party, "
-   "both with murder on their minds"]),
 ]
 
 # Costume work framed as collaboration on produced plays and films --
@@ -64,9 +61,9 @@ COLLAB = [
   ["Led a costume team from research through construction to production on stage"]),
  ("Sunday in the Park with George", "Costume Consultant",
   "Tisch New Theater · Dir. Clark Worden", "2026",
-  []),
+  ["Concert staging of the Sondheim musical"]),
  ("As You Like It", "Costume Assistant", "NYU Classical Studio · Dir. Daniel Spector", "2026",
-  []),
+  ["Assisted under Madison Barnett, mentored by Erin Black"]),
  ("Costume Design for Film", "", "", "2024–2026",
   ["<i>The Melody Goes</i> (written &amp; dir. Claire Zhang) · <i>Weightless</i> (dir. Kevin Sherman) · "
    "<i>Like Mother</i> (dir. Ziyan Zheng; Manhattan Film Festival &amp; Fusion Film Festival)",
@@ -104,9 +101,9 @@ build(
     TITLE,
     EDU_LEFT, EDU_RIGHT,
     [("Produced &amp; Published Work", PRODUCED),
-     ("Writing-Relevant Experience", EXPERIENCE),
+     ("Writing-Relevant Experience &amp; Study", EXPERIENCE + STUDY),
      ("Theatre &amp; Film Collaboration", COLLAB),
-     ("Writing Study", STUDY)],
+     ],
     SKILLS,
     refs=[r for r in REFS if 'Chick-fil-A' not in r[1]],
     website="kayleerenaud.com",
