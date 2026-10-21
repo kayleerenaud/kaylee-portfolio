@@ -25,11 +25,6 @@ EDU_RIGHT = []
 
 # (title, role, org, year, [bullets])
 PRODUCED = [
- ("The Virus and Us", "Writer · Voice",
-  "Children’s eBook &amp; animated short · Published in the US &amp; China · ArtsEverywhere", "2020",
-  ["Devised to teach kids COVID-19 safety, and to show kids in the US and China that "
-   "everyone around the world is responding together",
-   "Illustrated &amp; animated by Max Cohen · Written for an Emory Global Health Institute contest"]),
  ("Schmoopy", "Writer · Director · Art Design", "Short film · NYU", "2025",
   ["A short comedy about a hospital janitor mistaken for a nurse on his first day, "
    "who must help deliver a baby moments before his own is born"]),
@@ -42,6 +37,11 @@ PRODUCED = [
    "a spirit temple along the Brooklyn coast"]),
  ("Elli", "Director · Editor", "Documentary", "2024",
   ["A documentary about Dianna Goodwin’s mother, based on Dianna’s memoir, <i>Army Brat</i>"]),
+ ("The Virus and Us", "Writer · Voice",
+  "Children’s eBook &amp; animated short · Published in the US &amp; China · ArtsEverywhere", "2020",
+  ["Devised to teach kids COVID-19 safety, and to show kids in the US and China that "
+   "everyone around the world is responding together",
+   "Illustrated &amp; animated by Max Cohen · Written for an Emory Global Health Institute contest"]),
 ]
 
 EXPERIENCE = [
@@ -103,7 +103,7 @@ build(
     "kaylee-renaud-mfa-writing-resume.pdf",
     TITLE,
     EDU_LEFT, EDU_RIGHT,
-    [("Published &amp; Produced Work", PRODUCED),
+    [("Produced &amp; Published Work", PRODUCED),
      ("Writing-Relevant Experience", EXPERIENCE),
      ("Theatre &amp; Film Collaboration", COLLAB),
      ("Writing Study", STUDY)],
