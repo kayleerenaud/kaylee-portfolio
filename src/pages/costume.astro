@@ -117,6 +117,22 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
             </p>
           )}
           {p.blurb && <p class="ph-blurb">{p.blurb}</p>}
+          {p.videos && p.videos.length > 0 && (
+            <div class="vids">
+              <div class="vid-chips">
+                {p.videos.map((v) => (
+                  <button class="vid-chip" data-yt={v.id} data-title={`${p.show} — ${v.label}`} aria-label={`Play ${v.label}`}>
+                    <span class="vc-thumb">
+                      <img src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`} alt="" loading="lazy" decoding="async" />
+                      <span class="vc-play" aria-hidden="true"></span>
+                    </span>
+                    <span class="vc-label"><span class="stamp">Watch</span> <span class="vc-name">{v.label}</span></span>
+                  </button>
+                ))}
+              </div>
+              <div class="vid-stage" hidden></div>
+            </div>
+          )}
         </header>
 
         <div class="plates">
@@ -297,6 +313,31 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
   .ph-meta .dot { opacity: .5; }
   .ph-blurb { color: var(--ink-soft); margin: 1rem 0 0; max-width: 60ch; }
 
+  /* video chips: thumbnail pill → plays inline under the header */
+  .vids { margin-top: 1.25rem; }
+  .vid-chips { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .vid-chip { display: inline-flex; align-items: center; gap: .75rem; padding: .35rem 1.1rem .35rem .35rem;
+    background: color-mix(in srgb, var(--accent) 14%, #1c1916); color: var(--ink);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: 999px;
+    cursor: pointer; font: inherit; transition: background .2s ease, transform .2s ease, border-color .2s ease; }
+  .vid-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (hover: hover) { .vid-chip:hover { background: color-mix(in srgb, var(--accent) 28%, #1c1916); border-color: var(--accent); transform: translateY(-1px); } }
+  .vid-chip.is-active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 28%, #1c1916); }
+  .vc-thumb { position: relative; width: 104px; aspect-ratio: 16 / 9; border-radius: 999px; overflow: hidden; flex: none; background: #000; }
+  .vc-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vc-play { position: absolute; inset: 0; margin: auto; width: 28px; height: 28px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 88%, #000); box-shadow: 0 2px 8px rgba(0,0,0,.45); }
+  .vc-play::after { content: ''; position: absolute; left: 11px; top: 8px; border-style: solid;
+    border-width: 6px 0 6px 9px; border-color: transparent transparent transparent var(--on-accent, #fff); }
+  .vc-label { display: inline-flex; align-items: baseline; gap: .45rem; }
+  .vc-label .stamp { color: var(--accent); }
+  .vc-name { font-family: var(--font-hand); font-size: 1.35rem; line-height: 1; }
+  .vid-stage { margin-top: 1rem; position: relative; aspect-ratio: 16 / 9; width: 100%; max-width: 860px;
+    background: #000; border-radius: var(--radius, 6px); overflow: hidden;
+    box-shadow: 0 0 50px 6px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .vid-stage[hidden] { display: none; }
+  .vid-stage :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
   .plates { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4.5rem); }
   .plate { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
     grid-template-areas: 'name name' 'main side' 'cap cap'; gap: clamp(1rem, 2.5vw, 1.75rem);
@@ -354,15 +395,39 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
   const lbUp = () => !!document.querySelector('#lightbox[open]');
 
   function show(p: HTMLElement, instant = false) {
-    if (openEl && openEl !== p) openEl.classList.remove('open', 'instant');
+    if (openEl && openEl !== p) { stopVideos(openEl); openEl.classList.remove('open', 'instant'); }
     openEl = p;
     p.classList.toggle('instant', instant);   // skip the fade when stepping between projects
     p.classList.add('open');
     p.scrollTop = 0;
     document.body.style.overflow = 'hidden';
   }
+  // stop any playing trailer (drop its iframe) when leaving a panel
+  function stopVideos(p: HTMLElement | null) {
+    p?.querySelectorAll<HTMLElement>('.vid-stage').forEach((st) => { st.innerHTML = ''; st.hidden = true; });
+    p?.querySelectorAll('.vid-chip.is-active').forEach((c) => c.classList.remove('is-active'));
+  }
+  document.querySelectorAll<HTMLButtonElement>('.vid-chip').forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const stage = chip.closest('.vids')?.querySelector<HTMLElement>('.vid-stage');
+      if (!stage) return;
+      chip.closest('.vids')?.querySelectorAll('.vid-chip').forEach((c) => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${chip.dataset.yt}?autoplay=1&rel=0&playsinline=1`;
+      f.title = chip.dataset.title || 'Video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      f.allowFullscreen = true;
+      stage.hidden = false;            // size the stage first so the player lays out full-width
+      stage.replaceChildren(f);
+      stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    })
+  );
+
   function close() {
     if (!openEl) return;
+    stopVideos(openEl);
     openEl.classList.remove('open', 'instant');
     openEl = null;
     document.body.style.overflow = '';

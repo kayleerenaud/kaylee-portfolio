@@ -40,6 +40,7 @@ export type Project = {
   year: string;
   kind: 'realized' | 'paper';
   blurb?: string;
+  videos?: { id: string; label: string }[];  // YouTube clips → thumbnail chips that play in the panel
   coverPos?: string;    // object-position for the rack card thumbnail (preview crop only)
   coverImage?: string;  // dedicated rack thumbnail image (overrides the derived cover)
   pieces: Piece[];
@@ -54,6 +55,7 @@ export const projects: Project[] = [
     id: 'kotor',
     show: 'Knights of the Old Republic', company: 'Studio 70', director: 'Austin Parenti', role: 'Costume Director', year: '2025–Present', kind: 'realized',
     blurb: 'Knights of the Old Republic is a fan-made feature film trilogy.',
+    videos: [{ id: 'b_h2gfT5H4Q', label: 'Teaser Trailer' }],
     pieces: [
       // two Tusken Raider photos: wide full-body main + "Close Up" thumbnail
       { caption: 'Boots and accessories designed and crafted by Kaylee Renaud.',
