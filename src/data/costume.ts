@@ -7,6 +7,7 @@
 //     name?      short heading over the plate (character / look name)
 //     final?     finished costume photo  (omit for paper / unrealized projects)
 //     closeups?  detail shots of the final
+//     bts?       behind-the-scenes photos
 //     photos?    extra finished photos beside the final
 //     rendering? the design illustration
 //     renderings? extra renderings shown in the same plate
@@ -29,6 +30,7 @@ export type Piece = {
   swatches?: string[];
   photos?: string[];       // extra finished photos (shown beside the final)
   closeups?: string[];     // detail / close-up shots of the final
+  bts?: string[];          // behind-the-scenes photos (labelled "Behind the Scenes")
 };
 
 export type Project = {
@@ -68,6 +70,20 @@ export const projects: Project[] = [
       // Lena: final costume photo (large) + its technical drawing beside it
       { caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
         final: im('kotor', 'lena-final'), technicals: [im('kotor', 'look-6')] },
+    ],
+  },
+
+  // ---- The Melody Goes — short film, dir. Claire Zhang (realized) ---------
+  {
+    id: 'melody-goes',
+    show: 'The Melody Goes', company: '', director: 'Claire Zhang', role: 'Costume Designer', year: 'Oct. 2026', kind: 'realized',
+    blurb: 'In a dystopian world where cellos are banned, a woman hides her instrument while soldiers raid her home.',
+    pieces: [
+      { rendering: im('melody-goes', 'rendering') },            // the costume rendering leads the plates
+      { final: im('melody-goes', 'look-1') },                   // first production still → card cover
+      { final: im('melody-goes', 'look-2') },
+      { final: im('melody-goes', 'look-3') },
+      { bts: [im('melody-goes', 'bts')] },                      // behind-the-scenes, last
     ],
   },
 
