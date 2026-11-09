@@ -70,6 +70,9 @@ export const projects: Project[] = [
       // Lena: final costume photo (large) + its technical drawing beside it
       { caption: 'Designed by Kaylee Renaud, crafted by Marie Cosplay Shop.',
         final: im('kotor', 'lena-final'), technicals: [im('kotor', 'look-6')] },
+      // Sith Troopers: wide group shot + close-up of the EVA foam armor
+      { caption: 'Sith Troopers, with armor made from EVA foam. Crafted in collaboration with Ziyan Zheng and Andreas Cosco.',
+        final: im('kotor', 'sith-troopers'), closeups: [im('kotor', 'sith-trooper-close')] },
     ],
   },
 
