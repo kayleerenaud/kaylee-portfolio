@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Lightbox from '../components/Lightbox.astro';
 import YouTube from '../components/YouTube.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { projects, upcoming } from '../data/costume';
+import { projects, upcomingList } from '../data/costume';
 import { site } from '../config/site';
 
 const dirName = (d: string) => d.replace(/^Dir\.\s*/, '');
@@ -83,16 +83,18 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
             </button>
           </li>
         ))}
-        <li class="proj-li" data-reveal style={liStyle(projects.length)}>
-          <button class="proj-card" data-open="proj-upcoming" aria-haspopup="dialog" aria-label="Open Upcoming production">
+        {upcomingList.map((u, j) => (
+        <li class="proj-li" data-reveal style={liStyle(projects.length + j)}>
+          <button class="proj-card" data-open={`proj-upcoming-${u.id}`} aria-haspopup="dialog" aria-label={`Open ${u.show} (upcoming)`}>
             <span class="photo">
               <span class="proj-img proj-img-empty"><span class="empty-stamp">Coming Soon</span></span>
               <span class="tape tape-tl" aria-hidden="true"></span>
               <span class="tape tape-tr" aria-hidden="true"></span>
             </span>
-            <span class="card-title">{upcoming.show}</span>
+            <span class="card-title">{u.show}</span>
           </button>
         </li>
+        ))}
       </ul>
     </div>
     {site.social.instagram && (
@@ -161,8 +163,9 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
     </div>
   ))}
 
-  <!-- Upcoming overlay — no images yet, kept cohesive -->
-  <div class="panel" id="proj-upcoming" role="dialog" aria-modal="true" aria-label={upcoming.show}>
+  <!-- Upcoming overlays — no images yet, kept cohesive -->
+  {upcomingList.map((upcoming) => (
+  <div class="panel" id={`proj-upcoming-${upcoming.id}`} role="dialog" aria-modal="true" aria-label={upcoming.show}>
     <div class="panel-inner">
       <button class="panel-close" aria-label="Close">×</button>
       <button class="panel-prev" aria-label="Previous project">‹</button>
@@ -179,11 +182,12 @@ function pieceImages(piece: { final?: string; rendering?: string; renderings?: s
       </header>
       <div class="cs-frame">
         <span class="cs-stamp">Coming Soon</span>
-        <p class="cs-note">In development — looks &amp; imagery to be revealed.</p>
+        <p class="cs-note">{upcoming.blurb ?? <>In development — looks &amp; imagery to be revealed.</>}</p>
         {upcoming.note && <p class="cs-sub stamp">{upcoming.note}</p>}
       </div>
     </div>
   </div>
+  ))}
 
   <Lightbox />
 </BaseLayout>

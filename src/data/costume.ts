@@ -184,12 +184,38 @@ export const projects: Project[] = [
   },
 ];
 
-// the trailing tag — an upcoming production (still a "coming soon" teaser)
-export const upcoming = {
-  show: 'Eurydice',
-  company: 'NYU Tisch ETW',
-  director: 'Dir. Elia Monte-Brown',
-  role: 'Costume Designer',
-  date: 'Fall 2026',
-  note: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
-};
+// the trailing tags — upcoming productions (each a "coming soon" teaser)
+export const upcomingList: { id: string; show: string; company?: string; director?: string; role?: string; date?: string; note?: string; blurb?: string }[] = [
+  {
+    id: 'eurydice',
+    show: 'Eurydice',
+    company: 'NYU Tisch ETW',
+    director: 'Dir. Elia Monte-Brown',
+    role: 'Costume Designer',
+    date: 'Fall 2026',
+    note: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
+  },
+  {
+    id: 'be-all-end-all',
+    show: 'Be All End All',
+    company: 'Playwrights Horizons',
+    director: 'Dir. Delia Dumont',
+    role: 'Costume Designer',
+    note: 'Written by Jenn Martin',
+  },
+  {
+    id: 'sunday-in-the-park',
+    show: 'Sunday in the Park with George',
+    company: 'Tisch New Theater',
+    director: 'Dir. Clark Warden',
+    role: 'Costume Consultant',
+  },
+  {
+    id: 'vp-scifi',
+    show: 'Untitled Sci-Fi Project',
+    company: 'NYU Virtual Production',
+    blurb: 'A sci-fi collaboration with the NYU Virtual Production studio. Details not yet released.',
+  },
+];
+// kept for anything still importing the single teaser
+export const upcoming = upcomingList[0];
