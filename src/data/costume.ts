@@ -97,7 +97,7 @@ export const projects: Project[] = [
       { final: im('eurydice', 'stones-2') },
       { final: im('eurydice', 'underworld-group') },
       { final: im('eurydice', 'child'), rendering: im('eurydice', 'r-child') },
-      { final: im('eurydice', 'lord-group'), rendering: im('eurydice', 'r-lord') },
+      { final: im('eurydice', 'lord-group') },
       { final: im('eurydice', 'orpheus-raincoat'), rendering: im('eurydice', 'r-orpheus-raincoat') },
       { final: im('eurydice', 'orpheus-rain') },
     ],
@@ -106,7 +106,7 @@ export const projects: Project[] = [
   // ---- Be All End All — Playwrights Horizons (realized) -------------------
   {
     id: 'be-all-end-all',
-    show: 'Be All End All', company: 'Playwrights Horizons', director: 'Delia Dumont', role: 'Costume Designer', year: '2026', kind: 'realized',
+    show: 'Be All End All', company: 'Playwrights Horizons', director: 'Delia Dumont', role: 'Costume Designer', year: 'Nov. 2026', kind: 'realized',
     blurb: 'Written by Jenn Martin.',
     coverImage: im('be-all-end-all', 'look-2'),   // the mime shot (Kaylee's pick)
     coverPos: '46% center',
