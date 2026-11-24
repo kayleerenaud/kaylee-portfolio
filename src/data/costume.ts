@@ -23,6 +23,7 @@ export type Piece = {
   name?: string;           // short heading over the plate (character / look name)
   caption?: string;
   final?: string;
+  finalLabel?: string;     // overrides the 'Final' stamp on the main image (e.g. 'Close Up')
   rendering?: string;
   renderings?: string[];   // extra renderings shown in the same plate
   technicals?: string[];   // design/technical sheets that pair with the final
@@ -87,8 +88,8 @@ export const projects: Project[] = [
     pieces: [
       { name: 'Eurydice — Paz Spannus · Orpheus — Elliot Ingram', final: im('eurydice', 'beach'), rendering: im('eurydice', 'r-eurydice-beach'), renderings: [im('eurydice', 'r-orpheus-beach')] },
       { name: 'Eurydice — Paz Spannus · Interesting Man — Nicky Little', final: im('eurydice', 'wedding'),
-        closeups: [im('eurydice', 'interesting-man')],
         rendering: im('eurydice', 'r-eurydice-wedding'), renderings: [im('eurydice', 'r-interesting-man')] },
+      { name: 'Interesting Man — Nicky Little', final: im('eurydice', 'interesting-man'), finalLabel: 'Close Up' },
       { name: 'Orpheus — Elliot Ingram', final: im('eurydice', 'orpheus-suit'), rendering: im('eurydice', 'r-orpheus-suit') },
       { name: 'Father — Montana Jones', final: im('eurydice', 'father'), rendering: im('eurydice', 'r-father') },
       { name: 'Eurydice — Paz Spannus', final: im('eurydice', 'eurydice-umbrella'), rendering: im('eurydice', 'r-eurydice-underworld') },
@@ -99,9 +100,9 @@ export const projects: Project[] = [
       { name: 'Loud Stone — Kaya Bayley-Hay', final: im('eurydice', 'loud-stone'), rendering: im('eurydice', 'r-loud-stone') },
       { final: im('eurydice', 'stones-2') },
       { final: im('eurydice', 'underworld-group') },
+      { name: 'Orpheus — Elliot Ingram', final: im('eurydice', 'orpheus-raincoat'), rendering: im('eurydice', 'r-orpheus-raincoat') },
       { name: 'Child — Elliott Moxcey', final: im('eurydice', 'child'), rendering: im('eurydice', 'r-child') },
       { final: im('eurydice', 'lord-group') },
-      { name: 'Orpheus — Elliot Ingram', final: im('eurydice', 'orpheus-raincoat'), rendering: im('eurydice', 'r-orpheus-raincoat') },
       { final: im('eurydice', 'orpheus-rain') },
     ],
   },

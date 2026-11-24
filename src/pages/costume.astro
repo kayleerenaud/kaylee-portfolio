@@ -24,9 +24,9 @@ const liStyle = (i: number) => {
 // drawn ruler tick marks along the top of the frame
 const ticks = Array.from({ length: 41 }, (_, k) => ({ x: +(2 + k * (596 / 40)).toFixed(1), long: k % 5 === 0 }));
 type Img = { src: string; label: string };
-function pieceImages(piece: { final?: string; rendering?: string; renderings?: string[]; technicals?: string[]; progress?: string[]; swatches?: string[]; photos?: string[]; closeups?: string[]; bts?: string[] }): Img[] {
+function pieceImages(piece: { final?: string; finalLabel?: string; rendering?: string; renderings?: string[]; technicals?: string[]; progress?: string[]; swatches?: string[]; photos?: string[]; closeups?: string[]; bts?: string[] }): Img[] {
   const out: Img[] = [];
-  if (piece.final) out.push({ src: piece.final, label: 'Final' });
+  if (piece.final) out.push({ src: piece.final, label: piece.finalLabel ?? 'Final' });
   (piece.closeups ?? []).forEach((s) => out.push({ src: s, label: 'Close Up' }));
   (piece.photos ?? []).forEach((s) => out.push({ src: s, label: 'Photo' }));
   if (piece.rendering) out.push({ src: piece.rendering, label: 'Rendering' });
