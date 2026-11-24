@@ -207,7 +207,7 @@ export const upcomingList: { id: string; show: string; company?: string; directo
     id: 'sunday-in-the-park',
     show: 'Sunday in the Park with George',
     company: 'Tisch New Theater',
-    director: 'Dir. Clark Warden',
+    director: 'Dir. Clark Worden',
     role: 'Costume Consultant',
   },
   {
