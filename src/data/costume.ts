@@ -84,8 +84,9 @@ export const projects: Project[] = [
     blurb: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
     pieces: [
       { name: 'Eurydice — Paz Spannus · Orpheus — Elliot Ingram', final: im('eurydice', 'beach'), rendering: im('eurydice', 'r-eurydice-beach'), renderings: [im('eurydice', 'r-orpheus-beach')] },
-      { name: 'Eurydice — Paz Spannus', final: im('eurydice', 'wedding'), rendering: im('eurydice', 'r-eurydice-wedding') },
-      { name: 'Interesting Man — Nicky Little', final: im('eurydice', 'interesting-man'), rendering: im('eurydice', 'r-interesting-man') },
+      { name: 'Eurydice — Paz Spannus · Interesting Man — Nicky Little', final: im('eurydice', 'wedding'),
+        closeups: [im('eurydice', 'interesting-man')],
+        rendering: im('eurydice', 'r-eurydice-wedding'), renderings: [im('eurydice', 'r-interesting-man')] },
       { name: 'Orpheus — Elliot Ingram', final: im('eurydice', 'orpheus-suit'), rendering: im('eurydice', 'r-orpheus-suit') },
       { name: 'Father — Montana Jones', final: im('eurydice', 'father'), rendering: im('eurydice', 'r-father') },
       { name: 'Eurydice — Paz Spannus', final: im('eurydice', 'eurydice-umbrella'), rendering: im('eurydice', 'r-eurydice-underworld') },
