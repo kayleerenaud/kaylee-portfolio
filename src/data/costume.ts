@@ -82,6 +82,8 @@ export const projects: Project[] = [
     id: 'eurydice',
     show: 'Eurydice', company: 'NYU Tisch ETW', director: 'Elia Monte-Brown', role: 'Costume Designer', year: 'Fall 2026', kind: 'realized',
     blurb: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
+    coverImage: im('eurydice', 'underworld-group'),   // Kaylee's pick for the card
+    coverPos: '50% center',
     pieces: [
       { name: 'Eurydice — Paz Spannus · Orpheus — Elliot Ingram', final: im('eurydice', 'beach'), rendering: im('eurydice', 'r-eurydice-beach'), renderings: [im('eurydice', 'r-orpheus-beach')] },
       { name: 'Eurydice — Paz Spannus · Interesting Man — Nicky Little', final: im('eurydice', 'wedding'),
