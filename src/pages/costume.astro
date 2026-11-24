@@ -340,6 +340,17 @@ function pieceImages(piece: { final?: string; finalLabel?: string; rendering?: s
   /* natural aspect so vertical renderings/technicals aren't cropped to landscape */
   .plate-thumb img { width: 100%; height: auto; display: block;
     border-radius: 2px; border: 5px solid #efe9dc; box-shadow: 0 8px 20px rgba(0,0,0,.45); }
+  /* laptop+: thumbs sit side by side, height-capped so tall renderings never
+     out-tower a landscape final and stretch the plate */
+  @media (min-width: 681px) {
+    .plate-side { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+    .plate-thumb { flex: 0 1 auto; }
+    .plate-thumb img { width: auto; max-width: 100%; height: clamp(180px, 30vh, 260px); object-fit: contain; }
+    .plate { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+    /* tall (portrait) finals: cap to the viewport so a plate fits on a laptop screen */
+    .plate-main { justify-self: center; }
+    .plate-main img { width: auto; max-width: 100%; max-height: 78vh; }
+  }
   @media (max-width: 680px) {
     .plate-side { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
     .plate-thumb { width: calc(50% - .7rem); }
