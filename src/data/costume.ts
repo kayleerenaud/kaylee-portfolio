@@ -108,6 +108,8 @@ export const projects: Project[] = [
     id: 'be-all-end-all',
     show: 'Be All End All', company: 'Playwrights Horizons', director: 'Delia Dumont', role: 'Costume Designer', year: '2026', kind: 'realized',
     blurb: 'Written by Jenn Martin.',
+    coverImage: im('be-all-end-all', 'look-2'),   // the mime shot (Kaylee's pick)
+    coverPos: '46% center',
     pieces: [
       { final: im('be-all-end-all', 'look-1') },
       { final: im('be-all-end-all', 'look-2') },
