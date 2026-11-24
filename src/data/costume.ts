@@ -76,6 +76,33 @@ export const projects: Project[] = [
     ],
   },
 
+  // ---- Eurydice — NYU Tisch ETW (realized) ---------------------------------
+  //  close-ups paired with their renderings; group shots stand alone
+  {
+    id: 'eurydice',
+    show: 'Eurydice', company: 'NYU Tisch ETW', director: 'Elia Monte-Brown', role: 'Costume Designer', year: 'Fall 2026', kind: 'realized',
+    blurb: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
+    pieces: [
+      { final: im('eurydice', 'beach'), rendering: im('eurydice', 'r-eurydice-beach'), renderings: [im('eurydice', 'r-orpheus-beach')] },
+      { final: im('eurydice', 'wedding'), rendering: im('eurydice', 'r-eurydice-wedding') },
+      { final: im('eurydice', 'interesting-man'), rendering: im('eurydice', 'r-interesting-man') },
+      { final: im('eurydice', 'orpheus-suit'), rendering: im('eurydice', 'r-orpheus-suit') },
+      { final: im('eurydice', 'father'), rendering: im('eurydice', 'r-father') },
+      { final: im('eurydice', 'eurydice-umbrella'), rendering: im('eurydice', 'r-eurydice-underworld') },
+      { final: im('eurydice', 'stones') },
+      { final: im('eurydice', 'little-stone-1'), rendering: im('eurydice', 'r-little-stone-1') },
+      { final: im('eurydice', 'little-stone-2'), rendering: im('eurydice', 'r-little-stone-2') },
+      { final: im('eurydice', 'big-stone'), rendering: im('eurydice', 'r-big-stone') },
+      { final: im('eurydice', 'loud-stone'), rendering: im('eurydice', 'r-loud-stone') },
+      { final: im('eurydice', 'stones-2') },
+      { final: im('eurydice', 'underworld-group') },
+      { final: im('eurydice', 'child'), rendering: im('eurydice', 'r-child') },
+      { final: im('eurydice', 'lord-group'), rendering: im('eurydice', 'r-lord') },
+      { final: im('eurydice', 'orpheus-raincoat'), rendering: im('eurydice', 'r-orpheus-raincoat') },
+      { final: im('eurydice', 'orpheus-rain') },
+    ],
+  },
+
   // ---- Be All End All — Playwrights Horizons (realized) -------------------
   {
     id: 'be-all-end-all',
@@ -200,15 +227,6 @@ export const projects: Project[] = [
 
 // the trailing tags — upcoming productions (each a "coming soon" teaser)
 export const upcomingList: { id: string; show: string; company?: string; director?: string; role?: string; date?: string; note?: string; blurb?: string }[] = [
-  {
-    id: 'eurydice',
-    show: 'Eurydice',
-    company: 'NYU Tisch ETW',
-    director: 'Dir. Elia Monte-Brown',
-    role: 'Costume Designer',
-    date: 'Fall 2026',
-    note: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
-  },
   {
     id: 'sunday-in-the-park',
     show: 'Sunday in the Park with George',
