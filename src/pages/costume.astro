@@ -139,7 +139,7 @@ function pieceImages(piece: { final?: string; finalLabel?: string; rendering?: s
             const alt = lbCap || `${p.show} — ${main.label.toLowerCase()}`;
             return (
               <article class:list={['plate', sides.length === 0 && 'solo']} data-gallery>
-                {nm && <p class="plate-name hand">{nm}</p>}
+                {/* character/actor names live in the lightbox caption only (Kaylee, Nov 2026) */}
                 <button class="plate-main" data-lightbox data-index="0" data-src={main.src} data-alt={alt} data-caption={lbCap}>
                   <img src={main.src} alt={alt} loading="lazy" decoding="async" />
                   <span class="plate-label stamp">{main.label}</span>
