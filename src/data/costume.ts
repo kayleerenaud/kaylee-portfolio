@@ -76,6 +76,20 @@ export const projects: Project[] = [
     ],
   },
 
+  // ---- Be All End All — Playwrights Horizons (realized) -------------------
+  {
+    id: 'be-all-end-all',
+    show: 'Be All End All', company: 'Playwrights Horizons', director: 'Delia Dumont', role: 'Costume Designer', year: '2026', kind: 'realized',
+    blurb: 'Written by Jenn Martin.',
+    pieces: [
+      { final: im('be-all-end-all', 'look-1') },
+      { final: im('be-all-end-all', 'look-2') },
+      { final: im('be-all-end-all', 'look-3') },
+      { final: im('be-all-end-all', 'look-4') },
+      { final: im('be-all-end-all', 'look-5') },
+    ],
+  },
+
   // ---- The Melody Goes — short film, dir. Claire Zhang (realized) ---------
   {
     id: 'melody-goes',
@@ -194,14 +208,6 @@ export const upcomingList: { id: string; show: string; company?: string; directo
     role: 'Costume Designer',
     date: 'Fall 2026',
     note: 'Thank you to our Associate Z Wechsler and our Assistant Ollie Reece!',
-  },
-  {
-    id: 'be-all-end-all',
-    show: 'Be All End All',
-    company: 'Playwrights Horizons',
-    director: 'Dir. Delia Dumont',
-    role: 'Costume Designer',
-    note: 'Written by Jenn Martin',
   },
   {
     id: 'sunday-in-the-park',
